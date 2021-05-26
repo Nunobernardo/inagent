@@ -401,6 +401,25 @@
                           </div>
                         </div>
                       </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default required">
+                            <label>CC/Passaporte</label>
+                            <input type="text" class="form-control txtPlayerPassport" required>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default input-group">
+                            <div class="form-input-group">
+                              <label>Validade</label>
+                              <input type="email" class="form-control txtPlayerPassportVal" placeholder="Selecione a data" id="datepicker-component2">
+                            </div>
+                            <div class="input-group-append ">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>
@@ -446,7 +465,20 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Clube</label>
-                        <input type="text" class="form-control txtPlayerClub" required>
+                        <form role="form">
+                          <div class="form-group ">
+                            <select class="full-width ddlPlayerClub" data-init-plugin="select2">
+                              <optgroup label="Portugal">
+                                <option value="AK">F.C.Porto</option>
+                                <option value="HI">S.L.Benfica</option>
+                              </optgroup>
+                              <optgroup label="Espanha">
+                                <option value="CA">Real Madrid</option>
+                                <option value="NV">Barcelona</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
@@ -456,25 +488,6 @@
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
                                 </span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group form-group-default required">
-                            <label>CC/Passaporte</label>
-                            <input type="text" class="form-control txtPlayerPassport" required>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group form-group-default input-group">
-                            <div class="form-input-group">
-                              <label>Validade</label>
-                              <input type="email" class="form-control txtPlayerPassportVal" placeholder="Selecione a data" id="datepicker-component2">
-                            </div>
-                            <div class="input-group-append ">
-                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </form>
