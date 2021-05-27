@@ -474,7 +474,7 @@
                               </optgroup>
                               <optgroup label="Espanha">
                                 <option value="CA">Real Madrid</option>
-                                <option value="NV">Barcelona</option>
+                                <option value="NV">Barcelona F.C.</option>
                               </optgroup>
                             </select>
                           </div>
