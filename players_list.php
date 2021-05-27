@@ -328,7 +328,7 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table_players" id="basicTable">
+                  <table class="table table-hover" id="basicTable">
                     <thead>
                       <tr>
                         <th style="width:1%" class="text-center">
@@ -343,8 +343,7 @@
                         <th style="width:17%">Valor de mercado</th>
                       </tr>
                     </thead>
-                    <tbody role="row" class="row_player">
-                      
+                      <tbody role="row" class="row_player">
                     </tbody>
                   </table>
                 </div>
@@ -464,7 +463,7 @@
 
     <script type='text/javascript'>
       $(document).ready(function () {
-          publications();
+        list_player();
       });
     </script>
   </body>

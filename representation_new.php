@@ -509,15 +509,15 @@
                             </div>
                             <div class="input-group-append h-c-50">
                               <span class="input-group-text transparent">
-                                  <input type="checkbox" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
+                                  <input type="checkbox" id = "boxchecked" value="checkbox" name="CheckboxGroup1" data-init-plugin="switchery" data-size="small" data-color="success" />
                               </span>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="form-group form-group-default required">
+                      <div class="form-group form-group-defaultrequired">
                         <label>Nome do Pai</label>
-                        <input type="text" class="form-control txtRepresentationFather">
+                        <input type="text" class="form-control txtRepresentationFather" id="hidden" value="checkbox">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nome da Mãe</label>
@@ -819,6 +819,21 @@
     <script type="text/javascript">
       $(document).ready(function(){
         representation({ id: 0, representation: <?php echo json_encode(new representation(null)); ?>});
+      });
+
+      
+      $(document).ready(function(){
+        $("#boxchecked").click(function ()
+        {
+            if ($("#boxchecked").is(':checked'))
+            {
+                $("#hidden").show();
+            }
+            else
+            {
+                $("#hidden").hide();
+            }              
+        });
       });
     </script>
   </body>

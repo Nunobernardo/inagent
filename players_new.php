@@ -367,7 +367,7 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Idade</label>
-                            <input type="text" class="form-control txtPlayerAge">
+                            <input type="text" class="form-control txtPlayerAge" disabled>
                           </div>
                         </div>
                       </div>
@@ -431,11 +431,25 @@
                 <div class="card card-transparent">
                   <div class="card-body">
                     <form class="" role="form">
-                      <div class="form-group form-group-default">
-                        <label>Pé dominante</label>
-                        <input type="text" class="form-control txtPlayerFoot" required>
+                    <div class="card card-default">
+                        <div class="card-header ">
+                          <div class="card-title">Pé Dominante</div>
+                          <div class="tools">
+                            <a href="javascript:;" class="collapse"></a>
+                            <a href="#grid-config" data-toggle="modal" class="config"></a>
+                            <a href="javascript:;" class="reload"></a>
+                            <a href="javascript:;" class="remove"></a>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <select class="cs-select cs-skin-slide ddlPlayerFoot" data-init-plugin="cs-select">
+                            <option value="selected" disabled="disabled">Escolha o pé dominante</option>
+                            <option value="g">Esquerdo</option>
+                            <option value="dd">Direito</option>
+                            <option value="dc">Ambos</option>
+                          </select> 
+                        </div>
                       </div>
-
                       <div class="card card-default">
                         <div class="card-header ">
                           <div class="card-title">Posição</div>
@@ -448,6 +462,7 @@
                         </div>
                         <div class="card-body">
                           <select class="cs-select cs-skin-slide ddlPlayerPosition" data-init-plugin="cs-select">
+                            <option value="selected" disabled="disabled">Escolha a posição</option>
                             <option value="g">Guarda-redes</option>
                             <option value="dd">Defesa direito</option>
                             <option value="dc">Defesa central</option>

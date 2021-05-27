@@ -23,8 +23,8 @@
                 $passportvalPlayer = date("Y-m-d", strtotime($player->passportval));
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
-                $query = "INSERT INTO players (id_player, id_club, image, first_name, last_name, name, nationality, birth_date, height, weight, position, value, documents, documents_val)
-                          VALUES (NULL, '1', '', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', '$birthPlayer', '$player->height', '$player->weight', '$player->position', '$player->value', '$player->passport', '$passportvalPlayer');";
+                $query = "INSERT INTO players (id_player, id_club, image, first_name, last_name, name, nationality, birth_date, height, weight, foot, position, value, documents, documents_val)
+                          VALUES (NULL, '1', '', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', '$birthPlayer', '$player->height', '$player->weight', '$player->foot', '$player->position', '$player->value', '$player->passport', '$passportvalPlayer');";
 
 
                 //[ EXECUTE QUERY ]

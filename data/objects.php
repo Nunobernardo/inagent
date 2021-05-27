@@ -50,11 +50,10 @@
                 $this->firstname = $obj["first_name"];
                 $this->lastname = $obj["last_name"];
                 $this->birth = $obj["birth_date"];
-                //$this->age = $obj["email"];
                 $this->nationality = $$obj["nationality"];
                 $this->height = $obj["height"];
                 $this->weight = $obj["weight"];
-                //$this->foot = $obj["email"];
+                $this->foot = $obj["foot"];
                 $this->position = $obj["position"];
                 $this->club = $obj["id_club"];
                 $this->value = $obj["value"];
@@ -67,7 +66,7 @@
             return $this;
         }
 
-        public function set($id, $name, $firstname, $lastname, $birth, $age, $nationality, $height, $weight, $foot, $position, $club, $value, $passport, $passportval) {
+        public function set($id, $name, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $value, $passport, $passportval) {
             $this->id = $id;
             $this->name = $name;
             $this->firstname = $firstname;

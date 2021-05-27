@@ -9,7 +9,7 @@ function player(args) {
             playernationality: $('.txtPlayerNationality'),
             playerheight: $('.txtPlayerHeight'),
             playerweight: $('.txtPlayerWeight'),
-            playerfoot: $('.txtPlayerFoot'),
+            playerfoot: $('div.ddlPlayerFoot'),
             playerposition: $('div.ddlPlayerPosition'),
             playerclub: $('.txtPlayerClub'),
             playervalue: $('.txtPlayerValue'),
@@ -34,7 +34,7 @@ function player(args) {
                     birth = ds.playerbirth.val();
                     club = ds.playerclub.val();
                     firstname = ds.playerfirstname.val();
-                    foot = ds.playerfoot.val();
+                    foot = ds.playerfoot.find('span.cs-placeholder').html();
                     height = ds.playerheight.val();
                     lastname = ds.playerlastname.val();
                     name = ds.playername.val();
@@ -403,26 +403,26 @@ function mandates(args) {
     mandates.init();
 };
 
-function publications() { 
-    var publications = {
+function list_player() { 
+    var list_player = {
         design: {
             base: undefined,
             search: $('.grid-search input'),
             actions: {
                 me: $('.main-content-actions'),
-                add: $('.main-content-actions .add-publication'),
+                add: $('.main-content-actions .add-list_player'),
             },
             grid: {
-                me: $('.table_players'),
-                rows: $('.table_players .row_player'),
-                rowtemplate: $('<tr role="row" class="row_player"></tr>')
+                me: $('.table'),
+                rows: $('.table .row_player'),
+                rowtemplate: $('<tr role="row_player" class="row_player"></tr>')
                 // withoutresults: $('.grid-without-results')
             }
         },
         datasource: {
             base: undefined,
-            publications: new Array(),
-            publicationsusers: new Array(),
+            list_player: new Array(),
+            list_playerusers: new Array(),
             total: 0
         },
         methods: {
@@ -432,41 +432,41 @@ function publications() {
                 add: function () {
                     var me = this.base;
 
-                    controls.post(me.datasource.detailpage, { publication_id: 0 });
+                    controls.post(me.datasource.detailpage, { list_player_id: 0 });
                 },
-                edit: function (publicationid) {
+                edit: function (list_playerid) {
                     var me = this.base;
 
-                    //[ PUBLICATION DETAIL ]
-                    controls.post(me.datasource.detailpage, { publication_id: publicationid });
+                    //[ list_player DETAIL ]
+                    controls.post(me.datasource.detailpage, { list_player_id: list_playerid });
                 },
-                remove: function (publicationid) {
+                remove: function (list_playerid) {
                     var me = this.base,
-                        publication = me.datasource.publications.filter(function (p) { return (p.id == ifUndefinedOrNull(parseInt(publicationid), 0)); })[0];
+                        list_player = me.datasource.list_player.filter(function (p) { return (p.id == ifUndefinedOrNull(parseInt(list_playerid), 0)); })[0];
 
-                    //[ REMOVE PUBLICATION ]
-                    if (!isUndefinedOrNull(publication)) {
+                    //[ REMOVE list_player ]
+                    if (!isUndefinedOrNull(list_player)) {
                         controls.message.bind({
                             type: 'question',
-                            message: controls.resources.remove_publication,
+                            message: controls.resources.remove_list_player,
                             afteryes: function () {
                                 controls.ajax({
-                                    functionname: 'delete_publication',
+                                    functionname: 'delete_list_player',
                                     data: {
-                                        publication_id: publication.id
+                                        list_player_id: list_player.id
                                     }
                                 }, function (data) {
                                     if (ifUndefinedOrNull(data.success, false)) {
                                         controls.message.bind({
                                             type: 'success',
-                                            message: controls.resources.success_removing_publication,
+                                            message: controls.resources.success_removing_list_player,
                                             afterok: function () {
-                                                //[ BIND PUBLICATIONS GRID ]
+                                                //[ BIND list_player GRID ]
                                                 me.methods.grid.bind();
                                             }
                                         });
                                     } else {
-                                        controls.message.bind({ type: 'error', message: controls.resources.error_removing_publication });
+                                        controls.message.bind({ type: 'error', message: controls.resources.error_removing_list_player });
                                     };
                                 }, function () {
                                     //[ ERROR ]
@@ -485,18 +485,18 @@ function publications() {
                     var me = this.base,
                         ds = me.design.grid;
 
-                    //[ GET PUBLICATIONS ]
+                    //[ GET list_player ]
                     controls.ajax({
-                        functionname: 'publications',
+                        functionname: 'list_player',
                         data: {
                             user_id: controls.session.currentuser.id,
                             page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
                             records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
                         }
                     }, function (data) {
-                        //[ SET PUBLICATIONS LIST ]
-                        me.datasource.publications = ifUndefinedOrNull(data.publications, new Array());
-                        me.datasource.publicationsusers = ifUndefinedOrNull(data.publicationsusers, new Array());
+                        //[ SET list_player LIST ]
+                        me.datasource.list_player = ifUndefinedOrNull(data.list_player, new Array());
+                        me.datasource.list_playerusers = ifUndefinedOrNull(data.list_playerusers, new Array());
                         me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
 
                         if (data.total > 0) {
@@ -505,7 +505,7 @@ function publications() {
                                 ds.me.slideDown();
 
                                 //[ BIND ROWS ]
-                                me.methods.grid.build(me.datasource.publications);
+                                me.methods.grid.build(me.datasource.list_player);
 
                                 //[ BIND PAGER ]
                                 controls.pager.bind({
@@ -549,7 +549,7 @@ function publications() {
                                 itemcolumn = '<td class="v-align-middle">{0}</td>';
 
                             with (row) {
-                                //[ SAVE PUBLICATION ID ]
+                                //[ SAVE list_player ID ]
                                 attr('data', list_player.id);
 
                                 //[ OTHER COLUMNS ]
@@ -572,13 +572,13 @@ function publications() {
             var me = this,
                 ds = me.design.actions;
 
-            // //[ PUBLICATIONS ACTIONS ]
+            // //[ list_player ACTIONS ]
             // ds.add.on('click', function (e) {
             //     me.methods.actions.add();
             //     e.preventDefault();
             // });
 
-            //[ BIND PUBLICATIONS GRID ]
+            //[ BIND list_player GRID ]
             //me.methods.grid.bind();
             me.methods.grid.build();
         },
@@ -598,6 +598,8 @@ function publications() {
         }
     };
  
-    return publications.init();
+    return list_player.init();
 };
+
+
 
