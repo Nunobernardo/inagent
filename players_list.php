@@ -339,7 +339,7 @@
                         <th style="width:17%">Data de Nascimento</th>
                         <th style="width:17%">Nacionalidade</th>
                         <th style="width:15%">Posição</th>
-                        <th style="width:17%">Clube</th>
+                        <th style="width:17%">Clubes</th>
                         <th style="width:17%">Valor de mercado</th>
                       </tr>
                     </thead>
