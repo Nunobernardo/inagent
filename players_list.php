@@ -328,12 +328,9 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-hover" id="basicTable">
+                  <table class="table_players" id="basicTable">
                     <thead>
                       <tr>
-                        <!-- NOTE * : Inline Style Width For Table Cell is Required as it may differ from user to user
-    										Comman Practice Followed
-    										-->
                         <th style="width:1%" class="text-center">
                           <button class="btn btn-link"><i class="pg-trash"></i>
                           </button>
@@ -346,59 +343,8 @@
                         <th style="width:17%">Valor de mercado</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td class="v-align-middle">
-                          <div class="checkbox text-center">
-                            <input type="checkbox" value="3" id="checkbox6">
-                            <label for="checkbox6" class="no-padding no-margin"></label>
-                          </div>
-                        </td>
-                        <td class="v-align-middle ">
-                          <p>Fábio Abreu</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>24/11/1987</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>Portuguesa</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>Avançado</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>F.C.Porto</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>6.000.000</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="v-align-middle">
-                          <div class="checkbox text-center">
-                            <input type="checkbox" value="3" id="checkbox2">
-                            <label for="checkbox2" class="no-padding no-margin"></label>
-                          </div>
-                        </td>
-                        <td class="v-align-middle ">
-                          <p>Fábio Abreu</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>24/11/1987</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>Portuguesa</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>Avançado</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>F.C.Porto</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>6.000.000</p>
-                        </td>
-                      </tr>
+                    <tbody role="row" class="row_player">
+                      
                     </tbody>
                   </table>
                 </div>
@@ -512,5 +458,14 @@
     <script src="assets/js/tables.js" type="text/javascript"></script>
     <script src="assets/js/scripts.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS -->
+    <script src="js/toolkit.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/default.js"></script>
+
+    <script type='text/javascript'>
+      $(document).ready(function () {
+          publications();
+      });
+    </script>
   </body>
 </html>

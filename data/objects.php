@@ -314,4 +314,26 @@
         }
     }
 
+    class list_player {
+        public $id = 0;
+        public $name;
+        public $birth;
+        public $nationality;
+        public $position;
+        public $club_name;
+        public $value;
+
+        function __construct($obj) {
+            if (isset($obj)) {
+                $this->id = intval($obj["id"]);
+                $this->name = $obj["name"];
+                $this->date = date('d-m-Y H:i', strtotime($obj["date"]));
+                $this->nationality = $obj["nationality"];
+                $this->position = $obj["position"];
+                $this->club_name = $obj["club_name"];
+                $this->value = $obj["value"];
+            };
+        }
+    }
+
 ?>
