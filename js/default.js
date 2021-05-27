@@ -402,3 +402,202 @@ function mandates(args) {
     };
     mandates.init();
 };
+
+function publications() {
+    var publications = {
+		design: {
+			base: undefined,
+			search: $('.grid-search input'),
+			actions: {
+				me: $('.main-content-actions'),
+				add: $('.main-content-actions .add-publication'),
+			},
+			grid: {
+				me: $('.table_players'),
+				rows: $('.table_players .row_player'),
+				rowtemplate: $('<tr role="row" class="row_player"></tr>')
+				// withoutresults: $('.grid-without-results')
+			}
+		},
+		datasource: {
+			base: undefined,
+			publications: new Array(),
+			publicationsusers: new Array(),
+			total: 0
+		},
+		methods: {
+ 			base: undefined,
+			actions: {
+				base: undefined,
+				add: function () {
+					var me = this.base;
+
+					controls.post(me.datasource.detailpage, { publication_id: 0 });
+				},
+				edit: function (publicationid) {
+					var me = this.base;
+
+					//[ PUBLICATION DETAIL ]
+					controls.post(me.datasource.detailpage, { publication_id: publicationid });
+				},
+				remove: function (publicationid) {
+					var me = this.base,
+						publication = me.datasource.publications.filter(function (p) { return (p.id == ifUndefinedOrNull(parseInt(publicationid), 0)); })[0];
+
+					//[ REMOVE PUBLICATION ]
+					if (!isUndefinedOrNull(publication)) {
+						controls.message.bind({
+							type: 'question',
+							message: controls.resources.remove_publication,
+							afteryes: function () {
+								controls.ajax({
+									functionname: 'delete_publication',
+									data: {
+										publication_id: publication.id
+									}
+								}, function (data) {
+									if (ifUndefinedOrNull(data.success, false)) {
+										controls.message.bind({
+											type: 'success',
+											message: controls.resources.success_removing_publication,
+											afterok: function () {
+												//[ BIND PUBLICATIONS GRID ]
+												me.methods.grid.bind();
+											}
+										});
+									} else {
+										controls.message.bind({ type: 'error', message: controls.resources.error_removing_publication });
+									};
+								}, function () {
+									//[ ERROR ]
+									controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+								}, function () {
+									controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+								});
+							}
+						});
+					};
+				}
+			}, 
+			grid: {
+				base: undefined,
+ 				bind: function (parameters, after) {
+					var me = this.base,
+						ds = me.design.grid;
+
+					//[ GET PUBLICATIONS ]
+					controls.ajax({
+						functionname: 'publications',
+						data: {
+							user_id: controls.session.currentuser.id,
+							page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+							records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+						}
+					}, function (data) {
+						//[ SET PUBLICATIONS LIST ]
+						me.datasource.publications = ifUndefinedOrNull(data.publications, new Array());
+					    me.datasource.publicationsusers = ifUndefinedOrNull(data.publicationsusers, new Array());
+						me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+
+						if (data.total > 0) {
+							//[ HIDE WITHOUT RESULTS CONTENT ]
+							ds.withoutresults.slideUp('fast', function () {
+								ds.me.slideDown();
+
+								//[ BIND ROWS ]
+								me.methods.grid.build(me.datasource.publications);
+
+								//[ BIND PAGER ]
+								controls.pager.bind({
+									total: data.total_pages,
+									total_records: data.total,
+									current: data.current_page,
+									update: function (page) {
+										me.methods.grid.bind({ page: page });
+									}
+								});
+							});
+						} else {
+							//[ SHOW WITHOUT RESULTS CONTENT ]
+							ds.me.slideUp('fast', function () {
+								ds.withoutresults.slideDown();
+							});
+						};
+
+						if (!isUndefinedOrNull(after)) { after(data); };
+					}, function () {
+						//[ ERROR ]
+						controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+					}, function () {
+						//[ ERROR ]
+						controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+					});
+				}, 
+                build: function (datasource) {
+                    var me = this.base,
+                        ds = me.design.grid,
+                        datasource = [{a: 1, b: 2, c: 3, d: 4, e: 5, f:6, g:6}, {a: 1, b: 2, c: 3, d: 4, e: 5, f:6, g:6}];
+
+                    //[ CLEAR GRID ]
+                    // ds.rows.children().remove();
+
+                    //[ BIND ROWS ]
+                    if (datasource.length > 0) {
+                        $.each(datasource, function (index, list_player) {
+                            var row = ds.rowtemplate.clone(),
+                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                itemcolumn = '<td class="v-align-middle">{0}</td>';
+
+                            with (row) {
+                                //[ SAVE PUBLICATION ID ]
+                                attr('data', list_player.id);
+
+
+                                //[ OTHER COLUMNS ]
+                                row.append(itemcolumn.format(list_player.a));
+                                row.append(itemcolumn.format(list_player.b));
+                                row.append(itemcolumn.format(list_player.c));
+                                row.append(itemcolumn.format(list_player.d));
+                                row.append(itemcolumn.format(list_player.e));
+                                row.append(itemcolumn.format(list_player.f));
+                                row.append(itemcolumn.format(list_player.g));
+                            };
+
+                            ds.rows.append(row);
+                        });
+                    };
+                },
+			},
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design.actions;
+
+            // //[ PUBLICATIONS ACTIONS ]
+            // ds.add.on('click', function (e) {
+            //     me.methods.actions.add();
+            //     e.preventDefault();
+            // });
+
+            //[ BIND PUBLICATIONS GRID ]
+            //me.methods.grid.bind();
+            me.methods.grid.build();
+        },
+        init: function () {
+            var me = this;
+
+            this.design.base = this;
+            this.datasource.base = this;
+
+            this.methods.base = this;
+            this.methods.actions.base = this;
+            this.methods.grid.base = this;
+
+            this.load();
+
+            return this;
+        }
+    };
+ 
+    return publications.init();
+};
