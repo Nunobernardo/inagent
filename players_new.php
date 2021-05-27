@@ -667,7 +667,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        player({ id: 0, player: <?php echo json_encode(new player(null)); ?>});
+        player({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, player: <?php echo json_encode(new player(null)); ?>});
       });
     </script>
   </body>

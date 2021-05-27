@@ -1,0 +1,789 @@
+/*#region IMPORTS */
+/*#region COLOR THEMES */
+/*#endregion*/
+/*#region FONTS */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Poppins Regular'), local('Poppins-Regular'), url(https://fonts.gstatic.com/s/poppins/v9/pxiEyp8kv8JHgFVrJJfedw.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Poppins Medium'), local('Poppins-Medium'), url(https://fonts.gstatic.com/s/poppins/v9/pxiByp8kv8JHgFVrLGT9Z1xlEA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Poppins SemiBold'), local('Poppins-SemiBold'), url(https://fonts.gstatic.com/s/poppins/v9/pxiByp8kv8JHgFVrLEj6Z1xlEA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(https://fonts.gstatic.com/s/montserrat/v14/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('Montserrat Medium'), local('Montserrat-Medium'), url(https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_ZpC3gnD-w.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url(https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_bZF3gnD-w.ttf) format('truetype');
+}
+/*#endregion*/
+/*#endregion*/
+/*#region LOGIN */
+.login-form {
+  min-height: 58.55rem;
+  height: 100%;
+  position: relative;
+  background-color: #f4f4f4;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+@media (min-width: 970px) {
+  .login-form {
+    background-image: url(../images/background.jpg);
+  }
+}
+.login-form .illustration {
+  text-align: center;
+  padding: 15px 0px 20px;
+  font-size: 6.5rem;
+  color: #428bca;
+}
+.login-form .form {
+  max-width: 450px;
+  width: 90%;
+  background-color: #1e2833;
+  padding: 40px;
+  border-radius: 6px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  color: #FFFFFF;
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
+}
+.login-form .form .custom-checkbox {
+  margin: 0px 0px 10px;
+}
+.login-form .form .custom-checkbox label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  color: #FFFFFF;
+  font-weight: normal;
+  margin: 0;
+  line-height: 24px;
+  cursor: pointer;
+}
+.login-form .form .form-control {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  color: #FFFFFF;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #FFFFFF;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  padding: 0px 5px;
+}
+.login-form .form .form-control::placeholder {
+  color: #FFFFFF;
+}
+.login-form .form .btn-primary {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  color: #FFFFFF;
+  background: none;
+  padding: 11px;
+  box-shadow: none;
+  margin-top: 26px;
+  text-shadow: none;
+  border: 3px solid #428bca;
+  outline: none;
+  border-radius: 6rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.login-form .form .btn-primary:hover,
+.login-form .form .btn-primary:active {
+  background: #428bca;
+  outline: none;
+}
+.login-form .form .btn-primary:active {
+  transform: translateY(1px);
+}
+.login-form .form .ctrRegister {
+  margin: 1rem 0rem 0rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+.login-form .form .ctrRegister a {
+  color: #FFFFFF;
+  padding: 0px 0px 5px;
+  background: linear-gradient(#428bca, #428bca), linear-gradient(#1e2833, #1e2833);
+  background-color: #1e2833 !important;
+  background-position: center bottom, center bottom;
+  background-repeat: no-repeat;
+  background-size: 0 2px,100% 1px;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.login-form .form .ctrRegister a i {
+  margin-right: 0.625rem !important;
+}
+.login-form .form .ctrRegister a.active,
+.login-form .form .ctrRegister a:hover {
+  cursor: pointer;
+  color: #428bca;
+  box-shadow: none !important;
+  background-size: 100% 2px,100% 1px;
+  outline: 0;
+  transition-duration: 0.5s;
+}
+/*#endregion*/
+/*#region FEEDBACK */
+.feedback li {
+  -moz-transform-origin: right;
+  -ms-transform-origin: right;
+  -o-transform-origin: right;
+  -webkit-transform-origin: right;
+  transform-origin: right;
+  -moz-transform: scaleX(0);
+  -ms-transform: scaleX(0);
+  -o-transform: scaleX(0);
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -moz-transition: transform 0.1s linear;
+  -o-transition: transform 0.1s linear;
+  -webkit-transition: transform 0.1s linear;
+  transition: transform 0.1s linear;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+.feedback .messages {
+  position: fixed;
+  z-index: 9000;
+  top: 0%;
+  left: 52%;
+  width: 100px;
+}
+.feedback .messages.right {
+  width: auto;
+  bottom: 0px;
+  right: 0px;
+  left: auto;
+  top: 50%;
+}
+.feedback .messages .feed {
+  z-index: 3;
+  transform: translate(-67%, -100%);
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 6px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 6px;
+  padding: 20px 30px;
+  margin-bottom: 10px;
+  color: #FFFFFF;
+  opacity: 0;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  background-color: #FFFFFF;
+  text-align: left;
+  max-width: 450px;
+  display: inline-table;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.feedback .messages .feed i {
+  padding-right: 10px;
+}
+.feedback .messages .feed span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem !important;
+  font-weight: 500;
+  display: inline-flex;
+}
+.feedback .messages .feed.on {
+  opacity: 1;
+  transform: translate(-67%, 0%);
+}
+.feedback .messages .feed.on .window-alert-timer {
+  width: 100%;
+  transition: background-color 0s linear, width 3900ms linear;
+}
+.feedback .messages .feed.on .window-alert-timer.time_10000 {
+  transition: background-color 0s linear, width 10000ms linear !important;
+}
+.feedback .messages .feed.on.label-warning {
+  background-color: #f0ad4e;
+}
+.feedback .messages .feed.on.label-warning .window-alert-timer {
+  background-color: #b06d0f;
+}
+.feedback .messages .feed.on.label-info {
+  background-color: #5bc0de;
+}
+.feedback .messages .feed.on.label-info .window-alert-timer {
+  background-color: #1f7e9a;
+}
+.feedback .messages .feed.on.label-success {
+  background-color: #5cb85c;
+}
+.feedback .messages .feed.on.label-success .window-alert-timer {
+  background-color: #2d672d;
+}
+.feedback .messages .feed.on.label-danger {
+  background-color: #d9534f;
+}
+.feedback .messages .feed.on.label-danger .window-alert-timer {
+  background-color: #8b211e;
+}
+.feedback .messages .feed .window-alert-timer {
+  width: 0;
+  height: 5px;
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: background-color 0s linear, width 0s linear;
+}
+.feedback .messages .feed .closeMessage {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+/*#endregion*/
+/*#region MODAL MESSAGE */
+.modal-message {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3000;
+  text-align: center;
+  white-space: nowrap;
+}
+@media (min-width: 970px) {
+  .modal-message.update-user-password .box {
+    width: 600px;
+  }
+}
+.modal-message.update-user-password .box .password-info {
+  font-size: 0.8rem;
+  display: block;
+  text-align: left;
+  padding: 15px 15px 0px;
+}
+.modal-message.update-user-password .box .password-info p {
+  margin: 0px;
+}
+.modal-message.update-user-password .box .password-info ul {
+  padding-left: 30px;
+}
+.modal-message.update-user-password .box .password-info ul li {
+  list-style-type: circle;
+}
+.modal-message.update-user-password .box .form-fields {
+  margin: 0px;
+}
+.modal-message.update-user-password .box .invalid-feedback div {
+  padding: 0px 0px 0px 95px;
+  height: auto;
+}
+@media (max-width: 970px) {
+  .modal-message.update-user-password .box .invalid-feedback div {
+    padding: 0px 0px 0px 52px;
+  }
+}
+@media (min-width: 970px) {
+  .modal-message.register-user .box {
+    width: 600px;
+  }
+}
+.modal-message.register-user .box .form-fields {
+  margin: 0px 0px 10px;
+}
+.modal-message.register-user .box .form-fields .invalid-feedback {
+  display: flex !important;
+  width: 100%;
+  margin: -7px 0px 5px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  font-style: italic;
+  color: #d9534f;
+}
+.modal-message.register-user .box .form-fields .invalid-feedback.mandatory-textarea {
+  margin: 0px;
+}
+.modal-message.register-user .box .form-fields .invalid-feedback > div {
+  padding: 0px 0px 0px 90px;
+  height: auto;
+}
+.modal-message.register-user .box .form-fields label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: #555555;
+  padding: 0px;
+}
+.modal-message.register-user .box .form-fields label span {
+  display: table-cell;
+  height: 35px;
+  vertical-align: middle;
+}
+.modal-message.register-user .box .form-fields label span .label-mandatory {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: bold;
+  font-style: normal;
+  color: #d9534f;
+}
+.modal-message.register-user .box .form-fields .form-field {
+  display: flex;
+  padding: 0px;
+  height: 35px;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group {
+  position: relative;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  width: 1%;
+  margin-bottom: 0;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control {
+  background-color: #FFFFFF;
+  background-image: none;
+  border: 0px;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-appearance: none;
+  color: #626262;
+  outline: 0;
+  padding: 8px 12px;
+  line-height: normal;
+  font-size: 0.8rem;
+  font-weight: 400;
+  vertical-align: middle;
+  min-height: 35px;
+  -webkit-transition: all 0.12s ease;
+  transition: all 0.12s ease;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 2px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background: linear-gradient(#428bca, #428bca), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#428bca, #428bca), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#428bca, #428bca), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#428bca, #428bca), linear-gradient(#d7dfe3, #d7dfe3);
+  background-color: #fff;
+  background-position: center bottom, center bottom, center top,center top, left center,left center, right center, right center;
+  background-repeat: no-repeat;
+  background-size: 0px 1px, 100% 1px, 0px 1px, 100% 1px, 0px 1px, 1px 100%, 0px 1px, 1px 100%;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control:not(:disabled):hover,
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control:not(:disabled):active,
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control:not(:disabled):focus {
+  box-shadow: none;
+  outline: 0;
+  transition-duration: 0.5s;
+  background-size: 100% 1px, 0px 1px, 100% 1px, 0px 1px, 1px 100%, 0px 1px, 1px 100%, 0px 1px !important;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #f0f0f0;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control::-webkit-scrollbar-thumb {
+  background-color: #428bca;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control.mandatory-warning {
+  background: linear-gradient(#d9534f, #d9534f), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#d9534f, #d9534f), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#d9534f, #d9534f), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#d9534f, #d9534f), linear-gradient(#d7dfe3, #d7dfe3);
+  background-color: #fff;
+  background-position: center bottom, center bottom, center top,center top, left center,left center, right center, right center;
+  background-repeat: no-repeat;
+  background-size: 100% 1px, 0px 1px, 100% 1px, 0px 1px, 1px 100%, 0px 1px, 1px 100%, 0px 1px !important;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control.mandatory-warning:hover,
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control.mandatory-warning:active,
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control.mandatory-warning:focus {
+  box-shadow: none;
+  outline: 0;
+  transition-duration: 0.5s;
+  background: linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#428bca, #428bca), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#428bca, #428bca), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#428bca, #428bca), linear-gradient(#d7dfe3, #d7dfe3), linear-gradient(#428bca, #428bca);
+  background-color: #fff;
+  background-position: center bottom, center bottom, center top,center top, left center,left center, right center, right center;
+  background-repeat: no-repeat;
+  background-size: 0px 1px, 100% 1px, 0px 1px, 100% 1px, 0px 1px, 1px 100%, 0px 1px, 1px 100% !important;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group .form-control:disabled {
+  background-color: #f0f0f0 !important;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group-append {
+  display: flex;
+  align-items: center;
+  padding: 0px 15px;
+  background-color: #f0f0f0;
+  color: #474A59;
+  font-size: 1rem;
+  text-align: center;
+  border: 1px solid #d7dfe3;
+  border-right: 0px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.modal-message.register-user .box .form-fields .form-field .form-field-group-append i {
+  min-width: 20px;
+}
+.modal-message.register-user .box .form-fields .form-field .custom-control-label::before,
+.modal-message.register-user .box .form-fields .form-field .custom-control-label:checked::before,
+.modal-message.register-user .box .form-fields .form-field .custom-control-label::after,
+.modal-message.register-user .box .form-fields .form-field .custom-control-label:checked::after {
+  cursor: pointer;
+  top: 0.6rem;
+}
+@media (min-width: 970px) {
+  .modal-message.history .box {
+    width: 1100px;
+  }
+}
+.modal-message:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -0.25em;
+}
+.modal-message .box {
+  display: inline-block;
+  vertical-align: middle;
+  width: 720px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  background-color: #FFFFFF;
+  border-radius: 6px;
+  position: relative;
+  -webkit-transform: scale(0.7);
+  -ms-transform: scale(0.7);
+  transform: scale(0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition-duration: 500ms;
+  -webkit-transition-property: all;
+  transition-property: all;
+}
+@media (max-width: 970px) {
+  .modal-message .box {
+    width: 350px;
+  }
+}
+.modal-message .box .title {
+  text-align: left;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  padding: 8px 20px;
+  background-color: #f6f6f6;
+  border-top: 8px solid #428bca;
+  border-bottom: 1px solid #d7dfe3;
+  color: #626262 !important;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.modal-message .box .title i {
+  font-size: 1.2rem;
+  color: #428bca;
+  margin: 0px 5px 0px 0px;
+}
+.modal-message .box .wrapper {
+  display: inline-block;
+  width: 100%;
+}
+.modal-message .box .wrapper .icon {
+  display: block;
+  font-size: 2rem;
+  float: left;
+  padding: 15px 0px 15px 20px;
+}
+.modal-message .box .wrapper .message {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  float: left;
+  padding: 15px 20px;
+  text-align: left;
+  max-width: 650px;
+  white-space: normal;
+  line-height: 18px;
+  max-height: 290px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 13px;
+}
+@media (max-width: 970px) {
+  .modal-message .box .wrapper .message {
+    max-width: 298px;
+  }
+}
+.modal-message .box .wrapper .message p {
+  margin: 0px 0px 10px;
+}
+.modal-message .box .wrapper .form-content {
+  padding: 15px;
+}
+.modal-message .box .wrapper > .options {
+  text-align: right;
+  white-space: initial;
+  clear: both;
+  padding: 0px 15px 15px;
+  margin: 0px;
+}
+.modal-message .box .wrapper > .options li {
+  display: inline-block;
+  padding-left: 5px;
+}
+.modal-message .box .wrapper > .options li > .btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #444444;
+  background: #FFFFFF;
+  padding: 5px 10px;
+  border: 0px;
+  border-radius: 6rem;
+  text-decoration: none;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  min-width: 50px;
+  outline: none !important;
+  opacity: 1;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+}
+.modal-message .box .wrapper > .options li > .btn:hover {
+  -webkit-transform: translateY(-5px);
+  transform: translateY(-5px);
+}
+.modal-message .box .wrapper > .options li > .btn:before {
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  content: '';
+  top: 100%;
+  left: 5%;
+  height: 10px;
+  width: 90%;
+  opacity: 0;
+  background: -webkit-radial-gradient(center, ellipse, #00000059 0%, #0000 80%);
+  background: radial-gradient(ellipse at center, #00000059 0%, #0000 80%);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform, opacity;
+  transition-property: transform, opacity;
+}
+.modal-message .box .wrapper > .options li > .btn:hover:before {
+  opacity: 1;
+  -webkit-transform: translateY(5px);
+  transform: translateY(5px);
+}
+.modal-message .box .wrapper > .options li > .btn:after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border: 1px solid #d7dfe3;
+  border-radius: 6rem;
+  -webkit-transition-property: border-width;
+  transition-property: border-width;
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.modal-message .box .wrapper > .options li > .btn:hover:after {
+  border-color: #5cb85c;
+  border-width: 2px;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+}
+.modal-message .box .wrapper > .options li > .btn:focus {
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+.modal-message .box .wrapper > .options li > .btn > i {
+  padding-right: 4px;
+}
+.modal-message .box.on {
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+.modal-message .box.success .title {
+  border-top-color: #5cb85c;
+  color: #626262;
+}
+.modal-message .box.success .wrapper .icon {
+  color: #5cb85c;
+}
+.modal-message .box.success .wrapper > .options > li > .btn {
+  background-color: #5cb85c !important;
+  color: #FFFFFF !important;
+}
+.modal-message .box.success .wrapper > .options > li > .btn:after {
+  border-color: #5cb85c;
+}
+.modal-message .box.success .wrapper > .options > li > .btn:focus,
+.modal-message .box.success .wrapper > .options > li > .btn:hover {
+  color: #5cb85c !important;
+  z-index: 99;
+}
+.modal-message .box.success .wrapper > .options > li > .btn:focus:after,
+.modal-message .box.success .wrapper > .options > li > .btn:hover:after {
+  border-color: #5cb85c;
+  background-color: #FFFFFF;
+  z-index: -1;
+}
+.modal-message .box.info .title {
+  border-top-color: #5bc0de;
+  color: #626262;
+}
+.modal-message .box.info .wrapper .icon {
+  color: #5bc0de;
+}
+.modal-message .box.info .wrapper > .options > li > .btn {
+  background-color: #5bc0de !important;
+  color: #FFFFFF !important;
+}
+.modal-message .box.info .wrapper > .options > li > .btn:not(.dropdown-toggle):after {
+  border-color: #5bc0de;
+}
+.modal-message .box.info .wrapper > .options > li > .btn:focus,
+.modal-message .box.info .wrapper > .options > li > .btn:hover {
+  color: #5bc0de !important;
+  z-index: 99;
+}
+.modal-message .box.info .wrapper > .options > li > .btn:not(.dropdown-toggle):focus:after,
+.modal-message .box.info .wrapper > .options > li > .btn:not(.dropdown-toggle):hover:after {
+  border-color: #5bc0de;
+  background-color: #FFFFFF;
+  z-index: -1;
+}
+.modal-message .box.question .title {
+  border-top-color: #428bca;
+  color: #626262;
+}
+.modal-message .box.question .wrapper .icon {
+  color: #428bca;
+}
+.modal-message .box.question .wrapper > .options > li > .btn {
+  background-color: #428bca !important;
+  color: #FFFFFF !important;
+}
+.modal-message .box.question .wrapper > .options > li > .btn:not(.dropdown-toggle):after {
+  border-color: #428bca;
+}
+.modal-message .box.question .wrapper > .options > li > .btn:focus,
+.modal-message .box.question .wrapper > .options > li > .btn:hover {
+  color: #428bca !important;
+  z-index: 99;
+}
+.modal-message .box.question .wrapper > .options > li > .btn:not(.dropdown-toggle):focus:after,
+.modal-message .box.question .wrapper > .options > li > .btn:not(.dropdown-toggle):hover:after {
+  border-color: #428bca;
+  background-color: #FFFFFF;
+  z-index: -1;
+}
+.modal-message .box.danger .title {
+  border-top-color: #d9534f;
+  color: #626262;
+}
+.modal-message .box.danger .wrapper .icon {
+  color: #d9534f;
+}
+.modal-message .box.danger .wrapper > .options > li > .btn {
+  background-color: #d9534f !important;
+  color: #FFFFFF !important;
+}
+.modal-message .box.danger .wrapper > .options > li > .btn:not(.dropdown-toggle):after {
+  border-color: #d9534f;
+}
+.modal-message .box.danger .wrapper > .options > li > .btn:focus,
+.modal-message .box.danger .wrapper > .options > li > .btn:hover {
+  color: #d9534f !important;
+  z-index: 99;
+}
+.modal-message .box.danger .wrapper > .options > li > .btn:not(.dropdown-toggle):focus:after,
+.modal-message .box.danger .wrapper > .options > li > .btn:not(.dropdown-toggle):hover:after {
+  border-color: #d9534f;
+  background-color: #FFFFFF;
+  z-index: -1;
+}
+.modal-message .box.warning .title {
+  border-top-color: #f0ad4e;
+  color: #626262;
+}
+.modal-message .box.warning .wrapper .icon {
+  color: #f0ad4e;
+}
+.modal-message .box.warning .wrapper > .options > li > .btn {
+  background-color: #f0ad4e !important;
+  color: #FFFFFF !important;
+}
+.modal-message .box.warning .wrapper > .options > li > .btn:not(.dropdown-toggle):after {
+  border-color: #f0ad4e;
+}
+.modal-message .box.warning .wrapper > .options > li > .btn:focus,
+.modal-message .box.warning .wrapper > .options > li > .btn:hover {
+  color: #f0ad4e !important;
+  z-index: 99;
+}
+.modal-message .box.warning .wrapper > .options > li > .btn:not(.dropdown-toggle):focus:after,
+.modal-message .box.warning .wrapper > .options > li > .btn:not(.dropdown-toggle):hover:after {
+  border-color: #f0ad4e;
+  background-color: #FFFFFF;
+  z-index: -1;
+}
+/*#endregion*/

@@ -160,7 +160,122 @@
                     $feedback['XX'] = $query;
                 };
                 break;
-            case '':
+            
+            case 'players':
+                    $players = array();
+                    $page = (isset($object->{'page'})) ? urldecode($object->{'page'}) : 1;
+                    $records = (isset($object->{'records'})) ? urldecode($object->{'records'}) : 10;
+                    $offset = ($page - 1) * $records;
+                    
+                    //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
+                    $total_pages_query = "SELECT COUNT(*) AS total_records 
+                                          FROM players p
+                                          INNER JOIN club c ON p.id_club = c.id_club";
+    
+                    $result = mysqli_query($conn, $total_pages_query);
+    
+                    //[ TOTAL VALUES ]
+                    $total_records = intval($result->fetch_array(MYSQLI_ASSOC)['total_records']);
+                    $total_pages = ceil($total_records / $records);
+    
+                    //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                    $query = "SELECT p.id_player, p.first_name, p.last_name, p.birth_date, p.nationality, p.position, c.name_club as club_name, p.value 
+                              FROM players p
+                              INNER JOIN club c ON p.id_club = c.id_club
+                              LIMIT $offset, $records";
+    
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+
+                    //[ CHECK RESULTS ]
+                    if ($result->num_rows > 0) {   
+                        while($row = $result->fetch_assoc()) {
+                            array_push($players, new player($row));
+                        };
+                        
+                        //[ SET TOTAL ]
+                        $total = $result->num_rows;
+                    };
+    
+                    $feedback['success'] = true;
+                    $feedback['players'] = $players;
+                    $feedback['current_page'] = $page;
+                    $feedback['detail_page'] = "players_new.php";
+                    $feedback['total'] = $total_records;
+                    $feedback['total_pages'] = $total_pages;
+                    break;
+            
+            case 'player':
+                $playerid = intval(urldecode($object->{'player_id'}));
+
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "SELECT p.id_player, p.first_name, p.last_name, p.birth_date, p.nationality, p.position, c.name_club as club_name, p.value 
+                            FROM players p
+                            INNER JOIN club c ON p.id_club = c.id_club
+                            WHERE
+                            p.id_player = " . $playerid;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {   
+                    $player = new player($result->fetch_array(MYSQLI_ASSOC));
+                };
+
+                $feedback['success'] = true;
+                $feedback['player'] = $player;
+                break;
+
+            case 'delete_list_player':
+                $text = json_encode($object->{'players_ids'});
+                $text = str_replace("[","", $text);
+                $text = str_replace("]", "", $text);
+
+                // //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
+                // $query = "DELETE ph.*
+                //             FROM publications p
+                //             INNER JOIN publications_users pu ON pu.publication_id = p.id
+                //             INNER JOIN publications_history ph ON ph.publication_id = p.id
+                //             WHERE p.id in (" . $text . ")";
+
+                // //[ EXECUTE QUERY ]
+                // $result = mysqli_query($conn, $query);
+
+                // //[ CHECK RESULTS ]
+                // if ($result) {
+                //     //[ SET QUERY TO DELETE PUBLICATIONS USERS ASSOCIATED TO SELECTED PUBLICATION ]
+                //     $query = "DELETE pu.*
+                //                 FROM publications p
+                //                 INNER JOIN publications_users pu ON pu.publication_id = p.id
+                //                 WHERE p.id = " . $publicationid;
+                    
+                //     //[ EXECUTE QUERY ]
+                //     $result = mysqli_query($conn, $query);
+
+                //     //[ CHECK RESULTS ]
+                //     if ($result) {
+                //         //[ SET QUERY TO DELETE SELECTED PUBLICATION ]
+                //         $query = "DELETE FROM publications WHERE id = " . $publicationid;
+
+                //         //[ EXECUTE QUERY ]
+                //         $result = mysqli_query($conn, $query);
+        
+                //         //[ CHECK RESULTS ]
+                //         if ($result) {
+                //             $feedback['success'] = true;
+                //         } else {
+                //             $feedback['success'] = false;
+                //             $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                //         };
+                //     } else {
+                //         $feedback['success'] = false;
+                //         $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                //     };
+                // } else {
+                //     $feedback['success'] = false;
+                //     $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                // };
                 break;
 
             default:

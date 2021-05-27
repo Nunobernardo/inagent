@@ -410,6 +410,36 @@ var controls = {
 			});
 		};
 	},
+	post: function (page, parameters) {
+		if (!isUndefinedOrNull(parameters)) {
+			var form = document.createElement('form'),
+				inputobject = document.createElement('input');
+
+			//[ FORM ]
+			with (form) {
+				id = 'frmPage'
+				target = '_self';
+				method = 'POST';
+				action = (window.location.href.indexOf('modules') != -1) ? ('../../' + page) : page;
+			};
+
+			//[ PARAMETERS ]
+			with (inputobject) {
+				type = 'hidden';
+				name = 'parameters';
+				value = JSON.stringify(parameters).urlEncode();
+			};
+
+			form.appendChild(inputobject);
+
+			with (form) {
+				document.body.appendChild(form);
+
+				submit();
+				$(form).remove();
+			};
+		};
+	},
 	redirect: function (page, target) {
 		if (!isStringVoid(page)) {
 			window.open((window.location.href.indexOf('modules') != -1) ? ('../../' + page) : page, ifUndefinedOrNull(target, '_self'));

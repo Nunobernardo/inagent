@@ -32,13 +32,13 @@
         public $firstname;
         public $lastname;
         public $birth;
-        public $age;
         public $nationality;
         public $height;
         public $weight;
         public $foot;
         public $position;
         public $club;
+        public $clubname;
         public $value;
         public $passport;
         public $passportval;
@@ -56,6 +56,7 @@
                 $this->foot = $obj["foot"];
                 $this->position = $obj["position"];
                 $this->club = $obj["id_club"];
+                $this->clubname = $obj["club_name"];
                 $this->value = $obj["value"];
                 $this->passport = $obj["documents"];
                 $this->passportval = $obj["documents_val"];
@@ -66,19 +67,19 @@
             return $this;
         }
 
-        public function set($id, $name, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $value, $passport, $passportval) {
+        public function set($id, $name, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $clubname, $value, $passport, $passportval) {
             $this->id = $id;
             $this->name = $name;
             $this->firstname = $firstname;
             $this->lastname = $lastname;
             $this->birth = $birth;
-            $this->age = $age;
             $this->nationality = $nationality;
             $this->height = $height;
             $this->weight = $weight;
             $this->foot = $foot;
             $this->position = $position;
             $this->club = $club;
+            $this->clubname = $clubname;
             $this->value = $value;
             $this->passport = $passport;
             $this->passportval = $passportval;

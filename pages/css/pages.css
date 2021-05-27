@@ -8864,7 +8864,7 @@ div.cs-skin-slide .cs-options ul li.cs-selected span {
   padding-bottom: 14px;
   vertical-align: middle;
   border-bottom: 1px solid rgba(230, 230, 230, 0.7);
-  color: rgba(44, 44, 44, 0.35);
+  color: white;
   border-top: none;
 }
 .table thead tr th[class*='sorting_']:not([class='sorting_disabled']) {
@@ -9105,7 +9105,7 @@ table.dataTable thead .sorting_desc_disabled:after {
   width: 19px;
   height: 19px;
   background-position: center center;
-  opacity: 1;
+  opacity: 0;
 }
 table.dataTable.table-condensed .sorting:after,
 table.dataTable.table-condensed .sorting_asc:after,

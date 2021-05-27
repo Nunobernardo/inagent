@@ -19,55 +19,94 @@ function player(args) {
         },
         datasource: {
             base: undefined,
-            id: args.id,
-            player: args.player
+            id: ifUndefinedOrNull(args.data.player_id, 0),
+            player: undefined
+        },
+        methods: {
+            base: undefined,
+            getplayer: function (after) {
+                var me = this.base;
+
+                //[ GET player ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.ajax({
+                        functionname: 'player',
+                        data: {
+                            player_id: ifUndefinedOrNull(me.datasource.id, 0)
+                        }
+                    }, function (data) {
+                        //[ SET list_player LIST ]
+                        me.datasource.player = data.player;
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                } else {
+                    me.datasource.player = args.player;
+                };
+            }
         },
         load: function() {
             var me = this,
                 ds = me.design;            
 
-            ds.saveplayer.on('click', function(){
+            me.methods.getplayer(function(){
                 var player = me.datasource.player;
 
-                with(player) {
-                    age = ds.playerage.val();
-                    birth = ds.playerbirth.val();
-                    club = ds.playerclub.val();
-                    firstname = ds.playerfirstname.val();
-                    foot = ds.playerfoot.find('span.cs-placeholder').html();
-                    height = ds.playerheight.val();
-                    lastname = ds.playerlastname.val();
-                    name = ds.playername.val();
-                    nationality = ds.playernationality.val();
-                    passport = ds.playerpassport.val();
-                    passportval = ds.playerpassportval.val();
-                    position = ds.playerposition.find('span.cs-placeholder').html();
-                    value = ds.playervalue.val();
-                    weight = ds.playerweight.val();
+                if (player.id > 0) {
+                    ds.playerfirstname.val(player.firstname);
+                    ds.playerlastname.val(player.lastname);
                 };
 
-                controls.ajax({
-                    functionname: 'insert_player',
-                    data: {
-                        player: player
-                    }
-                }, function (data) {
-                    if (ifUndefinedOrNull(data.success, false)) {
-                        controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                        window.open('players_list.php', '_self');
-                    } else {
-                        controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                ds.saveplayer.on('click', function(){
+                    var player = me.datasource.player;                   
+
+                    with(player) {
+                        age = ds.playerage.val();
+                        birth = ds.playerbirth.val();
+                        club = ds.playerclub.val();
+                        firstname = ds.playerfirstname.val();
+                        foot = ds.playerfoot.find('span.cs-placeholder').html();
+                        height = ds.playerheight.val();
+                        lastname = ds.playerlastname.val();
+                        name = ds.playername.val();
+                        nationality = ds.playernationality.val();
+                        passport = ds.playerpassport.val();
+                        passportval = ds.playerpassportval.val();
+                        position = ds.playerposition.find('span.cs-placeholder').html();
+                        value = ds.playervalue.val();
+                        weight = ds.playerweight.val();
                     };
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+
+                    controls.ajax({
+                        functionname: 'insert_player',
+                        data: {
+                            player: player
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                            window.open('players_list.php', '_self');
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
                 });
             });
         },
         init: function() {
             var me = this;
             me.datasource.base = this;
+            me.methods.base = this;
             me.load();
         }
     };
@@ -429,44 +468,37 @@ function list_player() {
             base: undefined,
             actions: {
                 base: undefined,
-                add: function () {
-                    var me = this.base;
-
-                    controls.post(me.datasource.detailpage, { list_player_id: 0 });
-                },
                 edit: function (list_playerid) {
                     var me = this.base;
 
-                    //[ list_player DETAIL ]
-                    controls.post(me.datasource.detailpage, { list_player_id: list_playerid });
+                    controls.post(me.datasource.detailpage, { player_id: list_playerid });
                 },
-                remove: function (list_playerid) {
-                    var me = this.base,
-                        list_player = me.datasource.list_player.filter(function (p) { return (p.id == ifUndefinedOrNull(parseInt(list_playerid), 0)); })[0];
+                remove: function (playersids) {
+                    var me = this.base;
 
                     //[ REMOVE list_player ]
-                    if (!isUndefinedOrNull(list_player)) {
+                    if (ifUndefinedOrNull(playersids, new Array().length > 0)) {
                         controls.message.bind({
                             type: 'question',
-                            message: controls.resources.remove_list_player,
+                            message: 'Pretende remover os jogadores selecionados?',
                             afteryes: function () {
                                 controls.ajax({
                                     functionname: 'delete_list_player',
                                     data: {
-                                        list_player_id: list_player.id
+                                        players_ids: playersids
                                     }
                                 }, function (data) {
                                     if (ifUndefinedOrNull(data.success, false)) {
                                         controls.message.bind({
                                             type: 'success',
-                                            message: controls.resources.success_removing_list_player,
+                                            message: 'Os jogadores foram removidos com sucesso',
                                             afterok: function () {
                                                 //[ BIND list_player GRID ]
                                                 me.methods.grid.bind();
                                             }
                                         });
                                     } else {
-                                        controls.message.bind({ type: 'error', message: controls.resources.error_removing_list_player });
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
                                     };
                                 }, function () {
                                     //[ ERROR ]
@@ -487,41 +519,34 @@ function list_player() {
 
                     //[ GET list_player ]
                     controls.ajax({
-                        functionname: 'list_player',
+                        functionname: 'players',
                         data: {
-                            user_id: controls.session.currentuser.id,
                             page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
                             records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
                         }
                     }, function (data) {
                         //[ SET list_player LIST ]
-                        me.datasource.list_player = ifUndefinedOrNull(data.list_player, new Array());
-                        me.datasource.list_playerusers = ifUndefinedOrNull(data.list_playerusers, new Array());
+                        me.datasource.list_player = ifUndefinedOrNull(data.players, new Array());
                         me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
 
                         if (data.total > 0) {
-                            //[ HIDE WITHOUT RESULTS CONTENT ]
-                            ds.withoutresults.slideUp('fast', function () {
-                                ds.me.slideDown();
+                            ds.me.slideDown();
 
-                                //[ BIND ROWS ]
-                                me.methods.grid.build(me.datasource.list_player);
+                            //[ BIND ROWS ]
+                            me.methods.grid.build(me.datasource.list_player);
 
-                                //[ BIND PAGER ]
-                                controls.pager.bind({
-                                    total: data.total_pages,
-                                    total_records: data.total,
-                                    current: data.current_page,
-                                    update: function (page) {
-                                        me.methods.grid.bind({ page: page });
-                                    }
-                                });
+                            //[ BIND PAGER ]
+                            controls.pager.bind({
+                                total: data.total_pages,
+                                total_records: data.total,
+                                current: data.current_page,
+                                update: function (page) {
+                                    me.methods.grid.bind({ page: page });
+                                }
                             });
                         } else {
                             //[ SHOW WITHOUT RESULTS CONTENT ]
-                            ds.me.slideUp('fast', function () {
-                                ds.withoutresults.slideDown();
-                            });
+                            ds.me.slideUp();
                         };
 
                         if (!isUndefinedOrNull(after)) { after(data); };
@@ -536,10 +561,10 @@ function list_player() {
                 build: function (datasource) {
                     var me = this.base,
                         ds = me.design.grid,
-                        datasource = [{a: 1, b: 2, c: 3, d: 4, e: 5, f:6, g:6}, {a: 1, b: 2, c: 3, d: 4, e: 5, f:6, g:6}];
+                        datasource = me.datasource.list_player;
 
                     //[ CLEAR GRID ]
-                    // ds.rows.children().remove();
+                    ds.rows.children().remove();
 
                     //[ BIND ROWS ]
                     if (datasource.length > 0) {
@@ -553,16 +578,38 @@ function list_player() {
                                 attr('data', list_player.id);
 
                                 //[ OTHER COLUMNS ]
-                                row.append(itemcolumn.format(list_player.a));
-                                row.append(itemcolumn.format(list_player.b));
-                                row.append(itemcolumn.format(list_player.c));
-                                row.append(itemcolumn.format(list_player.d));
-                                row.append(itemcolumn.format(list_player.e));
-                                row.append(itemcolumn.format(list_player.f));
-                                row.append(itemcolumn.format(list_player.g));
+                                row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckPlayer{0}" data="{0}"><label for="ckPlayer{0}" class="no-padding no-margin"></label></div>'.format(list_player.id)));
+                                row.append(itemcolumn.format('{0} {1}'.format(list_player.firstname, list_player.lastname)));
+                                row.append(itemcolumn.format(list_player.birth));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_player.nationality, '')));
+                                row.append(itemcolumn.format(list_player.position));
+                                row.append(itemcolumn.format(list_player.clubname));
+                                row.append(itemcolumn.format(list_player.value));
                             };
 
+                            row.on('dblclick', function (e) {
+                                me.methods.actions.edit($(this).attr('data'));
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });                           
+
                             ds.rows.append(row);
+                        });
+
+                        ds.me.find('.btn-remove').on('click', function (e) {
+                            var selected = new Array();
+
+                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                if($(item).is(':checked')) {
+                                    selected.push(parseInt($(item).attr('data')));
+                                }
+                            });
+
+                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                me.methods.actions.remove(selected);
+                            };
+                            e.preventDefault();
+                            e.stopPropagation();
                         });
                     };
                 },
@@ -572,15 +619,8 @@ function list_player() {
             var me = this,
                 ds = me.design.actions;
 
-            // //[ list_player ACTIONS ]
-            // ds.add.on('click', function (e) {
-            //     me.methods.actions.add();
-            //     e.preventDefault();
-            // });
-
             //[ BIND list_player GRID ]
-            //me.methods.grid.bind();
-            me.methods.grid.build();
+            me.methods.grid.bind();
         },
         init: function () {
             var me = this;

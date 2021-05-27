@@ -26,6 +26,7 @@
     <link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="pages/css/pages-icons.css" rel="stylesheet" type="text/css">
     <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/controls.css" rel="stylesheet" type="text/css"/>
   </head>
   <body class="fixed-header ">
     <!-- BEGIN SIDEBPANEL-->
@@ -328,11 +329,11 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-hover" id="basicTable">
+                  <table class="table table-hover">
                     <thead>
                       <tr>
                         <th style="width:1%" class="text-center">
-                          <button class="btn btn-link"><i class="pg-trash"></i>
+                          <button class="btn btn-link btn-remove"><i class="pg-trash"></i>
                           </button>
                         </th>
                         <th style="width:20%">Nome</th>

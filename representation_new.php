@@ -509,17 +509,17 @@
                             </div>
                             <div class="input-group-append h-c-50">
                               <span class="input-group-text transparent">
-                                  <input type="checkbox" id = "boxchecked" value="checkbox" name="CheckboxGroup1" data-init-plugin="switchery" data-size="small" data-color="success" />
+                                  <input type="checkbox" id = "boxchecked" name="CheckboxGroup1" data-size="small" data-color="success" />
                               </span>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="form-group form-group-defaultrequired">
+                      <div class="form-group form-group-default" id="hidden" style="display:none;">
                         <label>Nome do Pai</label>
-                        <input type="text" class="form-control txtRepresentationFather" id="hidden" value="checkbox">
+                        <input type="text" class="form-control txtRepresentationFather" >
                       </div>
-                      <div class="form-group form-group-default required">
+                      <div class="form-group form-group-default" id="hidden2" style="display:none;">
                         <label>Nome da Mãe</label>
                         <input type="text" class="form-control txtRepresentationMother">
                       </div>
@@ -825,14 +825,16 @@
       $(document).ready(function(){
         $("#boxchecked").click(function ()
         {
-            if ($("#boxchecked").is(':checked'))
-            {
-                $("#hidden").show();
-            }
-            else
-            {
-                $("#hidden").hide();
-            }              
+          if ($("#boxchecked").is(':checked'))
+          {
+              $("#hidden").show();
+              $("#hidden2").show();
+          }
+          else
+          {
+              $("#hidden").hide();
+              $("#hidden2").hide();
+          }              
         });
       });
     </script>
