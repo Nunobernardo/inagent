@@ -344,8 +344,7 @@
                         <th style="width:17%">Valor de mercado</th>
                       </tr>
                     </thead>
-                      <tbody role="row" class="row_player">
-                    </tbody>
+                      <tbody role="row" class="row_player"></tbody>
                   </table>
                 </div>
               </div>

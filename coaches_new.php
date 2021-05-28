@@ -626,7 +626,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        coach({ id: 0, coach: <?php echo json_encode(new coach(null)); ?>});
+        coach({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, coach: <?php echo json_encode(new coach(null)); ?>});
       });
     </script>
   </body>

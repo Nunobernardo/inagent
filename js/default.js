@@ -64,6 +64,7 @@ function player(args) {
                 };
 
                 ds.saveplayer.on('click', function(){
+                    console.log("XPTO")
                     var player = me.datasource.player;                   
 
                     with(player) {
@@ -133,54 +134,94 @@ function coach(args) {
         },
         datasource: {
             base: undefined,
-            id: args.id,
-            coach: args.coach
+            id: ifUndefinedOrNull(args.data.coach_id, 0),
+            coach: undefined
+        },
+        methods: {
+            base: undefined,
+            getcoach: function (after) {
+                var me = this.base;
+
+                //[ GET coach ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.ajax({
+                        functionname: 'coach',
+                        data: {
+                            coach_id: ifUndefinedOrNull(me.datasource.id, 0)
+                        }
+                    }, function (data) {
+                        //[ SET list_coach LIST ]
+                        me.datasource.coach = data.coach;
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                } else {
+                    me.datasource.coach = args.coach;
+                };
+            }
         },
         load: function() {
             var me = this,
                 ds = me.design;            
 
-            ds.savecoach.on('click', function(){
+            me.methods.getcoach(function(){
                 var coach = me.datasource.coach;
 
-                with(coach) {
-                    age = ds.coachage.val();
-                    birth = ds.coachbirth.val();
-                    club = ds.coachclub.val();
-                    firstname = ds.coachfirstname.val();
-                    formation = ds.coachformation.find('span.cs-placeholder').html();
-                    height = ds.coachheight.val();
-                    lastname = ds.coachlastname.val();
-                    name = ds.coachname.val();
-                    nationality = ds.coachnationality.val();
-                    passport = ds.coachpassport.val();
-                    passportval = ds.coachpassportval.val();
-                    value = ds.coachvalue.val();
-                    weight = ds.coachweight.val();
+                if (coach.id > 0) {
+                    ds.coachfirstname.val(coach.firstname);
+                    ds.coachlastname.val(coach.lastname);
                 };
 
-                controls.ajax({
-                    functionname: 'insert_coach',
-                    data: {
-                        coach: coach
-                    }
-                }, function (data) {
-                    if (ifUndefinedOrNull(data.success, false)) {
-                        controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                        window.open('coaches_list.php', '_self');
-                    } else {
-                        controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                ds.savecoach.on('click', function(){
+                    var coach = me.datasource.coach;                   
+
+                    with(coach) {
+                        age = ds.coachage.val();
+                        birth = ds.coachbirth.val();
+                        club = ds.coachclub.val();
+                        firstname = ds.coachfirstname.val();
+                        formation = ds.coachformation.find('span.cs-placeholder').html();
+                        height = ds.coachheight.val();
+                        lastname = ds.coachlastname.val();
+                        name = ds.coachname.val();
+                        nationality = ds.coachnationality.val();
+                        passport = ds.coachpassport.val();
+                        passportval = ds.coachpassportval.val();
+                        value = ds.coachvalue.val();
+                        weight = ds.coachweight.val();
                     };
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+    
+
+                    controls.ajax({
+                        functionname: 'insert_coach',
+                        data: {
+                            coach: coach
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                            window.open('coaches_list.php', '_self');
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
                 });
             });
         },
         init: function() {
             var me = this;
             me.datasource.base = this;
+            me.methods.base = this;
             me.load();
         }
     };
@@ -190,7 +231,7 @@ function coach(args) {
 function representation(args) {
     var representation = {
         design: {
-            representationplayer: $('div.ddlRepresentationPlayer'),
+            representationplayer: $('.div.ddlRepresentationPlayer'),
             // representationchild: $('.txtrepresentationchild'),
             representationfather: $('.txtRepresentationFather'),
             representationmother: $('.txtRepresentationMother'),
@@ -201,47 +242,86 @@ function representation(args) {
         },
         datasource: {
             base: undefined,
-            id: args.id,
-            representation: args.representation
+            id: ifUndefinedOrNull(args.data.representation_id, 0),
+            representation: undefined
+        },
+        methods: {
+            base: undefined,
+            getrepresentation: function (after) {
+                var me = this.base;
+
+                //[ GET representation ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.ajax({
+                        functionname: 'representation',
+                        data: {
+                            representation_id: ifUndefinedOrNull(me.datasource.id, 0)
+                        }
+                    }, function (data) {
+                        //[ SET list_representation LIST ]
+                        me.datasource.representation = data.representation;
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                } else {
+                    me.datasource.representation = args.representation;
+                };
+            }
         },
         load: function() {
             var me = this,
                 ds = me.design;            
 
-            ds.saverepresentation.on('click', function(){
+            me.methods.getrepresentation(function(){
                 var representation = me.datasource.representation;
 
-                with(representation) {
-                    player = ds.representationplayer.find('span.cs-placeholder').html();
-                    father = ds.representationfather.val();
-                    mother = ds.representationmother.val();
-                    datestart = ds.representationdatestart.val();
-                    dateend = ds.representationdateend.val();
-                    commission = ds.representationcommission.val();
-                };
+                // if (representation.id > 0) {
+                //     ds.representationfirstname.val(representation.firstname);
+                //     ds.representationlastname.val(representation.lastname);
+                // };
 
-                controls.ajax({
-                    functionname: 'insert_representation',
-                    data: {
-                        representation: representation
-                    }
-                }, function (data) {
-                    if (ifUndefinedOrNull(data.success, false)) {
-                        controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                        window.open('representation_list.php', '_self');
-                    } else {
-                        controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                ds.saverepresentation.on('click', function(){
+                    var representation = me.datasource.representation;                   
+
+                    with(representation) {
+                        player = ds.representationplayer.val();
+                        father = ds.representationfather.val();
+                        mother = ds.representationmother.val();
+                        datestart = ds.representationdatestart.val();
+                        dateend = ds.representationdateend.val();
+                        commission = ds.representationcommission.val();
                     };
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+
+                    controls.ajax({
+                        functionname: 'insert_representation',
+                        data: {
+                            representation: representation
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                            window.open('representation_list.php', '_self');
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
                 });
             });
         },
         init: function() {
             var me = this;
             me.datasource.base = this;
+            me.methods.base = this;
             me.load();
         }
     };
@@ -320,46 +400,46 @@ function agent(args) {
     agent.init();
 };
 
-function cclub(args) {
-    var cclub = {
+function club(args) {
+    var club = {
         design: {
-            cclubplayer: $('div.ddlCclubPlayer'),
-            cclubdatestart: $('.txtCclubDateStart'),
-            cclubdateend: $('.txtCclubDateEnd'),
-            cclubvalue: $('.txtCclubValue'),
-            cclubclause: $('.txtCclubClause'),
-            cclubbonus: $('.txtCclubBonus'),
-            cclubcourt: $('.txtCclubCourt'),
-            cclubobs: $('.txtCclubObs'),
-            savecclub: $('.btnSaveCclub')
+            clubplayer: $('div.ddlCclubPlayer'),
+            clubdatestart: $('.txtCclubDateStart'),
+            clubdateend: $('.txtCclubDateEnd'),
+            clubvalue: $('.txtCclubValue'),
+            clubclause: $('.txtCclubClause'),
+            clubbonus: $('.txtCclubBonus'),
+            clubcourt: $('.txtCclubCourt'),
+            clubobs: $('.txtCclubObs'),
+            saveclub: $('.btnSaveCclub')
         },
         datasource: {
             base: undefined,
             id: args.id,
-            cclub: args.cclub
+            club: args.club
         },
         load: function() {
             var me = this,
                 ds = me.design;            
 
-            ds.savecclub.on('click', function(){
-                var cclub = me.datasource.cclub;
+            ds.saveclub.on('click', function(){
+                var club = me.datasource.club;
 
-                with(cclub) {
-                    player = ds.cclubplayer.find('span.cs-placeholder').html();
-                    datestart = ds.cclubdatestart.val();
-                    dateend = ds.cclubdateend.val();
-                    value = ds.cclubvalue.val();
-                    clause = ds.cclubclause.val();
-                    bonus = ds.cclubbonus.val();
-                    court = ds.cclubcourt.val();
-                    obs = ds.cclubobs.val();
+                with(club) {
+                    player = ds.clubplayer.find('span.cs-placeholder').html();
+                    datestart = ds.clubdatestart.val();
+                    dateend = ds.clubdateend.val();
+                    value = ds.clubvalue.val();
+                    clause = ds.clubclause.val();
+                    bonus = ds.clubbonus.val();
+                    court = ds.clubcourt.val();
+                    obs = ds.clubobs.val();
                 };
 
                 controls.ajax({
-                    functionname: 'insert_cclub',
+                    functionname: 'insert_club',
                     data: {
-                        cclub: cclub
+                        club: club
                     }
                 }, function (data) {
                     if (ifUndefinedOrNull(data.success, false)) {
@@ -381,7 +461,7 @@ function cclub(args) {
             me.load();
         }
     };
-    cclub.init();
+    club.init();
 };
 
 function mandates(args) {
@@ -483,7 +563,7 @@ function list_player() {
                             message: 'Pretende remover os jogadores selecionados?',
                             afteryes: function () {
                                 controls.ajax({
-                                    functionname: 'delete_list_player',
+                                    functionname: 'delete_player',
                                     data: {
                                         players_ids: playersids
                                     }
@@ -581,7 +661,7 @@ function list_player() {
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckPlayer{0}" data="{0}"><label for="ckPlayer{0}" class="no-padding no-margin"></label></div>'.format(list_player.id)));
                                 row.append(itemcolumn.format('{0} {1}'.format(list_player.firstname, list_player.lastname)));
                                 row.append(itemcolumn.format(list_player.birth));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_player.nationality, '')));
+                                row.append(itemcolumn.format(list_player.nationality));
                                 row.append(itemcolumn.format(list_player.position));
                                 row.append(itemcolumn.format(list_player.clubname));
                                 row.append(itemcolumn.format(list_player.value));
@@ -641,5 +721,602 @@ function list_player() {
     return list_player.init();
 };
 
+function list_coach() { 
+    var list_coach = {
+        design: {
+            base: undefined,
+            search: $('.grid-search input'),
+            actions: {
+                me: $('.main-content-actions'),
+                add: $('.main-content-actions .add-list_coach'),
+            },
+            grid: {
+                me: $('.table'),
+                rows: $('.table .row_coach'),
+                rowtemplate: $('<tr role="row_coach" class="row_coach"></tr>')
+                // withoutresults: $('.grid-without-results')
+            }
+        },
+        datasource: {
+            base: undefined,
+            list_coach: new Array(),
+            list_coachusers: new Array(),
+            total: 0
+        },
+        methods: {
+            base: undefined,
+            actions: {
+                base: undefined,
+                edit: function (list_coachid) {
+                    var me = this.base;
+
+                    controls.post(me.datasource.detailpage, { coach_id: list_coachid });
+                },
+                remove: function (coachesids) {
+                    var me = this.base;
+
+                    //[ REMOVE list_coach ]
+                    if (ifUndefinedOrNull(coachesids, new Array().length > 0)) {
+                        controls.message.bind({
+                            type: 'question',
+                            message: 'Pretende remover os jogadores selecionados?',
+                            afteryes: function () {
+                                controls.ajax({
+                                    functionname: 'delete_coach',
+                                    data: {
+                                        coaches_ids: coachesids
+                                    }
+                                }, function (data) {
+                                    if (ifUndefinedOrNull(data.success, false)) {
+                                        controls.message.bind({
+                                            type: 'success',
+                                            message: 'Os jogadores foram removidos com sucesso',
+                                            afterok: function () {
+                                                //[ BIND list_coach GRID ]
+                                                me.methods.grid.bind();
+                                            }
+                                        });
+                                    } else {
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
+                                    };
+                                }, function () {
+                                    //[ ERROR ]
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                }, function () {
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                });
+                            }
+                        });
+                    };
+                }
+            }, 
+            grid: {
+                base: undefined,
+                bind: function (parameters, after) {
+                    var me = this.base,
+                        ds = me.design.grid;
+
+                    //[ GET list_coach ]
+                    controls.ajax({
+                        functionname: 'coaches',
+                        data: {
+                            page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                            records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                        }
+                    }, function (data) {
+                        //[ SET list_coach LIST ]
+                        me.datasource.list_coach = ifUndefinedOrNull(data.coaches, new Array());
+                        me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+
+                        if (data.total > 0) {
+                            ds.me.slideDown();
+
+                            //[ BIND ROWS ]
+                            me.methods.grid.build(me.datasource.list_coach);
+
+                            //[ BIND PAGER ]
+                            controls.pager.bind({
+                                total: data.total_pages,
+                                total_records: data.total,
+                                current: data.current_page,
+                                update: function (page) {
+                                    me.methods.grid.bind({ page: page });
+                                }
+                            });
+                        } else {
+                            //[ SHOW WITHOUT RESULTS CONTENT ]
+                            ds.me.slideUp();
+                        };
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                }, 
+                build: function (datasource) {
+                    var me = this.base,
+                        ds = me.design.grid,
+                        datasource = me.datasource.list_coach;
+
+                    //[ CLEAR GRID ]
+                    ds.rows.children().remove();
+
+                    //[ BIND ROWS ]
+                    if (datasource.length > 0) {
+                        $.each(datasource, function (index, list_coach) {
+                            var row = ds.rowtemplate.clone(),
+                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                itemcolumn = '<td class="v-align-middle">{0}</td>';
+
+                            with (row) {
+                                //[ SAVE list_coach ID ]
+                                attr('data', list_coach.id);
+
+                                //[ OTHER COLUMNS ]
+                                row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckcoach{0}" data="{0}"><label for="ckcoach{0}" class="no-padding no-margin"></label></div>'.format(list_coach.id)));
+                                row.append(itemcolumn.format('{0} {1}'.format(list_coach.firstname, list_coach.lastname)));
+                                row.append(itemcolumn.format(list_coach.birth));
+                                row.append(itemcolumn.format(list_coach.nationality));
+                                row.append(itemcolumn.format(list_coach.formation));
+                                row.append(itemcolumn.format(list_coach.clubname));
+                                row.append(itemcolumn.format(list_coach.value));
+                            };
+
+                            row.on('dblclick', function (e) {
+                                me.methods.actions.edit($(this).attr('data'));
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });                           
+
+                            ds.rows.append(row);
+                        });
+
+                        ds.me.find('.btn-remove').on('click', function (e) {
+                            var selected = new Array();
+
+                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                if($(item).is(':checked')) {
+                                    selected.push(parseInt($(item).attr('data')));
+                                }
+                            });
+
+                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                me.methods.actions.remove(selected);
+                            };
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    };
+                },
+            },
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design.actions;
+
+            //[ BIND list_coach GRID ]
+            me.methods.grid.bind();
+        },
+        init: function () {
+            var me = this;
+
+            this.design.base = this;
+            this.datasource.base = this;
+
+            this.methods.base = this;
+            this.methods.actions.base = this;
+            this.methods.grid.base = this;
+
+            this.load();
+
+            return this;
+        }
+    };
+ 
+    return list_coach.init();
+};
+
+function list_representation() { 
+    var list_representation = {
+        design: {
+            base: undefined,
+            search: $('.grid-search input'),
+            actions: {
+                me: $('.main-content-actions'),
+                add: $('.main-content-actions .add-list_representation'),
+            },
+            grid: {
+                me: $('.table'),
+                rows: $('.table .row_representation'),
+                rowtemplate: $('<tr role="row_representation" class="row_representation"></tr>')
+                // withoutresults: $('.grid-without-results')
+            }
+        },
+        datasource: {
+            base: undefined,
+            list_representation: new Array(),
+            list_representationusers: new Array(),
+            total: 0
+        },
+        methods: {
+            base: undefined,
+            actions: {
+                base: undefined,
+                edit: function (list_representationid) {
+                    var me = this.base;
+
+                    controls.post(me.datasource.detailpage, { representation_id: list_representationid });
+                },
+                remove: function (representationsids) {
+                    var me = this.base;
+
+                    //[ REMOVE list_representation ]
+                    if (ifUndefinedOrNull(representationsids, new Array().length > 0)) {
+                        controls.message.bind({
+                            type: 'question',
+                            message: 'Pretende remover os jogadores selecionados?',
+                            afteryes: function () {
+                                controls.ajax({
+                                    functionname: 'delete_representation',
+                                    data: {
+                                        representations_ids: representationsids
+                                    }
+                                }, function (data) {
+                                    if (ifUndefinedOrNull(data.success, false)) {
+                                        controls.message.bind({
+                                            type: 'success',
+                                            message: 'Os jogadores foram removidos com sucesso',
+                                            afterok: function () {
+                                                //[ BIND list_representation GRID ]
+                                                me.methods.grid.bind();
+                                            }
+                                        });
+                                    } else {
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
+                                    };
+                                }, function () {
+                                    //[ ERROR ]
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                }, function () {
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                });
+                            }
+                        });
+                    };
+                }
+            }, 
+            grid: {
+                base: undefined,
+                bind: function (parameters, after) {
+                    var me = this.base,
+                        ds = me.design.grid;
+
+                    //[ GET list_representation ]
+                    controls.ajax({
+                        functionname: 'representations',
+                        data: {
+                            page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                            records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                        }
+                    }, function (data) {
+                        //[ SET list_representation LIST ]
+                        me.datasource.list_representation = ifUndefinedOrNull(data.representations, new Array());
+                        me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+
+                        if (data.total > 0) {
+                            ds.me.slideDown();
+
+                            //[ BIND ROWS ]
+                            me.methods.grid.build(me.datasource.list_representation);
+
+                            //[ BIND PAGER ]
+                            controls.pager.bind({
+                                total: data.total_pages,
+                                total_records: data.total,
+                                current: data.current_page,
+                                update: function (page) {
+                                    me.methods.grid.bind({ page: page });
+                                }
+                            });
+                        } else {
+                            //[ SHOW WITHOUT RESULTS CONTENT ]
+                            ds.me.slideUp();
+                        };
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                }, 
+                build: function (datasource) {
+                    var me = this.base,
+                        ds = me.design.grid,
+                        datasource = me.datasource.list_representation;
+
+                    //[ CLEAR GRID ]
+                    ds.rows.children().remove();
+
+                    //[ BIND ROWS ]
+                    if (datasource.length > 0) {
+                        $.each(datasource, function (index, list_representation) {
+                            var row = ds.rowtemplate.clone(),
+                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                itemcolumn = '<td class="v-align-middle">{0}</td>';
+
+                            with (row) {
+                                //[ SAVE list_representation ID ]
+                                attr('data', list_representation.id);
+
+                                //[ OTHER COLUMNS ]
+                                row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckrepresentation{0}" data="{0}"><label for="ckrepresentation{0}" class="no-padding no-margin"></label></div>'.format(list_representation.id)));
+                                row.append(itemcolumn.format(list_representation.playername));
+                                row.append(itemcolumn.format(list_representation.datestart));
+                                row.append(itemcolumn.format(list_representation.dateend));
+                                row.append(itemcolumn.format(list_representation.commission));
+                                row.append(itemcolumn.format(list_representation.child));
+                                row.append(itemcolumn.format(list_representation.documents));
+                            };
+
+                            row.on('dblclick', function (e) {
+                                me.methods.actions.edit($(this).attr('data'));
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });                           
+
+                            ds.rows.append(row);
+                        });
+
+                        ds.me.find('.btn-remove').on('click', function (e) {
+                            var selected = new Array();
+
+                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                if($(item).is(':checked')) {
+                                    selected.push(parseInt($(item).attr('data')));
+                                }
+                            });
+
+                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                me.methods.actions.remove(selected);
+                            };
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    };
+                },
+            },
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design.actions;
+
+            //[ BIND list_representation GRID ]
+            me.methods.grid.bind();
+        },
+        init: function () {
+            var me = this;
+
+            this.design.base = this;
+            this.datasource.base = this;
+
+            this.methods.base = this;
+            this.methods.actions.base = this;
+            this.methods.grid.base = this;
+
+            this.load();
+
+            return this;
+        }
+    };
+ 
+    return list_representation.init();
+};
+
+function list_club() { 
+    var list_club = {
+        design: {
+            base: undefined,
+            search: $('.grid-search input'),
+            actions: {
+                me: $('.main-content-actions'),
+                add: $('.main-content-actions .add-list_club'),
+            },
+            grid: {
+                me: $('.table'),
+                rows: $('.table .row_club'),
+                rowtemplate: $('<tr role="row_club" class="row_club"></tr>')
+                // withoutresults: $('.grid-without-results')
+            }
+        },
+        datasource: {
+            base: undefined,
+            list_club: new Array(),
+            list_clubusers: new Array(),
+            total: 0
+        },
+        methods: {
+            base: undefined,
+            actions: {
+                base: undefined,
+                edit: function (list_clubid) {
+                    var me = this.base;
+
+                    controls.post(me.datasource.detailpage, { club_id: list_clubid });
+                },
+                remove: function (clubsids) {
+                    var me = this.base;
+
+                    //[ REMOVE list_club ]
+                    if (ifUndefinedOrNull(clubsids, new Array().length > 0)) {
+                        controls.message.bind({
+                            type: 'question',
+                            message: 'Pretende remover os jogadores selecionados?',
+                            afteryes: function () {
+                                controls.ajax({
+                                    functionname: 'delete_club',
+                                    data: {
+                                        clubs_ids: clubsids
+                                    }
+                                }, function (data) {
+                                    if (ifUndefinedOrNull(data.success, false)) {
+                                        controls.message.bind({
+                                            type: 'success',
+                                            message: 'Os jogadores foram removidos com sucesso',
+                                            afterok: function () {
+                                                //[ BIND list_club GRID ]
+                                                me.methods.grid.bind();
+                                            }
+                                        });
+                                    } else {
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
+                                    };
+                                }, function () {
+                                    //[ ERROR ]
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                }, function () {
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                });
+                            }
+                        });
+                    };
+                }
+            }, 
+            grid: {
+                base: undefined,
+                bind: function (parameters, after) {
+                    var me = this.base,
+                        ds = me.design.grid;
+
+                    //[ GET list_club ]
+                    controls.ajax({
+                        functionname: 'clubs',
+                        data: {
+                            page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                            records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                        }
+                    }, function (data) {
+                        //[ SET list_club LIST ]
+                        me.datasource.list_club = ifUndefinedOrNull(data.clubs, new Array());
+                        me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+
+                        if (data.total > 0) {
+                            ds.me.slideDown();
+
+                            //[ BIND ROWS ]
+                            me.methods.grid.build(me.datasource.list_club);
+
+                            //[ BIND PAGER ]
+                            controls.pager.bind({
+                                total: data.total_pages,
+                                total_records: data.total,
+                                current: data.current_page,
+                                update: function (page) {
+                                    me.methods.grid.bind({ page: page });
+                                }
+                            });
+                        } else {
+                            //[ SHOW WITHOUT RESULTS CONTENT ]
+                            ds.me.slideUp();
+                        };
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                }, 
+                build: function (datasource) {
+                    var me = this.base,
+                        ds = me.design.grid,
+                        datasource = me.datasource.list_club;
+
+                    //[ CLEAR GRID ]
+                    ds.rows.children().remove();
+
+                    //[ BIND ROWS ]
+                    if (datasource.length > 0) {
+                        $.each(datasource, function (index, list_club) {
+                            var row = ds.rowtemplate.clone(),
+                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                itemcolumn = '<td class="v-align-middle">{0}</td>';
+
+                            with (row) {
+                                //[ SAVE list_club ID ]
+                                attr('data', list_club.id);
+
+                                //[ OTHER COLUMNS ]
+                                row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckclub{0}" data="{0}"><label for="ckclub{0}" class="no-padding no-margin"></label></div>'.format(list_club.id)));
+                                row.append(itemcolumn.format(list_club.playername));
+                                row.append(itemcolumn.format(list_club.datestart));
+                                row.append(itemcolumn.format(list_club.dateend));
+                                row.append(itemcolumn.format(list_club.clubname));
+                                row.append(itemcolumn.format(list_club.value));
+                                row.append(itemcolumn.format(list_club.clause));
+                                row.append(itemcolumn.format(list_club.documents));
+                            };
+
+                            row.on('dblclick', function (e) {
+                                me.methods.actions.edit($(this).attr('data'));
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });                           
+
+                            ds.rows.append(row);
+                        });
+
+                        ds.me.find('.btn-remove').on('click', function (e) {
+                            var selected = new Array();
+
+                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                if($(item).is(':checked')) {
+                                    selected.push(parseInt($(item).attr('data')));
+                                }
+                            });
+
+                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                me.methods.actions.remove(selected);
+                            };
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    };
+                },
+            },
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design.actions;
+
+            //[ BIND list_club GRID ]
+            me.methods.grid.bind();
+        },
+        init: function () {
+            var me = this;
+
+            this.design.base = this;
+            this.datasource.base = this;
+
+            this.methods.base = this;
+            this.methods.actions.base = this;
+            this.methods.grid.base = this;
+
+            this.load();
+
+            return this;
+        }
+    };
+ 
+    return list_club.init();
+};
 
 

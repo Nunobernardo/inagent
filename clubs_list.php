@@ -26,6 +26,7 @@
     <link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="pages/css/pages-icons.css" rel="stylesheet" type="text/css">
     <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/controls.css" rel="stylesheet" type="text/css"/>
   </head>
   <body class="fixed-header ">
     <!-- BEGIN SIDEBPANEL-->
@@ -326,14 +327,11 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-hover" id="basicTable">
+                  <table class="table table-hover">
                     <thead>
                       <tr>
-                        <!-- NOTE * : Inline Style Width For Table Cell is Required as it may differ from user to user
-    										Comman Practice Followed
-    										-->
                         <th style="width:1%" class="text-center">
-                          <button class="btn btn-link"><i class="pg-trash"></i>
+                          <button class="btn btn-link btn-remove"><i class="pg-trash"></i>
                           </button>
                         </th>
                         <th style="width:20%">Nome</th>
@@ -345,38 +343,7 @@
                         <th style="width:17%">Documentos</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      
-                      <tr>
-                        <td class="v-align-middle">
-                          <div class="checkbox text-center">
-                            <input type="checkbox" value="3" id="checkbox6">
-                            <label for="checkbox6" class="no-padding no-margin"></label>
-                          </div>
-                        </td>
-                        <td class="v-align-middle ">
-                          <p>Fábio Abreu</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>24/11/2019</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>24/11/2021</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>F.C.Porto</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>50.000</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>10.000.000</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>Download</p>
-                        </td>
-                      </tr>
-                    </tbody>
+                    <tbody role="row" class="row_club"></tbody>
                   </table>
                 </div>
               </div>
@@ -489,5 +456,14 @@
     <script src="assets/js/tables.js" type="text/javascript"></script>
     <script src="assets/js/scripts.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS -->
+    <script src="js/toolkit.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/default.js"></script>
+
+    <script type='text/javascript'>
+      $(document).ready(function () {
+        list_club();
+      });
+    </script>
   </body>
 </html>
