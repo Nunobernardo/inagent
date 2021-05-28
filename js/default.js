@@ -38,7 +38,7 @@ function player(args) {
                         //[ SET list_player LIST ]
                         me.datasource.player = data.player;
 
-                        if (!isUndefinedOrNull(after)) { after(data); };
+                        if (!isUndefinedOrNull(after)) { after(); };
                     }, function () {
                         //[ ERROR ]
                         controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
@@ -48,6 +48,8 @@ function player(args) {
                     });
                 } else {
                     me.datasource.player = args.player;
+
+                    if (!isUndefinedOrNull(after)) { after(); };
                 };
             }
         },
@@ -64,7 +66,6 @@ function player(args) {
                 };
 
                 ds.saveplayer.on('click', function(){
-                    console.log("XPTO")
                     var player = me.datasource.player;                   
 
                     with(player) {
@@ -1057,12 +1058,12 @@ function list_representation() {
 
                                 //[ OTHER COLUMNS ]
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckrepresentation{0}" data="{0}"><label for="ckrepresentation{0}" class="no-padding no-margin"></label></div>'.format(list_representation.id)));
-                                row.append(itemcolumn.format(list_representation.playername));
-                                row.append(itemcolumn.format(list_representation.datestart));
-                                row.append(itemcolumn.format(list_representation.dateend));
-                                row.append(itemcolumn.format(list_representation.commission));
-                                row.append(itemcolumn.format(list_representation.child));
-                                row.append(itemcolumn.format(list_representation.documents));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.playername, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.datestart, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.dateend, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.commission, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.child, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.documents, '')));
                             };
 
                             row.on('dblclick', function (e) {
@@ -1256,13 +1257,13 @@ function list_club() {
 
                                 //[ OTHER COLUMNS ]
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckclub{0}" data="{0}"><label for="ckclub{0}" class="no-padding no-margin"></label></div>'.format(list_club.id)));
-                                row.append(itemcolumn.format(list_club.playername));
-                                row.append(itemcolumn.format(list_club.datestart));
-                                row.append(itemcolumn.format(list_club.dateend));
-                                row.append(itemcolumn.format(list_club.clubname));
-                                row.append(itemcolumn.format(list_club.value));
-                                row.append(itemcolumn.format(list_club.clause));
-                                row.append(itemcolumn.format(list_club.documents));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.playername, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.datestart, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.dateend, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.clubname, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.value, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.clause, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.files, '')));
                             };
 
                             row.on('dblclick', function (e) {

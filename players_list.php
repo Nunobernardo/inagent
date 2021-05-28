@@ -336,15 +336,15 @@
                           <button class="btn btn-link btn-remove"><i class="pg-trash"></i>
                           </button>
                         </th>
-                        <th style="width:20%">Nome</th>
-                        <th style="width:17%">Data de Nascimento</th>
-                        <th style="width:17%">Nacionalidade</th>
-                        <th style="width:15%">Posição</th>
-                        <th style="width:17%">Clubes</th>
-                        <th style="width:17%">Valor de mercado</th>
+                        <th style="width:20%; text-align: center; vertical-align: middle;">Nome</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Data de Nascimento</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Nacionalidade</th>
+                        <th style="width:15%; text-align: center; vertical-align: middle;">Posição</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Clubes</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Valor de mercado</th>
                       </tr>
                     </thead>
-                      <tbody role="row" class="row_player"></tbody>
+                      <tbody role="row" class="row_player"  style="width:20%; text-align: center; vertical-align: middle;"></tbody>
                   </table>
                 </div>
               </div>

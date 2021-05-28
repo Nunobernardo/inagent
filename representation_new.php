@@ -818,7 +818,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        representation({ id: 0, representation: <?php echo json_encode(new representation(null)); ?>});
+        representation({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, representation: <?php echo json_encode(new representation(null)); ?>});
       });
 
       

@@ -827,9 +827,10 @@
     <?php
       include('data/objects.php');
     ?>
+
     <script type="text/javascript">
       $(document).ready(function(){
-        cclub({ id: 0, cclub: <?php echo json_encode(new cclub(null)); ?>});
+        club({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, club: <?php echo json_encode(new club(null)); ?>});
       });
     </script>
   </body>

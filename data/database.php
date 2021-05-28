@@ -532,7 +532,7 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT cc.id_contract_club, cc.date_start, cc.date_end, c.name_club as club_name, cc.value, cc.clause, p.name as name_player 
+                $query = "SELECT cc.id_contract_club, cc.date_start, cc.date_end, c.name_club as club_name, cc.value, cc.clause, p.name as player_name, cc.files
                             FROM contract_club cc 
                             INNER JOIN club c ON cc.id_club = c.id_club 
                             INNER JOIN players p ON cc.id_player = p.id_player
@@ -563,7 +563,7 @@
                 $clubid = intval(urldecode($object->{'club_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT cc.id_contract_club, cc.date_start, cc.date_end, c.name_club as club_name, cc.value, cc.clause, p.name as name_player 
+                $query = "SELECT cc.id_contract_club, cc.date_start, cc.date_end, c.name_club as club_name, cc.value, cc.clause, p.name as name_player, cc.files
                             FROM contract_club cc 
                             INNER JOIN club c ON cc.id_club = c.id_club 
                             INNER JOIN players p ON cc.id_player = p.id_player

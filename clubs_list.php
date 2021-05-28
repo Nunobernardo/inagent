@@ -334,16 +334,16 @@
                           <button class="btn btn-link btn-remove"><i class="pg-trash"></i>
                           </button>
                         </th>
-                        <th style="width:20%">Nome</th>
-                        <th style="width:17%">Data início</th>
-                        <th style="width:17%">Data fim</th>
-                        <th style="width:15%">Clube</th>
-                        <th style="width:17%">Valor</th>
-                        <th style="width:17%">Cláusala de Rescisão</th>
-                        <th style="width:17%">Documentos</th>
+                        <th style="width:20%; text-align: center; vertical-align: middle;">Nome</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Data início</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Data fim</th>
+                        <th style="width:15%; text-align: center; vertical-align: middle;">Clube</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Valor</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Cláusala de Rescisão</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Documentos</th>
                       </tr>
                     </thead>
-                    <tbody role="row" class="row_club"></tbody>
+                    <tbody role="row" class="row_club" style="width:20%; text-align: center; vertical-align: middle;"></tbody>
                   </table>
                 </div>
               </div>

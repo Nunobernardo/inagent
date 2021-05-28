@@ -336,15 +336,15 @@
                           <button class="btn btn-link btn-remove"><i class="pg-trash"></i>
                           </button>
                         </th>
-                        <th style="width:20%">Nome</th>
-                        <th style="width:17%">Data Início</th>
-                        <th style="width:17%">Data Fim</th>
-                        <th style="width:15%">Valores</th>
-                        <th style="width:17%">Menor</th>
-                        <th style="width:17%">Documento</th>
+                        <th style="width:20%; text-align: center; vertical-align: middle;">Nome</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Data Início</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Data Fim</th>
+                        <th style="width:15%; text-align: center; vertical-align: middle;">Valores</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Menor</th>
+                        <th style="width:17%; text-align: center; vertical-align: middle;">Documento</th>
                       </tr>
                     </thead>
-                      <tbody role="row" class="row_representation">
+                      <tbody role="row" class="row_representation"  style="width:20%; text-align: center; vertical-align: middle;">
                     </tbody>
                   </table>
                 </div>
