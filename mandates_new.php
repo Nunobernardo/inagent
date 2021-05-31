@@ -940,7 +940,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        mandates({ id: 0, mandates: <?php echo json_encode(new mandates(null)); ?>});
+        mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>});
       });
     </script>
   </body>

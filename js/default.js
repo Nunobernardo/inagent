@@ -61,8 +61,19 @@ function player(args) {
                 var player = me.datasource.player;
 
                 if (player.id > 0) {
+                    ds.playername.val(player.name);
                     ds.playerfirstname.val(player.firstname);
                     ds.playerlastname.val(player.lastname);
+                    ds.playerbirth.val(player.birth);
+                    ds.playernationality.val(player.nationality);
+                    ds.playerheight.val(player.height);
+                    ds.playerweight.val(player.weight);
+                    //ds.playerfoot.val(player.foot);
+                    //ds.playerposition.val(player.position);
+                    //ds.playerclub.val(player.clubname);
+                    ds.playervalue.val(player.value);
+                    ds.playerpassport.val(player.passport);
+                    ds.playerpassportval.val(player.passportval);
                 };
 
                 ds.saveplayer.on('click', function(){
@@ -175,8 +186,19 @@ function coach(args) {
                 var coach = me.datasource.coach;
 
                 if (coach.id > 0) {
+                    ds.coachname.val(coach.name);
                     ds.coachfirstname.val(coach.firstname);
                     ds.coachlastname.val(coach.lastname);
+                    ds.coachbirth.val(coach.birth);
+                    ds.coachnationality.val(coach.nationality);
+                    ds.coachheight.val(coach.height);
+                    ds.coachweight.val(coach.weight);
+                    //ds.coachfoot.val(coach.foot);
+                    //ds.coachposition.val(coach.position);
+                    //ds.coachclub.val(coach.clubname);
+                    ds.coachvalue.val(coach.value);
+                    ds.coachpassport.val(coach.passport);
+                    ds.coachpassportval.val(coach.passportval);
                 };
 
                 ds.savecoach.on('click', function(){
@@ -1263,7 +1285,7 @@ function list_club() {
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_club.clubname, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_club.value, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_club.clause, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.files, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.file, '')));
                             };
 
                             row.on('dblclick', function (e) {
@@ -1320,4 +1342,799 @@ function list_club() {
     return list_club.init();
 };
 
+function list_mandate() { 
+    var list_mandate = {
+        design: {
+            base: undefined,
+            search: $('.grid-search input'),
+            actions: {
+                me: $('.main-content-actions'),
+                add: $('.main-content-actions .add-list_mandate'),
+            },
+            grid: {
+                me: $('.table'),
+                rows: $('.table .row_mandates'),
+                rowtemplate: $('<tr role="row_mandates" class="row_mandates"></tr>')
+                // withoutresults: $('.grid-without-results')
+            }
+        },
+        datasource: {
+            base: undefined,
+            list_mandate: new Array(),
+            list_mandateusers: new Array(),
+            total: 0
+        },
+        methods: {
+            base: undefined,
+            actions: {
+                base: undefined,
+                edit: function (list_mandateid) {
+                    var me = this.base;
 
+                    controls.post(me.datasource.detailpage, { mandate_id: list_mandateid });
+                },
+                remove: function (mandatesids) {
+                    var me = this.base;
+
+                    //[ REMOVE list_mandate ]
+                    if (ifUndefinedOrNull(mandatesids, new Array().length > 0)) {
+                        controls.message.bind({
+                            type: 'question',
+                            message: 'Pretende remover os jogadores selecionados?',
+                            afteryes: function () {
+                                controls.ajax({
+                                    functionname: 'delete_mandate',
+                                    data: {
+                                        mandates_ids: mandatesids
+                                    }
+                                }, function (data) {
+                                    if (ifUndefinedOrNull(data.success, false)) {
+                                        controls.message.bind({
+                                            type: 'success',
+                                            message: 'Os jogadores foram removidos com sucesso',
+                                            afterok: function () {
+                                                //[ BIND list_mandate GRID ]
+                                                me.methods.grid.bind();
+                                            }
+                                        });
+                                    } else {
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
+                                    };
+                                }, function () {
+                                    //[ ERROR ]
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                }, function () {
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                });
+                            }
+                        });
+                    };
+                }
+            }, 
+            grid: {
+                base: undefined,
+                bind: function (parameters, after) {
+                    var me = this.base,
+                        ds = me.design.grid;
+
+                    //[ GET list_mandate ]
+                    controls.ajax({
+                        functionname: 'mandates',
+                        data: {
+                            page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                            records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                        }
+                    }, function (data) {
+                        //[ SET list_mandate LIST ]
+                        me.datasource.list_mandate = ifUndefinedOrNull(data.mandates, new Array());
+                        me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+
+                        if (data.total > 0) {
+                            ds.me.slideDown();
+
+                            //[ BIND ROWS ]
+                            me.methods.grid.build(me.datasource.list_mandate);
+
+                            //[ BIND PAGER ]
+                            controls.pager.bind({
+                                total: data.total_pages,
+                                total_records: data.total,
+                                current: data.current_page,
+                                update: function (page) {
+                                    me.methods.grid.bind({ page: page });
+                                }
+                            });
+                        } else {
+                            //[ SHOW WITHOUT RESULTS CONTENT ]
+                            ds.me.slideUp();
+                        };
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                }, 
+                build: function (datasource) {
+                    var me = this.base,
+                        ds = me.design.grid,
+                        datasource = me.datasource.list_mandate;
+
+                    //[ CLEAR GRID ]
+                    ds.rows.children().remove();
+
+                    //[ BIND ROWS ]
+                    if (datasource.length > 0) {
+                        $.each(datasource, function (index, list_mandate) {
+                            var row = ds.rowtemplate.clone(),
+                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                itemcolumn = '<td class="v-align-middle">{0}</td>';
+
+                            with (row) {
+                                //[ SAVE list_mandate ID ]
+                                attr('data', list_mandate.id);
+
+                                //[ OTHER COLUMNS ]
+                                row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckmandate{0}" data="{0}"><label for="ckmandate{0}" class="no-padding no-margin"></label></div>'.format(list_mandate.id)));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.playername, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentname, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentcompany, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.clubname, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.country, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.datestart, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.dateend, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.file, '')));
+                            };
+
+                            row.on('dblclick', function (e) {
+                                me.methods.actions.edit($(this).attr('data'));
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });                           
+
+                            ds.rows.append(row);
+                        });
+
+                        ds.me.find('.btn-remove').on('click', function (e) {
+                            var selected = new Array();
+
+                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                if($(item).is(':checked')) {
+                                    selected.push(parseInt($(item).attr('data')));
+                                }
+                            });
+
+                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                me.methods.actions.remove(selected);
+                            };
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    };
+                },
+            },
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design.actions;
+
+            //[ BIND list_mandate GRID ]
+            me.methods.grid.bind();
+        },
+        init: function () {
+            var me = this;
+
+            this.design.base = this;
+            this.datasource.base = this;
+
+            this.methods.base = this;
+            this.methods.actions.base = this;
+            this.methods.grid.base = this;
+
+            this.load();
+
+            return this;
+        }
+    };
+ 
+    return list_mandate.init();
+};
+
+function list_agent() { 
+    var list_agent = {
+        design: {
+            base: undefined,
+            search: $('.grid-search input'),
+            actions: {
+                me: $('.main-content-actions'),
+                add: $('.main-content-actions .add-list_agent'),
+            },
+            grid: {
+                me: $('.table'),
+                rows: $('.table .row_agent'),
+                rowtemplate: $('<tr role="row_agent" class="row_agent"></tr>')
+                // withoutresults: $('.grid-without-results')
+            }
+        },
+        datasource: {
+            base: undefined,
+            list_agent: new Array(),
+            list_agentusers: new Array(),
+            total: 0
+        },
+        methods: {
+            base: undefined,
+            actions: {
+                base: undefined,
+                edit: function (list_agentid) {
+                    var me = this.base;
+
+                    controls.post(me.datasource.detailpage, { agent_id: list_agentid });
+                },
+                remove: function (agentsids) {
+                    var me = this.base;
+
+                    //[ REMOVE list_agent ]
+                    if (ifUndefinedOrNull(agentsids, new Array().length > 0)) {
+                        controls.message.bind({
+                            type: 'question',
+                            message: 'Pretende remover os jogadores selecionados?',
+                            afteryes: function () {
+                                controls.ajax({
+                                    functionname: 'delete_agent',
+                                    data: {
+                                        agents_ids: agentsids
+                                    }
+                                }, function (data) {
+                                    if (ifUndefinedOrNull(data.success, false)) {
+                                        controls.message.bind({
+                                            type: 'success',
+                                            message: 'Os jogadores foram removidos com sucesso',
+                                            afterok: function () {
+                                                //[ BIND list_agent GRID ]
+                                                me.methods.grid.bind();
+                                            }
+                                        });
+                                    } else {
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
+                                    };
+                                }, function () {
+                                    //[ ERROR ]
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                }, function () {
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                });
+                            }
+                        });
+                    };
+                }
+            }, 
+            grid: {
+                base: undefined,
+                bind: function (parameters, after) {
+                    var me = this.base,
+                        ds = me.design.grid;
+
+                    //[ GET list_agent ]
+                    controls.ajax({
+                        functionname: 'agents',
+                        data: {
+                            page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                            records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                        }
+                    }, function (data) {
+                        //[ SET list_agent LIST ]
+                        me.datasource.list_agent = ifUndefinedOrNull(data.agents, new Array());
+                        me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+
+                        if (data.total > 0) {
+                            ds.me.slideDown();
+
+                            //[ BIND ROWS ]
+                            me.methods.grid.build(me.datasource.list_agent);
+
+                            //[ BIND PAGER ]
+                            controls.pager.bind({
+                                total: data.total_pages,
+                                total_records: data.total,
+                                current: data.current_page,
+                                update: function (page) {
+                                    me.methods.grid.bind({ page: page });
+                                }
+                            });
+                        } else {
+                            //[ SHOW WITHOUT RESULTS CONTENT ]
+                            ds.me.slideUp();
+                        };
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                }, 
+                build: function (datasource) {
+                    var me = this.base,
+                        ds = me.design.grid,
+                        datasource = me.datasource.list_agent;
+
+                    //[ CLEAR GRID ]
+                    ds.rows.children().remove();
+
+                    //[ BIND ROWS ]
+                    if (datasource.length > 0) {
+                        $.each(datasource, function (index, list_agent) {
+                            var row = ds.rowtemplate.clone(),
+                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                itemcolumn = '<td class="v-align-middle">{0}</td>';
+
+                            with (row) {
+                                //[ SAVE list_agent ID ]
+                                attr('data', list_agent.id);
+
+                                //[ OTHER COLUMNS ]
+                                row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckagent{0}" data="{0}"><label for="ckagent{0}" class="no-padding no-margin"></label></div>'.format(list_agent.id)));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.agent, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.agentcompany, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.clubname, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.country, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.contacts, '')));
+                            };
+
+                            row.on('dblclick', function (e) {
+                                me.methods.actions.edit($(this).attr('data'));
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });                           
+
+                            ds.rows.append(row);
+                        });
+
+                        ds.me.find('.btn-remove').on('click', function (e) {
+                            var selected = new Array();
+
+                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                if($(item).is(':checked')) {
+                                    selected.push(parseInt($(item).attr('data')));
+                                }
+                            });
+
+                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                me.methods.actions.remove(selected);
+                            };
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    };
+                },
+            },
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design.actions;
+
+            //[ BIND list_agent GRID ]
+            me.methods.grid.bind();
+        },
+        init: function () {
+            var me = this;
+
+            this.design.base = this;
+            this.datasource.base = this;
+
+            this.methods.base = this;
+            this.methods.actions.base = this;
+            this.methods.grid.base = this;
+
+            this.load();
+
+            return this;
+        }
+    };
+ 
+    return list_agent.init();
+};
+
+function list_value() { 
+    var list_value = {
+        design: {
+            base: undefined,
+            search: $('.grid-search input'),
+            actions: {
+                me: $('.main-content-actions'),
+                add: $('.main-content-actions .add-list_value'),
+            },
+            grid: {
+                me: $('.table'),
+                rows: $('.table .row_value'),
+                rowtemplate: $('<tr role="row_value" class="row_value"></tr>')
+                // withoutresults: $('.grid-without-results')
+            }
+        },
+        datasource: {
+            base: undefined,
+            list_value: new Array(),
+            list_valueusers: new Array(),
+            total: 0
+        },
+        methods: {
+            base: undefined,
+            actions: {
+                base: undefined,
+                edit: function (list_valueid) {
+                    var me = this.base;
+
+                    controls.post(me.datasource.detailpage, { value_id: list_valueid });
+                },
+                remove: function (valuesids) {
+                    var me = this.base;
+
+                    //[ REMOVE list_value ]
+                    if (ifUndefinedOrNull(valuesids, new Array().length > 0)) {
+                        controls.message.bind({
+                            type: 'question',
+                            message: 'Pretende remover os jogadores selecionados?',
+                            afteryes: function () {
+                                controls.ajax({
+                                    functionname: 'delete_value',
+                                    data: {
+                                        values_ids: valuesids
+                                    }
+                                }, function (data) {
+                                    if (ifUndefinedOrNull(data.success, false)) {
+                                        controls.message.bind({
+                                            type: 'success',
+                                            message: 'Os jogadores foram removidos com sucesso',
+                                            afterok: function () {
+                                                //[ BIND list_value GRID ]
+                                                me.methods.grid.bind();
+                                            }
+                                        });
+                                    } else {
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
+                                    };
+                                }, function () {
+                                    //[ ERROR ]
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                }, function () {
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                });
+                            }
+                        });
+                    };
+                }
+            }, 
+            grid: {
+                base: undefined,
+                bind: function (parameters, after) {
+                    var me = this.base,
+                        ds = me.design.grid;
+
+                    //[ GET list_value ]
+                    controls.ajax({
+                        functionname: 'values',
+                        data: {
+                            page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                            records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                        }
+                    }, function (data) {
+                        //[ SET list_value LIST ]
+                        me.datasource.list_value = ifUndefinedOrNull(data.values, new Array());
+                        me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+
+                        if (data.total > 0) {
+                            ds.me.slideDown();
+
+                            //[ BIND ROWS ]
+                            me.methods.grid.build(me.datasource.list_value);
+
+                            //[ BIND PAGER ]
+                            controls.pager.bind({
+                                total: data.total_pages,
+                                total_records: data.total,
+                                current: data.current_page,
+                                update: function (page) {
+                                    me.methods.grid.bind({ page: page });
+                                }
+                            });
+                        } else {
+                            //[ SHOW WITHOUT RESULTS CONTENT ]
+                            ds.me.slideUp();
+                        };
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                }, 
+                build: function (datasource) {
+                    var me = this.base,
+                        ds = me.design.grid,
+                        datasource = me.datasource.list_value;
+
+                    //[ CLEAR GRID ]
+                    ds.rows.children().remove();
+
+                    //[ BIND ROWS ]
+                    if (datasource.length > 0) {
+                        $.each(datasource, function (index, list_value) {
+                            var row = ds.rowtemplate.clone(),
+                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
+                                itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Valor €</span></td>',
+                                itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
+
+                            with (row) {
+                                //[ SAVE list_value ID ]
+                                attr('data', list_value.id);
+
+                                //[ OTHER COLUMNS ]
+                                row.append(itemcolumn.format('{0} {1}'.format(list_value.firstname, list_value.lastname)));
+                                row.append(itemcolumn2);
+                                row.append(itemcolumn3.format(ifUndefinedOrNull(list_value.value, '')));
+                            };
+
+                            row.on('dblclick', function (e) {
+                                me.methods.actions.edit($(this).attr('data'));
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });                           
+
+                            ds.rows.append(row);
+                        });
+
+                        ds.me.find('.btn-remove').on('click', function (e) {
+                            var selected = new Array();
+
+                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                if($(item).is(':checked')) {
+                                    selected.push(parseInt($(item).attr('data')));
+                                }
+                            });
+
+                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                me.methods.actions.remove(selected);
+                            };
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    };
+                },
+            },
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design.actions;
+
+            //[ BIND list_value GRID ]
+            me.methods.grid.bind();
+        },
+        init: function () {
+            var me = this;
+
+            this.design.base = this;
+            this.datasource.base = this;
+
+            this.methods.base = this;
+            this.methods.actions.base = this;
+            this.methods.grid.base = this;
+
+            this.load();
+
+            return this;
+        }
+    };
+ 
+    return list_value.init();
+};
+
+function list_nationality() { 
+    var list_nationality = {
+        design: {
+            base: undefined,
+            search: $('.grid-search input'),
+            actions: {
+                me: $('.main-content-actions'),
+                add: $('.main-content-actions .add-list_nationality'),
+            },
+            grid: {
+                me: $('.table'),
+                rows: $('.table .row_nationality'),
+                rowtemplate: $('<tr role="row" class="row_nationality"></tr>')
+                // withoutresults: $('.grid-without-results')
+            }
+        },
+        datasource: {
+            base: undefined,
+            list_nationality: new Array(),
+            list_nationalityusers: new Array(),
+            total: 0
+        },
+        methods: {
+            base: undefined,
+            actions: {
+                base: undefined,
+                edit: function (list_nationalityid) {
+                    var me = this.base;
+
+                    controls.post(me.datasource.detailpage, { nationality_id: list_nationalityid });
+                },
+                remove: function (nationalitiesids) {
+                    var me = this.base;
+
+                    //[ REMOVE list_nationality ]
+                    if (ifUndefinedOrNull(nationalitiesids, new Array().length > 0)) {
+                        controls.message.bind({
+                            type: 'question',
+                            message: 'Pretende remover os jogadores selecionados?',
+                            afteryes: function () {
+                                controls.ajax({
+                                    functionname: 'delete_nationality',
+                                    data: {
+                                        nationalities_ids: nationalitiesids
+                                    }
+                                }, function (data) {
+                                    if (ifUndefinedOrNull(data.success, false)) {
+                                        controls.message.bind({
+                                            type: 'success',
+                                            message: 'Os jogadores foram removidos com sucesso',
+                                            afterok: function () {
+                                                //[ BIND list_nationality GRID ]
+                                                me.methods.grid.bind();
+                                            }
+                                        });
+                                    } else {
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
+                                    };
+                                }, function () {
+                                    //[ ERROR ]
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                }, function () {
+                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                });
+                            }
+                        });
+                    };
+                }
+            }, 
+            grid: {
+                base: undefined,
+                bind: function (parameters, after) {
+                    var me = this.base,
+                        ds = me.design.grid;
+
+                    //[ GET list_nationality ]
+                    controls.ajax({
+                        functionname: 'nationality',
+                        data: {
+                            page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                            records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                        }
+                    }, function (data) {
+                        //[ SET list_nationality LIST ]
+                        me.datasource.list_nationality = ifUndefinedOrNull(data.nationalities, new Array());
+                        me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+
+                        if (data.total > 0) {
+                            ds.me.slideDown();
+
+                            //[ BIND ROWS ]
+                            me.methods.grid.build(me.datasource.list_nationality);
+
+                            //[ BIND PAGER ]
+                            controls.pager.bind({
+                                total: data.total_pages,
+                                total_records: data.total,
+                                current: data.current_page,
+                                update: function (page) {
+                                    me.methods.grid.bind({ page: page });
+                                }
+                            });
+                        } else {
+                            //[ SHOW WITHOUT RESULTS CONTENT ]
+                            ds.me.slideUp();
+                        };
+
+                        if (!isUndefinedOrNull(after)) { after(data); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                }, 
+                build: function (datasource) {
+                    var me = this.base,
+                        ds = me.design.grid,
+                        datasource = me.datasource.list_nationality;
+
+                    //[ CLEAR GRID ]
+                    ds.rows.children().remove();
+
+                    //[ BIND ROWS ]
+
+
+                    
+                    // NAO ENTRA AQUI NAO SEI PK
+                    if (datasource.length >= 0) {
+                        $.each(datasource, function (index, list_nationality) {
+                            var row = ds.rowtemplate.clone(),
+                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
+                                itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Nacionalidade</span></td>',
+                                itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
+
+                            with (row) {
+                                //[ SAVE list_nationality ID ]
+                                attr('data', list_nationality.id);
+
+                                //[ OTHER COLUMNS ]
+                                row.append(itemcolumn.format('{0} {1}'.format(list_nationality.firstname, list_nationality.lastname)));
+                                row.append(itemcolumn2);
+                                row.append(itemcolumn3.format(ifUndefinedOrNull(list_nationality.nationality, '')));
+                            };
+
+                            row.on('dblclick', function (e) {
+                                me.methods.actions.edit($(this).attr('data'));
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });                           
+
+                            ds.rows.append(row);
+                        });
+
+                        ds.me.find('.btn-remove').on('click', function (e) {
+                            var selected = new Array();
+
+                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                if($(item).is(':checked')) {
+                                    selected.push(parseInt($(item).attr('data')));
+                                }
+                            });
+
+                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                me.methods.actions.remove(selected);
+                            };
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    };
+                },
+            },
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design.actions;
+
+            //[ BIND list_nationality GRID ]
+            me.methods.grid.bind();
+        },
+        init: function () {
+            var me = this;
+
+            this.design.base = this;
+            this.datasource.base = this;
+
+            this.methods.base = this;
+            this.methods.actions.base = this;
+            this.methods.grid.base = this;
+
+            this.load();
+
+            return this;
+        }
+    };
+ 
+    return list_nationality.init();
+};

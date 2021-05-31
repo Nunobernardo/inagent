@@ -820,7 +820,6 @@
       $(document).ready(function(){
         representation({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, representation: <?php echo json_encode(new representation(null)); ?>});
       });
-
       
       $(document).ready(function(){
         $("#boxchecked").click(function ()

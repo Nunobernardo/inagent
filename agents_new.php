@@ -586,7 +586,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        agent({ id: 0, agent: <?php echo json_encode(new agent(null)); ?>});
+        agent({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, agent: <?php echo json_encode(new agent(null)); ?>});
       });
     </script>
 

@@ -42,6 +42,7 @@
         public $value;
         public $passport;
         public $passportval;
+        public $file;
 
         function __construct($obj) {
             if (isset($obj)) {
@@ -201,59 +202,6 @@
         }
     }
 
-    class agent {
-        public $id = 0;
-        public $club;
-        public $name;
-        public $firstname;
-        public $lastname;
-        public $birth;
-        public $nationality;
-        public $documents;
-        public $documentsval;
-        public $company;
-        public $contacts;
-        public $obs;
-
-        function __construct($obj) {
-            if (isset($obj)) {
-                $this->id = intval($obj["id_agent"]);
-                $this->club = $obj["id_club"];
-                $this->name = $obj["name"];
-                $this->firstname = $obj["firstname"];
-                $this->lastname = $obj["lastname"];
-                $this->birth = $obj["birth"];
-                $this->nationality = $obj["nationality"];
-                $this->documents = $obj["documents"];
-                $this->documentsval = $obj["documentsval"];
-                $this->company = $obj["company"];
-                $this->contacts = $obj["contacts"];
-                $this->obs = $obj["obs"];
-            };
-        }
-
-        public function get() {
-            return $this;
-        }
-
-        public function set($id, $club, $name, $firstname, $lastname, $birth, $nationality, $documents, $documentsval, $company, $contacts, $obs) {
-            $this->id = $id;
-            $this->club = $club;
-            $this->name = $name;
-            $this->firstname = $firstname;
-            $this->lastname = $lastname;
-            $this->birth = $birth;
-            $this->nationality = $nationality;
-            $this->documents = $documents;
-            $this->documentsval = $documentsval;
-            $this->company = $company;
-            $this->contacts = $contacts;
-            $this->obs = $obs;
-            
-            return $this;
-        }
-    }
-
     class club {
         public $id = 0;
         public $player;
@@ -267,7 +215,7 @@
         public $bonus;
         public $court;
         public $obs;
-        public $files;
+        public $file;
 
         function __construct($obj) {
             if (isset($obj)) {
@@ -283,7 +231,7 @@
                 $this->bonus = (isset($obj["bonus"])) ? $obj["bonus"] : null;
                 $this->court = (isset($obj["court"])) ? $obj["court"] : null;
                 $this->obs = (isset($obj["obs"])) ? $obj["obs"] : null;
-                $this->files = (isset($obj["files"])) ? $obj["files"] : null;
+                $this->file = (isset($obj["files"])) ? $obj["file"] : null;
             };
         }
 
@@ -291,7 +239,7 @@
             return $this;
         }
 
-        public function set($id, $club, $clubname, $player, $playername, $datestart, $dateend, $value, $clause, $bonus, $court, $obs, $files) {
+        public function set($id, $club, $clubname, $player, $playername, $datestart, $dateend, $value, $clause, $bonus, $court, $obs, $file) {
             $this->id = $id;
             $this->club = $club;
             $this->clubname = $clubname;
@@ -304,26 +252,42 @@
             $this->bonus = $bonus;
             $this->court = $court;
             $this->obs = $obs;
-            $this->files = $files;
+            $this->file = $file;
             
             return $this;
         }
     }
 
-    class mandates {
+    class mandate {
         public $id = 0;
         public $player;
+        public $playername;
+        public $agent;
+        public $agentname;
+        public $agentcompany;
+        public $club;
+        public $clubname;
+        public $country;
         public $datestart;
         public $dateend;
         public $obs;
+        public $file;
 
         function __construct($obj) {
             if (isset($obj)) {
-                $this->id = intval($obj["id_representation"]);
-                $this->player = $obj["player"];
-                $this->datestart = $obj["datestart"];
-                $this->dateend = $obj["dateend"];
-                $this->obs = $obj["obs"];
+                $this->id = (isset($obj["id_mandates"])) ? intval($obj["id_mandates"]) : null;
+                $this->player = (isset($obj["id_player"])) ? $obj["id_player"] : null;
+                $this->playername = (isset($obj["player_name"])) ? $obj["player_name"] : null;
+                $this->agent = (isset($obj["id_agent"])) ? $obj["id_agent"] : null;
+                $this->agentname = (isset($obj["agent_name"])) ? $obj["agent_name"] : null;
+                $this->agentcompany = (isset($obj["agent_company"])) ? $obj["agent_company"] : null;
+                $this->club = (isset($obj["id_club"])) ? $obj["id_club"] : null;
+                $this->clubname = (isset($obj["club_name"])) ? $obj["club_name"] : null;
+                $this->country = (isset($obj["country_name"])) ? $obj["country_name"] : null;
+                $this->datestart = (isset($obj["date_start"])) ? $obj["date_start"] : null;
+                $this->dateend = (isset($obj["date_end"])) ? $obj["date_end"] : null;
+                $this->obs = (isset($obj["obs"])) ? $obj["obs"] : null;
+                $this->file = (isset($obj["files"])) ? $obj["file"] : null;
             };
         }
 
@@ -331,12 +295,118 @@
             return $this;
         }
 
-        public function set($id, $player, $datestart, $dateend,  $obs) {
+        public function set($id, $player, $playername, $agent, $agentname, $agentcompany, $club, $clubname, $country, $datestart, $dateend,  $obs,  $file) {
             $this->id = $id;
             $this->player = $player;
+            $this->playername = $playername;
+            $this->agent = $agent;
+            $this->agentname = $agentname;
+            $this->agentcompany = $agentcompany;
+            $this->club = $club;
+            $this->clubname = $clubname;
+            $this->country = $country;
             $this->datestart = $datestart;
             $this->dateend = $dateend;
             $this->obs = $obs;
+            $this->file = $file;
+            
+            return $this;
+        }
+    }
+
+    class agent {
+        public $id = 0;
+        public $agent;
+        public $agentname;
+        public $agentcompany;
+        public $club;
+        public $clubname;
+        public $country;
+        public $contacts;
+
+        function __construct($obj) {
+            if (isset($obj)) {
+                $this->id = (isset($obj["id_agent"])) ? intval($obj["id_agent"]) : null;
+                $this->agent = (isset($obj["name"])) ? $obj["name"] : null;
+                $this->agentcompany = (isset($obj["company"])) ? $obj["company"] : null;
+                $this->club = (isset($obj["id_club"])) ? $obj["id_club"] : null;
+                $this->clubname = (isset($obj["club_name"])) ? $obj["club_name"] : null;
+                $this->country = (isset($obj["country_name"])) ? $obj["country_name"] : null;
+                $this->contacts = (isset($obj["contacts"])) ? $obj["contacts"] : null;
+            };
+        }
+
+        public function get() {
+            return $this;
+        }
+
+        public function set($id, $agent, $agentname, $agentcompany, $club, $clubname, $country, $contacts) {
+            $this->id = $id;
+            $this->agent = $agent;
+            $this->agentname = $agentname;
+            $this->agentcompany = $agentcompany;
+            $this->club = $club;
+            $this->clubname = $clubname;
+            $this->country = $country;
+            $this->contacts = $contacts;
+            
+            return $this;
+        }
+    }
+
+    class value {
+        public $id = 0;
+        public $firstname;
+        public $lastname;
+        public $value;
+
+        function __construct($obj) {
+            if (isset($obj)) {
+                $this->id = (isset($obj["id_player"])) ? intval($obj["id_player"]) : null;
+                $this->firstname = (isset($obj["first_name"])) ? $obj["first_name"] : null;
+                $this->lastname = (isset($obj["last_name"])) ? $obj["last_name"] : null;
+                $this->value = (isset($obj["value"])) ? $obj["value"] : null;
+            };
+        }
+
+        public function get() {
+            return $this;
+        }
+
+        public function set($id, $firstname, $lastname, $value) {
+            $this->id = $id;
+            $this->firstname = $firstname;
+            $this->lastname = $lastname;
+            $this->value = $value;
+            
+            return $this;
+        }
+    }
+
+    class nationality {
+        public $id = 0;
+        public $firstname;
+        public $lastname;
+        public $nationality;
+
+        function __construct($obj) {
+            if (isset($obj)) {
+                $this->id = (isset($obj["id_player"])) ? intval($obj["id_player"]) : null;
+                $this->firstname = (isset($obj["first_name"])) ? $obj["first_name"] : null;
+                $this->lastname = (isset($obj["last_name"])) ? $obj["last_name"] : null;
+                $this->nationality = (isset($obj["nationality"])) ? $obj["nationality"] : null;
+            };
+        }
+
+        public function get() {
+            return $this;
+        }
+
+        public function set($id, $firstname, $lastname, $nationality) {
+            $this->id = $id;
+            $this->firstname = $firstname;
+            $this->lastname = $lastname;
+            $this->nationality = $nationality;
             
             return $this;
         }

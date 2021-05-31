@@ -827,7 +827,6 @@
     <?php
       include('data/objects.php');
     ?>
-
     <script type="text/javascript">
       $(document).ready(function(){
         club({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, club: <?php echo json_encode(new club(null)); ?>});

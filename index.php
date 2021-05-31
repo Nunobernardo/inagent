@@ -23,6 +23,7 @@
     <link href="assets/plugins/jquery-metrojs/MetroJs.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="pages/css/pages-icons.css" rel="stylesheet" type="text/css">
     <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/controls.css" rel="stylesheet" type="text/css"/>
   </head>
   <body class="fixed-header dashboard">
     <!-- BEGIN SIDEBAR-->
@@ -396,25 +397,16 @@
                       <h2 class="text-success no-margin">Valor de mercado</h2>
                       <p class="no-margin">Mais valiosos</p>
                     </div>
-                    <h3 class="pull-right semi-bold"><sup>
-                      <small class="semi-bold">€</small>
-                    </sup> 9.00M
-                    </h3>
+                      <h3 class="pull-right semi-bold"><sup>
+                        <small class="semi-bold">€</small>
+                      </sup> 9.00M
+                      </h3>
                     <div class="clearfix"></div>
                   </div>
+
                   <div class="auto-overflow widget-11-2-table">
-                    <table class="table table-condensed table-hover">
-                      <tbody>
-                        <tr>
-                          <td class="font-montserrat all-caps fs-12 w-50">Fábio Abreu</td>
-                          <td class="text-right b-r b-dashed b-grey w-25">
-                            <span class="hint-text small">Valor</span>
-                          </td>
-                          <td class="w-25">
-                            <span class="font-montserrat fs-18">€2.00M</span>
-                          </td>
-                        </tr>
-                      </tbody>
+                    <table class="table table-hover">
+                      <tbody role="row" class="row_value"></tbody>
                     </table>
                   </div>
                 </div>
@@ -435,19 +427,10 @@
                     </h3>
                     <div class="clearfix"></div>
                   </div>
+                  
                   <div class="auto-overflow widget-11-2-table">
-                    <table class="table table-condensed table-hover">
-                      <tbody>
-                        <tr>
-                          <td class="font-montserrat all-caps fs-12 w-50">Fábio Abreu</td>
-                          <td class="text-right b-r b-dashed b-grey w-25">
-                            <span class="hint-text small">País</span>
-                          </td>
-                          <td class="w-25">
-                            <span class="font-montserrat fs-18">Portugal</span>
-                          </td>
-                        </tr>
-                      </tbody>
+                    <table class="table table-hover">
+                      <tbody role="row" class="row_nationality"></tbody>
                     </table>
                   </div>
                 </div>
@@ -713,5 +696,15 @@
     <script src="assets/js/dashboard.js" type="text/javascript"></script>
     <script src="assets/js/scripts.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS -->
+    <script src="js/toolkit.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/default.js"></script>
+
+    <script type='text/javascript'>
+      $(document).ready(function () {
+        list_value();
+        list_nationality();
+      });
+    </script>
   </body>
 </html>
