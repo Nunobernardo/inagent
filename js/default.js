@@ -61,6 +61,7 @@ function player(args) {
                 var player = me.datasource.player;
 
                 if (player.id > 0) {
+                    
                     ds.playername.val(player.name);
                     ds.playerfirstname.val(player.firstname);
                     ds.playerlastname.val(player.lastname);
@@ -1755,6 +1756,12 @@ function list_value() {
                 rows: $('.table .row_value'),
                 rowtemplate: $('<tr role="row_value" class="row_value"></tr>')
                 // withoutresults: $('.grid-without-results')
+            },
+            gridnationality: {
+                me: $('.table'),
+                rows: $('.table .row_nationality'),
+                rowtemplate: $('<tr role="row" class="row_nationality"></tr>')
+                // withoutresults: $('.grid-without-results')
             }
         },
         datasource: {
@@ -1767,48 +1774,11 @@ function list_value() {
             base: undefined,
             actions: {
                 base: undefined,
-                edit: function (list_valueid) {
+                edit: function (playerid) {
                     var me = this.base;
 
-                    controls.post(me.datasource.detailpage, { value_id: list_valueid });
+                    controls.post(me.datasource.detailpage, { player_id: playerid });
                 },
-                remove: function (valuesids) {
-                    var me = this.base;
-
-                    //[ REMOVE list_value ]
-                    if (ifUndefinedOrNull(valuesids, new Array().length > 0)) {
-                        controls.message.bind({
-                            type: 'question',
-                            message: 'Pretende remover os jogadores selecionados?',
-                            afteryes: function () {
-                                controls.ajax({
-                                    functionname: 'delete_value',
-                                    data: {
-                                        values_ids: valuesids
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-                                        controls.message.bind({
-                                            type: 'success',
-                                            message: 'Os jogadores foram removidos com sucesso',
-                                            afterok: function () {
-                                                //[ BIND list_value GRID ]
-                                                me.methods.grid.bind();
-                                            }
-                                        });
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
-                                    };
-                                }, function () {
-                                    //[ ERROR ]
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            }
-                        });
-                    };
-                }
             }, 
             grid: {
                 base: undefined,
@@ -1867,6 +1837,8 @@ function list_value() {
 
                     //[ BIND ROWS ]
                     if (datasource.length > 0) {
+                        var total = 0;
+                        
                         $.each(datasource, function (index, list_value) {
                             var row = ds.rowtemplate.clone(),
                                 actionscolumn = '<div class="actions" data="{1}">{0}</div>',
@@ -1882,6 +1854,8 @@ function list_value() {
                                 row.append(itemcolumn.format('{0} {1}'.format(list_value.firstname, list_value.lastname)));
                                 row.append(itemcolumn2);
                                 row.append(itemcolumn3.format(ifUndefinedOrNull(list_value.value, '')));
+
+                                total = total + parseFloat(list_value.value);
                             };
 
                             row.on('dblclick', function (e) {
@@ -1892,6 +1866,8 @@ function list_value() {
 
                             ds.rows.append(row);
                         });
+
+                        $('.marketTotalValue').html(total + '€');
 
                         ds.me.find('.btn-remove').on('click', function (e) {
                             var selected = new Array();
@@ -1910,6 +1886,108 @@ function list_value() {
                         });
                     };
                 },
+                nationality: {
+                    base: undefined,
+                    bind: function (parameters, after) {
+                        var me = this.base,
+                            ds = me.design.gridnationality;
+    
+                        //[ GET list_nationality ]
+                        controls.ajax({
+                            functionname: 'nationality',
+                            data: {
+                                page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                                records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                            }
+                        }, function (data) {
+                            //[ SET list_nationality LIST ]
+                            me.datasource.list_nationality = ifUndefinedOrNull(data.nationality, new Array());
+                            me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+    
+                            if (data.total > 0) {
+                                ds.me.slideDown();
+    
+                                //[ BIND ROWS ]
+                                me.methods.grid.nationality.build(me.datasource.list_nationality);
+    
+                                //[ BIND PAGER ]
+                                controls.pager.bind({
+                                    total: data.total_pages,
+                                    total_records: data.total,
+                                    current: data.current_page,
+                                    update: function (page) {
+                                        me.methods.grid.nationality.bind({ page: page });
+                                    }
+                                });
+                            } else {
+                                //[ SHOW WITHOUT RESULTS CONTENT ]
+                                ds.me.slideUp();
+                            };
+    
+                            if (!isUndefinedOrNull(after)) { after(data); };
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    }, 
+                    build: function (datasource) {
+                        var me = this.base,
+                            ds = me.design.gridnationality,
+                            datasource = me.datasource.list_nationality;
+    
+                        //[ CLEAR GRID ]
+                        ds.rows.children().remove();
+    
+                        //[ BIND ROWS ]
+    
+                        if (datasource.length > 0) {
+                            $.each(datasource, function (index, list_nationality) {
+                                var row = ds.rowtemplate.clone(),
+                                    actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                    itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
+                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Nacionalidade</span></td>',
+                                    itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
+    
+                                with (row) {
+                                    //[ SAVE list_nationality ID ]
+                                    attr('data', list_nationality.id);
+    
+                                    //[ OTHER COLUMNS ]
+                                    row.append(itemcolumn.format('{0} {1}'.format(list_nationality.firstname, list_nationality.lastname)));
+                                    row.append(itemcolumn2);
+                                    row.append(itemcolumn3.format(ifUndefinedOrNull(list_nationality.nationality, '')));
+                                };
+    
+                                row.on('dblclick', function (e) {
+                                    me.methods.actions.edit($(this).attr('data'));
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });                           
+    
+                                ds.rows.append(row);
+                            });
+    
+                            ds.me.find('.btn-remove').on('click', function (e) {
+                                var selected = new Array();
+    
+                                $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                    if($(item).is(':checked')) {
+                                        selected.push(parseInt($(item).attr('data')));
+                                    }
+                                });
+    
+                                if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                    me.methods.actions.remove(selected);
+                                };
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+                        };
+                    }
+                }
             },
         }, 
         load: function () {
@@ -1918,6 +1996,7 @@ function list_value() {
 
             //[ BIND list_value GRID ]
             me.methods.grid.bind();
+            me.methods.grid.nationality.bind();
         },
         init: function () {
             var me = this;
@@ -1928,6 +2007,7 @@ function list_value() {
             this.methods.base = this;
             this.methods.actions.base = this;
             this.methods.grid.base = this;
+            this.methods.grid.nationality.base = this;
 
             this.load();
 
@@ -1938,203 +2018,3 @@ function list_value() {
     return list_value.init();
 };
 
-function list_nationality() { 
-    var list_nationality = {
-        design: {
-            base: undefined,
-            search: $('.grid-search input'),
-            actions: {
-                me: $('.main-content-actions'),
-                add: $('.main-content-actions .add-list_nationality'),
-            },
-            grid: {
-                me: $('.table'),
-                rows: $('.table .row_nationality'),
-                rowtemplate: $('<tr role="row" class="row_nationality"></tr>')
-                // withoutresults: $('.grid-without-results')
-            }
-        },
-        datasource: {
-            base: undefined,
-            list_nationality: new Array(),
-            list_nationalityusers: new Array(),
-            total: 0
-        },
-        methods: {
-            base: undefined,
-            actions: {
-                base: undefined,
-                edit: function (list_nationalityid) {
-                    var me = this.base;
-
-                    controls.post(me.datasource.detailpage, { nationality_id: list_nationalityid });
-                },
-                remove: function (nationalitiesids) {
-                    var me = this.base;
-
-                    //[ REMOVE list_nationality ]
-                    if (ifUndefinedOrNull(nationalitiesids, new Array().length > 0)) {
-                        controls.message.bind({
-                            type: 'question',
-                            message: 'Pretende remover os jogadores selecionados?',
-                            afteryes: function () {
-                                controls.ajax({
-                                    functionname: 'delete_nationality',
-                                    data: {
-                                        nationalities_ids: nationalitiesids
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-                                        controls.message.bind({
-                                            type: 'success',
-                                            message: 'Os jogadores foram removidos com sucesso',
-                                            afterok: function () {
-                                                //[ BIND list_nationality GRID ]
-                                                me.methods.grid.bind();
-                                            }
-                                        });
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
-                                    };
-                                }, function () {
-                                    //[ ERROR ]
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            }
-                        });
-                    };
-                }
-            }, 
-            grid: {
-                base: undefined,
-                bind: function (parameters, after) {
-                    var me = this.base,
-                        ds = me.design.grid;
-
-                    //[ GET list_nationality ]
-                    controls.ajax({
-                        functionname: 'nationality',
-                        data: {
-                            page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
-                            records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
-                        }
-                    }, function (data) {
-                        //[ SET list_nationality LIST ]
-                        me.datasource.list_nationality = ifUndefinedOrNull(data.nationalities, new Array());
-                        me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
-
-                        if (data.total > 0) {
-                            ds.me.slideDown();
-
-                            //[ BIND ROWS ]
-                            me.methods.grid.build(me.datasource.list_nationality);
-
-                            //[ BIND PAGER ]
-                            controls.pager.bind({
-                                total: data.total_pages,
-                                total_records: data.total,
-                                current: data.current_page,
-                                update: function (page) {
-                                    me.methods.grid.bind({ page: page });
-                                }
-                            });
-                        } else {
-                            //[ SHOW WITHOUT RESULTS CONTENT ]
-                            ds.me.slideUp();
-                        };
-
-                        if (!isUndefinedOrNull(after)) { after(data); };
-                    }, function () {
-                        //[ ERROR ]
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    }, function () {
-                        //[ ERROR ]
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    });
-                }, 
-                build: function (datasource) {
-                    var me = this.base,
-                        ds = me.design.grid,
-                        datasource = me.datasource.list_nationality;
-
-                    //[ CLEAR GRID ]
-                    ds.rows.children().remove();
-
-                    //[ BIND ROWS ]
-
-
-                    
-                    // NAO ENTRA AQUI NAO SEI PK
-                    if (datasource.length >= 0) {
-                        $.each(datasource, function (index, list_nationality) {
-                            var row = ds.rowtemplate.clone(),
-                                actionscolumn = '<div class="actions" data="{1}">{0}</div>',
-                                itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
-                                itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Nacionalidade</span></td>',
-                                itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
-
-                            with (row) {
-                                //[ SAVE list_nationality ID ]
-                                attr('data', list_nationality.id);
-
-                                //[ OTHER COLUMNS ]
-                                row.append(itemcolumn.format('{0} {1}'.format(list_nationality.firstname, list_nationality.lastname)));
-                                row.append(itemcolumn2);
-                                row.append(itemcolumn3.format(ifUndefinedOrNull(list_nationality.nationality, '')));
-                            };
-
-                            row.on('dblclick', function (e) {
-                                me.methods.actions.edit($(this).attr('data'));
-                                e.preventDefault();
-                                e.stopPropagation();
-                            });                           
-
-                            ds.rows.append(row);
-                        });
-
-                        ds.me.find('.btn-remove').on('click', function (e) {
-                            var selected = new Array();
-
-                            $.each(ds.rows.find('.checkbox > input'), function (index, item) {
-                                if($(item).is(':checked')) {
-                                    selected.push(parseInt($(item).attr('data')));
-                                }
-                            });
-
-                            if (ifUndefinedOrNull(selected, new Array()).length > 0) {
-                                me.methods.actions.remove(selected);
-                            };
-                            e.preventDefault();
-                            e.stopPropagation();
-                        });
-                    };
-                },
-            },
-        }, 
-        load: function () {
-            var me = this,
-                ds = me.design.actions;
-
-            //[ BIND list_nationality GRID ]
-            me.methods.grid.bind();
-        },
-        init: function () {
-            var me = this;
-
-            this.design.base = this;
-            this.datasource.base = this;
-
-            this.methods.base = this;
-            this.methods.actions.base = this;
-            this.methods.grid.base = this;
-
-            this.load();
-
-            return this;
-        }
-    };
- 
-    return list_nationality.init();
-};

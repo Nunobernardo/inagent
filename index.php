@@ -397,10 +397,7 @@
                       <h2 class="text-success no-margin">Valor de mercado</h2>
                       <p class="no-margin">Mais valiosos</p>
                     </div>
-                      <h3 class="pull-right semi-bold"><sup>
-                        <small class="semi-bold">€</small>
-                      </sup> 9.00M
-                      </h3>
+                      <h3 class="marketTotalValue pull-right semi-bold"></h3>
                     <div class="clearfix"></div>
                   </div>
 
@@ -703,7 +700,7 @@
     <script type='text/javascript'>
       $(document).ready(function () {
         list_value();
-        list_nationality();
+        ///list_nationality();
       });
     </script>
   </body>

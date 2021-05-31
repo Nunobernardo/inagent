@@ -287,7 +287,7 @@
                 $this->datestart = (isset($obj["date_start"])) ? $obj["date_start"] : null;
                 $this->dateend = (isset($obj["date_end"])) ? $obj["date_end"] : null;
                 $this->obs = (isset($obj["obs"])) ? $obj["obs"] : null;
-                $this->file = (isset($obj["files"])) ? $obj["file"] : null;
+                $this->file = (isset($obj["file"])) ? $obj["file"] : null;
             };
         }
 

@@ -897,7 +897,7 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT p.first_name, p.last_name, p.value
+                $query = "SELECT p.id_player, p.first_name, p.last_name, p.value
                             FROM players p
                             LIMIT $offset, $records";
 
@@ -939,7 +939,7 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT p.first_name, p.last_name, p.nationality
+                $query = "SELECT p.id_player, p.first_name, p.last_name, p.nationality
                             FROM players p
                             LIMIT $offset, $records";
 
@@ -959,7 +959,7 @@
                 $feedback['success'] = true;
                 $feedback['nationality'] = $nationality;
                 $feedback['current_page'] = $page;
-                $feedback['detail_page'] = "players_list.php";
+                $feedback['detail_page'] = "players_new.php";
                 $feedback['total'] = $total_records;
                 $feedback['total_pages'] = $total_pages;
                 break; 

@@ -8022,7 +8022,7 @@ select.full-width + .select2-container {
   z-index: 1051;
 }
 .modal-open .select2-container {
-  z-index: 1051;
+  z-index: 1049;
 }
 .modal-open .datepicker.dropdown-menu {
   z-index: 1051 !important;
