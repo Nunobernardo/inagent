@@ -340,7 +340,6 @@
                         <th style="width:15%; text-align: center; vertical-align: middle;">Clube</th>
                         <th style="width:17%; text-align: center; vertical-align: middle;">Valor</th>
                         <th style="width:17%; text-align: center; vertical-align: middle;">Cláusala de Rescisão</th>
-                        <th style="width:17%; text-align: center; vertical-align: middle;">Documentos</th>
                       </tr>
                     </thead>
                     <tbody role="row" class="row_club" style="width:20%; text-align: center; vertical-align: middle;"></tbody>

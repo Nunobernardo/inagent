@@ -75,6 +75,7 @@ function player(args) {
                     ds.playervalue.val(player.value);
                     ds.playerpassport.val(player.passport);
                     ds.playerpassportval.val(player.passportval);
+                    $('.titlePlayer').html('Editar Jogador');
                 };
 
                 ds.saveplayer.on('click', function(){
@@ -166,7 +167,7 @@ function coach(args) {
                         //[ SET list_coach LIST ]
                         me.datasource.coach = data.coach;
 
-                        if (!isUndefinedOrNull(after)) { after(data); };
+                        if (!isUndefinedOrNull(after)) { after(); };
                     }, function () {
                         //[ ERROR ]
                         controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
@@ -176,6 +177,7 @@ function coach(args) {
                     });
                 } else {
                     me.datasource.coach = args.coach;
+                    if (!isUndefinedOrNull(after)) { after(); };
                 };
             }
         },
@@ -194,12 +196,11 @@ function coach(args) {
                     ds.coachnationality.val(coach.nationality);
                     ds.coachheight.val(coach.height);
                     ds.coachweight.val(coach.weight);
-                    //ds.coachfoot.val(coach.foot);
-                    //ds.coachposition.val(coach.position);
-                    //ds.coachclub.val(coach.clubname);
+                    //ds.coachclub.val(coach.formation);
                     ds.coachvalue.val(coach.value);
                     ds.coachpassport.val(coach.passport);
                     ds.coachpassportval.val(coach.passportval);
+                    $('.titleCoach').html('Editar Treinador');
                 };
 
                 ds.savecoach.on('click', function(){
@@ -221,7 +222,6 @@ function coach(args) {
                         weight = ds.coachweight.val();
                     };
     
-
                     controls.ajax({
                         functionname: 'insert_coach',
                         data: {
@@ -252,17 +252,179 @@ function coach(args) {
     coach.init();
 };
 
+function agent(args) {
+    var agent = {
+        design: {
+            agentname: $('.txtAgentName'),
+            agentclub: $('.txtAgentClub'),
+            agentcountry: $('.txtAgentCountry'),
+            agentfirstname: $('.txtAgentFirstName'),
+            agentlastname: $('.txtAgentLastName'),
+            agentbirth: $('.txtAgentBirth'),
+            agentnationality: $('.txtAgentNationality'),
+            agentdocuments: $('.txtAgentDocuments'),
+            agentdocumentsval: $('.txtAgentDocumentsVal'),
+            agentcompany: $('.txtAgentCompany'),
+            agentcontacts: $('.txtAgentContacts'),
+            agentobs: $('.txtAgentObs'),
+            saveagent: $('.btnSaveAgent')
+        },
+        datasource: {
+            base: undefined,
+            id: ifUndefinedOrNull(args.data.agent_id, 0),
+            agent: undefined
+        },
+        methods: {
+            base: undefined,
+            getagent: function (after) {
+                var me = this.base;
+
+                //[ GET agent ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.ajax({
+                        functionname: 'agent',
+                        data: {
+                            agent_id: ifUndefinedOrNull(me.datasource.id, 0)
+                        }
+                    }, function (data) {
+                        //[ SET list_agent LIST ]
+                        me.datasource.agent = data.agent;
+
+                        if (!isUndefinedOrNull(after)) { after(); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                } else {
+                    me.datasource.agent = args.agent;
+                    if (!isUndefinedOrNull(after)) { after(); };
+                };
+            }
+        },
+        load: function() {
+            var me = this,
+                ds = me.design;            
+
+            me.methods.getagent(function(){
+                var agent = me.datasource.agent;
+
+                if (agent.id > 0) {
+                    ds.agentname.val(agent.name);
+                    ds.agentclub.val(agent.clubname);
+                    ds.agentcountry.val(agent.country);
+                    ds.agentfirstname.val(agent.firstname);
+                    ds.agentlastname.val(agent.lastname);
+                    ds.agentbirth.val(agent.birth);
+                    ds.agentnationality.val(agent.nationality);
+                    ds.agentdocuments.val(agent.passport);
+                    ds.agentdocumentsval.val(agent.passportval);
+                    ds.agentcompany.val(agent.agentcompany);
+                    ds.agentcontacts.val(agent.contacts);
+                    ds.agentobs.val(agent.obs);
+                };
+
+                ds.saveagent.on('click', function(){
+                    var agent = me.datasource.agent;                   
+
+                    with(agent) {
+                        name = ds.agentname.val();
+                        club = ds.agentclub.val();
+                        firstname = ds.agentfirstname.val();
+                        lastname = ds.agentlastname.val();
+                        birth = ds.agentbirth.val();
+                        nationality = ds.agentnationality.val();
+                        passport = ds.agentdocuments.val();
+                        passportval = ds.agentdocumentsval.val();
+                        agentcompany = ds.agentcompany.val();
+                        contacts = ds.agentcontacts.val();
+                        obs = ds.agentobs.val();
+                    };
+
+                    controls.ajax({
+                        functionname: 'insert_agent',
+                        data: {
+                            agent: agent
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                            window.open('agents_list.php', '_self');
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                });
+            });
+        },
+        init: function() {
+            var me = this;
+            me.datasource.base = this;
+            me.methods.base = this;
+            me.load();
+        }
+    };
+    agent.init();
+};
+
 function representation(args) {
     var representation = {
         design: {
             representationplayer: $('.div.ddlRepresentationPlayer'),
+            representationplayername: $('.txtPlayerName'),
+            representationplayerfirstname: $('.txtPlayerFirstName'),
+            representationplayerlastname: $('.txtPlayerLastName'),
+            representationplayerbirth: $('.txtPlayerBirth'),
+            representationplayernationality: $('.txtPlayerNationality'),
+            representationplayerheight: $('.txtPlayerHeight'),
+            representationplayerweight: $('.txtPlayerWeight'),
+            representationplayerclub: $('.txtPalyerClub'),
+            representationplayervalue: $('.txtPLayerValue'),
+            representationplayerpassport: $('.txtPlayerPassport'),
+            representationplayerpassportval: $('.txtPlayerPassportVal'),
+
+            representationplayernamenew: $('.txtPlayerNameNew'),
+            representationplayerfirstnamenew: $('.txtPlayerFirstNameNew'),
+            representationplayerlastnamenew: $('.txtPlayerLastNameNew'),
+            representationplayerbirthnew: $('.txtPlayerBirthNew'),
+            representationplayernationalitynew: $('.txtPlayerNationalityNew'),
+            representationplayerheightnew: $('.txtPlayerHeightNew'),
+            representationplayerweightnew: $('.txtPlayerWeightNew'),
+            representationplayerclubnew: $('.txtPalyerClubNew'),
+            representationplayervaluenew: $('.txtPLayerValueNew'),
+            representationplayerpassportnew: $('.txtPlayerPassportNew'),
+            representationplayerpassportvalnew: $('.txtPlayerPassportValNew'),
+
+
+            representationplayernameedit: $('.txtPlayerNameEdit'),
+            representationplayerfirstnameedit: $('.txtPlayerFirstNameEdit'),
+            representationplayerlastnameedit: $('.txtPlayerLastNameEdit'),
+            representationplayerbirthedit: $('.txtPlayerBirthEdit'),
+            representationplayernationalityedit: $('.txtPlayerNationalityEdit'),
+            representationplayerheightedit: $('.txtPlayerHeightEdit'),
+            representationplayerweightedit: $('.txtPlayerWeightEdit'),
+            representationplayerclubedit: $('.txtPalyerClubEdit'),
+            representationplayervalueedit: $('.txtPLayerValueEdit'),
+            representationplayerpassportedit: $('.txtPlayerPassportEdit'),
+            representationplayerpassportvaledit: $('.txtPlayerPassportValEdit'),
+
             // representationchild: $('.txtrepresentationchild'),
             representationfather: $('.txtRepresentationFather'),
             representationmother: $('.txtRepresentationMother'),
             representationdatestart: $('.txtRepresentationDateStart'),
             representationdateend: $('.txtRepresentationDateEnd'),
             representationcommission: $('.txtRepresentationCommission'),
-            saverepresentation: $('.btnSaveRepresentation')
+
+            saverepresentation: $('.btnSaveRepresentation'),
+            saveeditrepresentation: $('.btnSavePlayerEdit'),
+            addnewplayer: $('.addNewPlayer'),
+            editplayer: $('.editPlayer')
         },
         datasource: {
             base: undefined,
@@ -285,7 +447,7 @@ function representation(args) {
                         //[ SET list_representation LIST ]
                         me.datasource.representation = data.representation;
 
-                        if (!isUndefinedOrNull(after)) { after(data); };
+                        if (!isUndefinedOrNull(after)) { after(); };
                     }, function () {
                         //[ ERROR ]
                         controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
@@ -295,6 +457,7 @@ function representation(args) {
                     });
                 } else {
                     me.datasource.representation = args.representation;
+                    if (!isUndefinedOrNull(after)) { after(); };
                 };
             }
         },
@@ -305,10 +468,108 @@ function representation(args) {
             me.methods.getrepresentation(function(){
                 var representation = me.datasource.representation;
 
-                // if (representation.id > 0) {
-                //     ds.representationfirstname.val(representation.firstname);
-                //     ds.representationlastname.val(representation.lastname);
-                // };
+                if (representation.id > 0) {
+                    ds.representationplayer.val(representation.player);
+                    ds.representationplayername.val(representation.name);
+                    ds.representationplayerfirstname.val(representation.firstname);
+                    ds.representationplayerlastname.val(representation.lastname);
+                    ds.representationplayerbirth.val(representation.birth);
+                    ds.representationplayernationality.val(representation.nationality);
+                    ds.representationplayerheight.val(representation.height);
+                    ds.representationplayerweight.val(representation.weight);
+                    ds.representationplayerclub.val(representation.clubname);
+                    ds.representationplayervalue.val(representation.value);
+                    ds.representationplayerpassport.val(representation.passport);
+                    ds.representationplayerpassportval.val(representation.passportval);
+                    
+                    ds.representationfather.val(representation.father);
+                    ds.representationmother.val(representation.mother);
+                    ds.representationdatestart.val(representation.datestart);
+                    ds.representationdateend.val(representation.dateend);
+                    ds.representationcommission.val(representation.commission);
+                    $('.titleRepresentation').html('Editar contrato de representação');
+
+                    ds.addnewplayer.remove();
+                } else {
+                    ds.addnewplayer.on('click', function(){
+                        ds.representationplayerfirstnamenew.val('');
+                        ds.representationplayerlastnamenew.val('');
+                        ds.representationplayerbirthnew.val('');
+                        ds.representationplayernationalitynew.val('');
+                        ds.representationplayerheightnew.val('');
+                        ds.representationplayerweightnew.val('');
+                        ds.representationplayerclubnew.val('');
+                        ds.representationplayervaluenew.val('');
+                        ds.representationplayerpassportnew.val('');
+                        ds.representationplayerpassportvalnew.val('');
+                    });
+                };               
+
+                ds.editplayer.on('click', function(){
+                    ds.representationplayernameedit.val(representation.name);
+                    ds.representationplayerfirstnameedit.val(representation.firstname);
+                    ds.representationplayerlastnameedit.val(representation.lastname);
+                    ds.representationplayerbirthedit.val(representation.birth);
+                    ds.representationplayernationalityedit.val(representation.nationality);
+                    ds.representationplayerheightedit.val(representation.height);
+                    ds.representationplayerweightedit.val(representation.weight);
+                    ds.representationplayerclubedit.val(representation.clubname);
+                    ds.representationplayervalueedit.val(representation.value);
+                    ds.representationplayerpassportedit.val(representation.passport);
+                    ds.representationplayerpassportvaledit.val(representation.passportval);
+                });
+
+                ds.saveeditrepresentation.on('click', function(){
+                    var player = args.player;       
+                    
+                    with(player) {
+                        id = representation.player;
+                        name = ds.representationplayernameedit.val();
+                        firstname = ds.representationplayerfirstnameedit.val();
+                        lastname = ds.representationplayerlastnameedit.val();
+                        birth = ds.representationplayerbirthedit.val();
+                        nationality = ds.representationplayernationalityedit.val();
+                        height = ds.representationplayerheightedit.val();
+                        weight = ds.representationplayerweightedit.val();
+                        value = ds.representationplayervalueedit.val();
+                        passport = ds.representationplayerpassportedit.val();
+                        passportval = ds.representationplayerpassportvaledit.val();
+                    };
+
+                    controls.ajax({
+                        functionname: 'update_player',
+                        data: {
+                            player: player
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            //MOSTRAR DADOS ALTERADOS
+                            // ds.representationplayername.val(player.name);
+                            // ds.representationplayerfirstname.val(representation.firstnameedit);
+                            // ds.representationplayerlastname.val(representation.lastnameedit);
+                            // ds.representationplayerbirth.val(representation.birthedit);
+                            // ds.representationplayernationality.val(representation.nationalityedit);
+                            // ds.representationplayerheight.val(representation.heightedit);
+                            // ds.representationplayerweight.val(representation.weightedit);
+                            // ds.representationplayerclub.val(representation.clubnameedit);
+                            // ds.representationplayervalue.val(representation.valueedit);
+                            // ds.representationplayerpassport.val(representation.passportedit);
+                            // ds.representationplayerpassportval.val(representation.passportvaledit);
+                            
+                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                            $('body').trigger('click');
+                            
+                            //window.open('players_list.php', '_self');
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                });  
+
 
                 ds.saverepresentation.on('click', function(){
                     var representation = me.datasource.representation;                   
@@ -352,82 +613,23 @@ function representation(args) {
     representation.init();
 };
 
-function agent(args) {
-    var agent = {
-        design: {
-            agentname: $('.txtAgentName'),
-            agentclub: $('.txtAgentClub'),
-            agentfirstname: $('.txtAgentFirstName'),
-            agentlastname: $('.txtAgentLastName'),
-            agentbirth: $('.txtAgentBirth'),
-            agentnationality: $('.txtAgentNationality'),
-            agentdocuments: $('.txtAgentDocuments'),
-            agentdocumentsval: $('.txtAgentDocumentsVal'),
-            agentcompany: $('.txtAgentCompany'),
-            agentcontacts: $('.txtAgentContacts'),
-            agentobs: $('.txtAgentObs'),
-            saveagent: $('.btnSaveAgent')
-        },
-        datasource: {
-            base: undefined,
-            id: args.id,
-            agent: args.agent
-        },
-        load: function() {
-            var me = this,
-                ds = me.design;            
-
-            ds.saveagent.on('click', function(){
-                var agent = me.datasource.agent;
-
-                with(agent) {
-                    name = ds.agentname.val();
-                    club = ds.agentclub.val();
-                    firstname = ds.agentfirstname.val();
-                    lastname = ds.agentlastname.val();
-                    birth = ds.agentbirth.val();
-                    nationality = ds.agentnationality.val();
-                    documents = ds.agentdocuments.val();
-                    documentsval = ds.agentdocumentsval.val();
-                    company = ds.agentcompany.val();
-                    contacts = ds.agentcontacts.val();
-                    obs = ds.agentobs.val();
-                };
-
-                controls.ajax({
-                    functionname: 'insert_agent',
-                    data: {
-                        agent: agent
-                    }
-                }, function (data) {
-                    if (ifUndefinedOrNull(data.success, false)) {
-                        controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                        window.open('agents_list.php', '_self') ;
-                    } else {
-                        controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
-                    };
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                });
-            });
-        },
-        init: function() {
-            var me = this;
-
-            me.datasource.base = this;
-
-            me.load();
-        }
-    };
-    agent.init();
-};
-
 function club(args) {
     var club = {
         design: {
+            clubplayername: $('.txtPlayerName'),
+            clubplayerfirstname: $('.txtPlayerFirstName'),
+            clubplayerlastname: $('.txtPlayerLastName'),
+            clubplayerbirth: $('.txtPlayerBirth'),
+            clubplayernationality: $('.txtPlayerNationality'),
+            clubplayerheight: $('.txtPlayerHeight'),
+            clubplayerweight: $('.txtPlayerWeight'),
+            clubplayerclub: $('.txtPalyerClub'),
+            clubplayervalue: $('.txtPLayerValue'),
+            clubplayerpassport: $('.txtPlayerPassport'),
+            clubplayerpassportval: $('.txtPlayerPassportVal'),
+
             clubplayer: $('div.ddlCclubPlayer'),
+            clubclub: $('.txtCclub'),
             clubdatestart: $('.txtCclubDateStart'),
             clubdateend: $('.txtCclubDateEnd'),
             clubvalue: $('.txtCclubValue'),
@@ -439,49 +641,109 @@ function club(args) {
         },
         datasource: {
             base: undefined,
-            id: args.id,
-            club: args.club
+            id: ifUndefinedOrNull(args.data.club_id, 0),
+            club: undefined
+        },
+        methods: {
+            base: undefined,
+            getclub: function (after) {
+                var me = this.base;
+
+                //[ GET club ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.ajax({
+                        functionname: 'club',
+                        data: {
+                            club_id: ifUndefinedOrNull(me.datasource.id, 0)
+                        }
+                    }, function (data) {
+                        //[ SET list_club LIST ]
+                        me.datasource.club = data.club;
+
+                        if (!isUndefinedOrNull(after)) { after(); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                } else {
+                    me.datasource.club = args.club;
+                    if (!isUndefinedOrNull(after)) { after(); };
+                };
+            }
         },
         load: function() {
             var me = this,
-                ds = me.design;            
-
-            ds.saveclub.on('click', function(){
+                ds = me.design;     
+                
+            me.methods.getclub(function(){
                 var club = me.datasource.club;
 
-                with(club) {
-                    player = ds.clubplayer.find('span.cs-placeholder').html();
-                    datestart = ds.clubdatestart.val();
-                    dateend = ds.clubdateend.val();
-                    value = ds.clubvalue.val();
-                    clause = ds.clubclause.val();
-                    bonus = ds.clubbonus.val();
-                    court = ds.clubcourt.val();
-                    obs = ds.clubobs.val();
+                if (club.id > 0) {
+                    ds.clubplayername.val(club.name);
+                    ds.clubplayerfirstname.val(club.firstname);
+                    ds.clubplayerlastname.val(club.lastname);
+                    ds.clubplayerbirth.val(club.birth);
+                    ds.clubplayernationality.val(club.nationality);
+                    ds.clubplayerheight.val(club.height);
+                    ds.clubplayerweight.val(club.weight);
+                    ds.clubplayerclub.val(club.clubname);
+                    ds.clubplayervalue.val(club.valueplayer);
+                    ds.clubplayerpassport.val(club.passport);
+                    ds.clubplayerpassportval.val(club.passportval);
+
+                    ds.clubplayer.val(club.name);
+                    ds.clubclub.val(club.clubname);
+                    ds.clubdatestart.val(club.datestart);
+                    ds.clubdateend.val(club.dateend);
+                    ds.clubvalue.val(club.value);
+                    ds.clubclause.val(club.clause);
+                    ds.clubbonus.val(club.bonus);
+                    ds.clubcourt.val(club.court);
+                    ds.clubobs.val(club.obs);
+                    $('.titleRepresentation').html('Editar contrato de representação');
                 };
 
-                controls.ajax({
-                    functionname: 'insert_club',
-                    data: {
-                        club: club
-                    }
-                }, function (data) {
-                    if (ifUndefinedOrNull(data.success, false)) {
-                        controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                        window.open('clubs_list.php', '_self');
-                    } else {
-                        controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                ds.saveclub.on('click', function(){
+                    var club = me.datasource.club;
+
+                    with(club) {
+                        player = ds.clubplayer.find('span.cs-placeholder').html();
+                        datestart = ds.clubdatestart.val();
+                        dateend = ds.clubdateend.val();
+                        value = ds.clubvalue.val();
+                        clause = ds.clubclause.val();
+                        bonus = ds.clubbonus.val();
+                        court = ds.clubcourt.val();
+                        obs = ds.clubobs.val();
                     };
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+
+                    controls.ajax({
+                        functionname: 'insert_club',
+                        data: {
+                            club: club
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                            window.open('clubs_list.php', '_self');
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
                 });
             });
         },
         init: function() {
             var me = this;
             me.datasource.base = this;
+            me.methods.base = this;
             me.load();
         }
     };
@@ -491,55 +753,128 @@ function club(args) {
 function mandates(args) {
     var mandates = {
         design: {
+            mandatesplayername: $('.txtPlayerName'),
+            mandatesplayerfirstname: $('.txtPlayerFirstName'),
+            mandatesplayerlastname: $('.txtPlayerLastName'),
+            mandatesplayerbirth: $('.txtPlayerBirth'),
+            mandatesplayernationality: $('.txtPlayerNationality'),
+            mandatesplayerheight: $('.txtPlayerHeight'),
+            mandatesplayerweight: $('.txtPlayerWeight'),
+            mandatesplayerclub: $('.txtPalyerClub'),
+            mandatesplayervalue: $('.txtPLayerValue'),
+            mandatesplayerpassport: $('.txtPlayerPassport'),
+            mandatesplayerpassportval: $('.txtPlayerPassportVal'),
+
             mandatesplayer: $('div.ddlMandatesPlayer'),
             mandatesagent: $('.ddlMandatesAgent'),
             mandatesdatestart: $('.txtMandatesDateStart'),
             mandatesdateend: $('.txtMandatesDateEnd'),
+            mandatesdateend: $('.txtmandatesCompany'),
+            mandatesdateend: $('.txtmandatesClub'),
+            mandatesdateend: $('.txtmandatesCountry'),
             mandatesobs: $('.txtMandatesObs'),
             savemandates: $('.btnSaveMandates')
         },
         datasource: {
             base: undefined,
-            id: args.id,
-            mandates: args.mandates
+            id: ifUndefinedOrNull(args.data.mandates_id, 0),
+            mandates: undefined
+        },
+        methods: {
+            base: undefined,
+            getmandates: function (after) {
+                var me = this.base;
+
+                //[ GET mandates ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.ajax({
+                        functionname: 'mandate',
+                        data: {
+                            mandates_id: ifUndefinedOrNull(me.datasource.id, 0)
+                        }
+                    }, function (data) {
+                        //[ SET list_mandates LIST ]
+                        me.datasource.mandates = data.mandate;
+
+                        if (!isUndefinedOrNull(after)) { after(); };
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        //[ ERROR ]
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                } else {
+                    me.datasource.mandates = args.mandates;
+                    if (!isUndefinedOrNull(after)) { after(); };
+                };
+            }
         },
         load: function() {
             var me = this,
-                ds = me.design;            
-
-            ds.savemandates.on('click', function(){
+                ds = me.design;  
+                
+            me.methods.getmandates(function(){
                 var mandates = me.datasource.mandates;
 
-                with(mandates) {
-                    player = ds.mandatesplayer.find('span.cs-placeholder').html();
-                    agent = ds.mandatesagent.find('span.cs-placeholder').html();
-                    datestart = ds.mandatesdatestart.val();
-                    dateend = ds.mandatesdateend.val();
-                    obs = ds.mandatesobs.val();
+                if (mandates.id > 0) {
+                    ds.mandatesplayer.val(mandates.player);
+                    ds.mandatesplayername.val(mandates.name);
+                    ds.mandatesplayerfirstname.val(mandates.firstname);
+                    ds.mandatesplayerlastname.val(mandates.lastname);
+                    ds.mandatesplayerbirth.val(mandates.birth);
+                    ds.mandatesplayernationality.val(mandates.nationality);
+                    ds.mandatesplayerheight.val(mandates.height);
+                    ds.mandatesplayerweight.val(mandates.weight);
+                    ds.mandatesplayerclub.val(mandates.clubname);
+                    ds.mandatesplayervalue.val(mandates.value);
+                    ds.mandatesplayerpassport.val(mandates.passport);
+                    ds.mandatesplayerpassportval.val(mandates.passportval);
+                    $('.titlePlayer').html('Editar Mandato');
+
+                    ds.mandatesdatestart.val(mandates.datestart);
+                    ds.mandatesdatestart.val(mandates.dateend);
+                    ds.mandatesdatestart.val(mandates.agentcompany);
+                    ds.mandatesdatestart.val(mandates.agentclub);
+                    ds.mandatesdatestart.val(mandates.agentcountry);
+                    ds.mandatesdatestart.val(mandates.obs);
                 };
 
-                controls.ajax({
-                    functionname: 'insert_mandates',
-                    data: {
-                        mandates: mandates
-                    }
-                }, function (data) {
-                    if (ifUndefinedOrNull(data.success, false)) {
-                        controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                        window.open('mandates_list.php', '_self');
-                    } else {
-                        controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                ds.savemandates.on('click', function(){
+                    var mandates = me.datasource.mandates;
+
+                    with(mandates) {
+                        player = ds.mandatesplayer.find('span.cs-placeholder').html();
+                        agent = ds.mandatesagent.find('span.cs-placeholder').html();
+                        datestart = ds.mandatesdatestart.val();
+                        dateend = ds.mandatesdateend.val();
+                        obs = ds.mandatesobs.val();
                     };
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                }, function () {
-                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+
+                    controls.ajax({
+                        functionname: 'insert_mandates',
+                        data: {
+                            mandates: mandates
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                            window.open('mandates_list.php', '_self');
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
                 });
             });
         },
         init: function() {
             var me = this;
             me.datasource.base = this;
+            me.methods.base = this;
             me.load();
         }
     };
@@ -1280,13 +1615,12 @@ function list_club() {
 
                                 //[ OTHER COLUMNS ]
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckclub{0}" data="{0}"><label for="ckclub{0}" class="no-padding no-margin"></label></div>'.format(list_club.id)));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.playername, '')));
+                                row.append(itemcolumn.format('{0} {1}'.format(list_club.firstname, list_club.lastname)));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_club.datestart, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_club.dateend, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_club.clubname, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_club.value, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_club.clause, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_club.file, '')));
                             };
 
                             row.on('dblclick', function (e) {
@@ -1372,7 +1706,7 @@ function list_mandate() {
                 edit: function (list_mandateid) {
                     var me = this.base;
 
-                    controls.post(me.datasource.detailpage, { mandate_id: list_mandateid });
+                    controls.post(me.datasource.detailpage, { mandates_id: list_mandateid });
                 },
                 remove: function (mandatesids) {
                     var me = this.base;
@@ -1480,14 +1814,13 @@ function list_mandate() {
 
                                 //[ OTHER COLUMNS ]
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckmandate{0}" data="{0}"><label for="ckmandate{0}" class="no-padding no-margin"></label></div>'.format(list_mandate.id)));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.playername, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentname, '')));
+                                row.append(itemcolumn.format('{0} {1}'.format(list_mandate.playerfirstname, list_mandate.playerlastname)));
+                                row.append(itemcolumn.format('{0} {1}'.format(list_mandate.agentfirstname, list_mandate.agentlastname)));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentcompany, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.clubname, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.country, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentclubname, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentcountry, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.datestart, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.dateend, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.file, '')));
                             };
 
                             row.on('dblclick', function (e) {
@@ -1681,7 +2014,7 @@ function list_agent() {
 
                                 //[ OTHER COLUMNS ]
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckagent{0}" data="{0}"><label for="ckagent{0}" class="no-padding no-margin"></label></div>'.format(list_agent.id)));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.agent, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.name, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.agentcompany, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.clubname, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.country, '')));
@@ -1742,7 +2075,7 @@ function list_agent() {
     return list_agent.init();
 };
 
-function list_value() { 
+function list_index() { 
     var list_value = {
         design: {
             base: undefined,
@@ -1761,6 +2094,30 @@ function list_value() {
                 me: $('.table'),
                 rows: $('.table .row_nationality'),
                 rowtemplate: $('<tr role="row" class="row_nationality"></tr>')
+                // withoutresults: $('.grid-without-results')
+            },
+            gridclubs_index: {
+                me: $('.table'),
+                rows: $('.table .row_clubs_index'),
+                rowtemplate: $('<tr role="row" class="row_clubs_index"></tr>')
+                // withoutresults: $('.grid-without-results')
+            },
+            gridbirth: {
+                me: $('.table'),
+                rows: $('.table .row_birth'),
+                rowtemplate: $('<tr role="row" class="row_birth"></tr>')
+                // withoutresults: $('.grid-without-results')
+            },
+            gridleague: {
+                me: $('.table'),
+                rows: $('.table .row_league'),
+                rowtemplate: $('<tr role="row" class="row_league"></tr>')
+                // withoutresults: $('.grid-without-results')
+            },
+            gridposition: {
+                me: $('.table'),
+                rows: $('.table .row_position'),
+                rowtemplate: $('<tr role="row" class="row_position"></tr>')
                 // withoutresults: $('.grid-without-results')
             }
         },
@@ -1944,6 +2301,8 @@ function list_value() {
                         //[ BIND ROWS ]
     
                         if (datasource.length > 0) {
+                            var total = datasource.SingleFieldDistinct('nationality').length;
+
                             $.each(datasource, function (index, list_nationality) {
                                 var row = ds.rowtemplate.clone(),
                                     actionscolumn = '<div class="actions" data="{1}">{0}</div>',
@@ -1959,6 +2318,218 @@ function list_value() {
                                     row.append(itemcolumn.format('{0} {1}'.format(list_nationality.firstname, list_nationality.lastname)));
                                     row.append(itemcolumn2);
                                     row.append(itemcolumn3.format(ifUndefinedOrNull(list_nationality.nationality, '')));
+                                };
+    
+                                row.on('dblclick', function (e) {
+                                    me.methods.actions.edit($(this).attr('data'));
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });                           
+    
+                                ds.rows.append(row);
+                            });
+
+                            $('.marketTotalNationality').html(total + ' países');
+    
+                            ds.me.find('.btn-remove').on('click', function (e) {
+                                var selected = new Array();
+    
+                                $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                    if($(item).is(':checked')) {
+                                        selected.push(parseInt($(item).attr('data')));
+                                    }
+                                });
+    
+                                if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                    me.methods.actions.remove(selected);
+                                };
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+                        };
+                    }
+                },
+                clubs_index: {
+                    base: undefined,
+                    bind: function (parameters, after) {
+                        var me = this.base,
+                            ds = me.design.gridclubs_index;
+    
+                        //[ GET list_clubs_index ]
+                        controls.ajax({
+                            functionname: 'clubs_index',
+                            data: {
+                                page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                                records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                            }
+                        }, function (data) {
+                            //[ SET list_clubs_index LIST ]
+                            me.datasource.list_clubs_index = ifUndefinedOrNull(data.clubs_index, new Array());
+                            me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+    
+                            if (data.total > 0) {
+                                ds.me.slideDown();
+    
+                                //[ BIND ROWS ]
+                                me.methods.grid.clubs_index.build(me.datasource.list_clubs_index);
+    
+                                //[ BIND PAGER ]
+                                controls.pager.bind({
+                                    total: data.total_pages,
+                                    total_records: data.total,
+                                    current: data.current_page,
+                                    update: function (page) {
+                                        me.methods.grid.clubs_index.bind({ page: page });
+                                    }
+                                });
+                            } else {
+                                //[ SHOW WITHOUT RESULTS CONTENT ]
+                                ds.me.slideUp();
+                            };
+    
+                            if (!isUndefinedOrNull(after)) { after(data); };
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    }, 
+                    build: function (datasource) {
+                        var me = this.base,
+                            ds = me.design.gridclubs_index,
+                            datasource = me.datasource.list_clubs_index;
+    
+                        //[ CLEAR GRID ]
+                        ds.rows.children().remove();
+    
+                        //[ BIND ROWS ]
+    
+                        if (datasource.length > 0) {
+                            var total = 0;
+
+                            $.each(datasource, function (index, list_clubs_index) {
+                                var row = ds.rowtemplate.clone(),
+                                    actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                    itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
+                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Total</span></td>',
+                                    itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
+    
+                                with (row) {
+                                    //[ SAVE list_clubs_index ID ]
+                                    attr('data', list_clubs_index.id);
+    
+                                    //[ OTHER COLUMNS ]
+                                    row.append(itemcolumn.format(ifUndefinedOrNull(list_clubs_index.clubname, '')));
+                                    row.append(itemcolumn2);
+                                    row.append(itemcolumn3.format(ifUndefinedOrNull(list_clubs_index.count, '')));
+
+                                    total = total +1;
+                                };
+    
+                                row.on('dblclick', function (e) {
+                                    me.methods.actions.edit($(this).attr('data'));
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });                           
+                                
+                                ds.rows.append(row);
+                            });
+
+                            $('.marketTotalClubs').html(total + ' clubes');
+    
+                            ds.me.find('.btn-remove').on('click', function (e) {
+                                var selected = new Array();
+    
+                                $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                    if($(item).is(':checked')) {
+                                        selected.push(parseInt($(item).attr('data')));
+                                    }
+                                });
+    
+                                if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                    me.methods.actions.remove(selected);
+                                };
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+                        };
+                    }
+                },
+                birth: {
+                    base: undefined,
+                    bind: function (parameters, after) {
+                        var me = this.base,
+                            ds = me.design.gridbirth;
+    
+                        //[ GET list_birth ]
+                        controls.ajax({
+                            functionname: 'birth',
+                            data: {
+                                page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                                records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                            }
+                        }, function (data) {
+                            //[ SET list_birth LIST ]
+                            me.datasource.list_birth = ifUndefinedOrNull(data.birth, new Array());
+                            me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+    
+                            if (data.total > 0) {
+                                ds.me.slideDown();
+    
+                                //[ BIND ROWS ]
+                                me.methods.grid.birth.build(me.datasource.list_birth);
+    
+                                //[ BIND PAGER ]
+                                controls.pager.bind({
+                                    total: data.total_pages,
+                                    total_records: data.total,
+                                    current: data.current_page,
+                                    update: function (page) {
+                                        me.methods.grid.birth.bind({ page: page });
+                                    }
+                                });
+                            } else {
+                                //[ SHOW WITHOUT RESULTS CONTENT ]
+                                ds.me.slideUp();
+                            };
+    
+                            if (!isUndefinedOrNull(after)) { after(data); };
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    }, 
+                    build: function (datasource) {
+                        var me = this.base,
+                            ds = me.design.gridbirth,
+                            datasource = me.datasource.list_birth;
+    
+                        //[ CLEAR GRID ]
+                        ds.rows.children().remove();
+    
+                        //[ BIND ROWS ]
+    
+                        if (datasource.length > 0) {
+                            $.each(datasource, function (index, list_birth) {
+                                var row = ds.rowtemplate.clone(),
+                                    actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                    itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
+                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Data</span></td>',
+                                    itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
+    
+                                with (row) {
+                                    //[ SAVE list_birth ID ]
+                                    attr('data', list_birth.id);
+    
+                                    //[ OTHER COLUMNS ]
+                                    row.append(itemcolumn.format('{0} {1}'.format(list_birth.firstname, list_birth.lastname)));
+                                    row.append(itemcolumn2);
+                                    row.append(itemcolumn3.format(ifUndefinedOrNull(list_birth.birth, '')));
                                 };
     
                                 row.on('dblclick', function (e) {
@@ -1987,6 +2558,222 @@ function list_value() {
                             });
                         };
                     }
+                },
+                league: {
+                    base: undefined,
+                    bind: function (parameters, after) {
+                        var me = this.base,
+                            ds = me.design.gridleague;
+    
+                        //[ GET list_league ]
+                        controls.ajax({
+                            functionname: 'league',
+                            data: {
+                                page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                                records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                            }
+                        }, function (data) {
+                            //[ SET list_league LIST ]
+                            me.datasource.list_league = ifUndefinedOrNull(data.league, new Array());
+                            me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+    
+                            if (data.total > 0) {
+                                ds.me.slideDown();
+    
+                                //[ BIND ROWS ]
+                                me.methods.grid.league.build(me.datasource.list_league);
+    
+                                //[ BIND PAGER ]
+                                controls.pager.bind({
+                                    total: data.total_pages,
+                                    total_records: data.total,
+                                    current: data.current_page,
+                                    update: function (page) {
+                                        me.methods.grid.league.bind({ page: page });
+                                    }
+                                });
+                            } else {
+                                //[ SHOW WITHOUT RESULTS CONTENT ]
+                                ds.me.slideUp();
+                            };
+    
+                            if (!isUndefinedOrNull(after)) { after(data); };
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    }, 
+                    build: function (datasource) {
+                        var me = this.base,
+                            ds = me.design.gridleague,
+                            datasource = me.datasource.list_league;
+    
+                        //[ CLEAR GRID ]
+                        ds.rows.children().remove();
+    
+                        //[ BIND ROWS ]
+    
+                        if (datasource.length > 0) {
+                            var total = 0;
+
+                            $.each(datasource, function (index, list_league) {
+                                var row = ds.rowtemplate.clone(),
+                                    actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                    itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
+                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Ligas</span></td>',
+                                    itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
+    
+                                with (row) {
+                                    //[ SAVE list_league ID ]
+                                    attr('data', list_league.id);
+    
+                                    //[ OTHER COLUMNS ]
+                                    row.append(itemcolumn.format(ifUndefinedOrNull(list_league.league, '')));
+                                    row.append(itemcolumn2);
+                                    row.append(itemcolumn3.format(ifUndefinedOrNull(list_league.count, '')));
+
+                                    total = total +1;
+                                };
+    
+                                row.on('dblclick', function (e) {
+                                    me.methods.actions.edit($(this).attr('data'));
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });                           
+    
+                                ds.rows.append(row);
+                            });
+
+                            $('.marketTotalLeague').html(total + ' ligas');
+    
+                            ds.me.find('.btn-remove').on('click', function (e) {
+                                var selected = new Array();
+    
+                                $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                    if($(item).is(':checked')) {
+                                        selected.push(parseInt($(item).attr('data')));
+                                    }
+                                });
+    
+                                if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                    me.methods.actions.remove(selected);
+                                };
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+                        };
+                    }
+                },
+                position: {
+                    base: undefined,
+                    bind: function (parameters, after) {
+                        var me = this.base,
+                            ds = me.design.gridposition;
+    
+                        //[ GET list_position ]
+                        controls.ajax({
+                            functionname: 'position',
+                            data: {
+                                page: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.page, 1) : 1,
+                                records: (!isUndefinedOrNull(parameters)) ? ifUndefinedOrNull(parameters.records, 10) : 10
+                            }
+                        }, function (data) {
+                            //[ SET list_position LIST ]
+                            me.datasource.list_position = ifUndefinedOrNull(data.position, new Array());
+                            me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+    
+                            if (data.total > 0) {
+                                ds.me.slideDown();
+    
+                                //[ BIND ROWS ]
+                                me.methods.grid.position.build(me.datasource.list_position);
+    
+                                //[ BIND PAGER ]
+                                controls.pager.bind({
+                                    total: data.total_pages,
+                                    total_records: data.total,
+                                    current: data.current_page,
+                                    update: function (page) {
+                                        me.methods.grid.position.bind({ page: page });
+                                    }
+                                });
+                            } else {
+                                //[ SHOW WITHOUT RESULTS CONTENT ]
+                                ds.me.slideUp();
+                            };
+    
+                            if (!isUndefinedOrNull(after)) { after(data); };
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            //[ ERROR ]
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    }, 
+                    build: function (datasource) {
+                        var me = this.base,
+                            ds = me.design.gridposition,
+                            datasource = me.datasource.list_position;
+    
+                        //[ CLEAR GRID ]
+                        ds.rows.children().remove();
+    
+                        //[ BIND ROWS ]
+    
+                        if (datasource.length > 0) {
+                            var total = 0;
+
+                            $.each(datasource, function (index, list_position) {
+                                var row = ds.rowtemplate.clone(),
+                                    actionscolumn = '<div class="actions" data="{1}">{0}</div>',
+                                    itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
+                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Ligas</span></td>',
+                                    itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
+    
+                                with (row) {
+                                    //[ SAVE list_position ID ]
+                                    attr('data', list_position.id);
+    
+                                    //[ OTHER COLUMNS ]
+                                    row.append(itemcolumn.format(ifUndefinedOrNull(list_position.position, '')));
+                                    row.append(itemcolumn2);
+                                    row.append(itemcolumn3.format(ifUndefinedOrNull(list_position.count, '')));
+
+                                    total = total +1;
+                                };
+    
+                                row.on('dblclick', function (e) {
+                                    me.methods.actions.edit($(this).attr('data'));
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });                           
+    
+                                ds.rows.append(row);
+                            });
+
+                            $('.marketTotalPosition').html(total + ' posições');
+    
+                            ds.me.find('.btn-remove').on('click', function (e) {
+                                var selected = new Array();
+    
+                                $.each(ds.rows.find('.checkbox > input'), function (index, item) {
+                                    if($(item).is(':checked')) {
+                                        selected.push(parseInt($(item).attr('data')));
+                                    }
+                                });
+    
+                                if (ifUndefinedOrNull(selected, new Array()).length > 0) {
+                                    me.methods.actions.remove(selected);
+                                };
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+                        };
+                    }
                 }
             },
         }, 
@@ -1997,6 +2784,10 @@ function list_value() {
             //[ BIND list_value GRID ]
             me.methods.grid.bind();
             me.methods.grid.nationality.bind();
+            me.methods.grid.clubs_index.bind();
+            me.methods.grid.birth.bind();
+            me.methods.grid.league.bind();
+            me.methods.grid.position.bind();
         },
         init: function () {
             var me = this;
@@ -2008,6 +2799,10 @@ function list_value() {
             this.methods.actions.base = this;
             this.methods.grid.base = this;
             this.methods.grid.nationality.base = this;
+            this.methods.grid.clubs_index.base = this;
+            this.methods.grid.birth.base = this;
+            this.methods.grid.league.base = this;
+            this.methods.grid.position.base = this;
 
             this.load();
 

@@ -410,11 +410,11 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Clubes</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control txtAgentClub" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Países</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control txtAgentCountry" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Contactos</label>

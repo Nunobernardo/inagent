@@ -418,10 +418,7 @@
                       <h2 class="text-success no-margin">Nacionalidades</h2>
                       <p class="no-margin">Totais por nacionalidades</p>
                     </div>
-                    <h3 class="pull-right semi-bold"><sup>
-                      <small class="semi-bold"></small>
-                    </sup> 15 países
-                    </h3>
+                    <h3 class="marketTotalNationality pull-right semi-bold"></h3>
                     <div class="clearfix"></div>
                   </div>
                   
@@ -442,25 +439,13 @@
                       <h2 class="text-success no-margin">Clube</h2>
                       <p class="no-margin">Jogadores por clube</p>
                     </div>
-                    <h3 class="pull-right semi-bold"><sup>
-                      <small class="semi-bold"></small>
-                    </sup> 10 clubes
-                    </h3>
+                    <h3 class="marketTotalClubs pull-right semi-bold"></h3>
                     <div class="clearfix"></div>
                   </div>
+
                   <div class="auto-overflow widget-11-2-table">
-                    <table class="table table-condensed table-hover">
-                      <tbody>
-                        <tr>
-                          <td class="font-montserrat all-caps fs-12 w-50">FC Porto</td>
-                          <td class="text-right b-r b-dashed b-grey w-25">
-                            <span class="hint-text small">Jogadores</span>
-                          </td>
-                          <td class="w-25">
-                            <span class="font-montserrat fs-18">4</span>
-                          </td>
-                        </tr>
-                      </tbody>
+                    <table class="table table-hover">
+                      <tbody role="row" class="row_clubs_index"></tbody>
                     </table>
                   </div>
                 </div>
@@ -477,25 +462,13 @@
                       <h2 class="text-success no-margin">Ligas</h2>
                       <p class="no-margin">Jogadores por ligas</p>
                     </div>
-                    <h3 class="pull-right semi-bold"><sup>
-                      <small class="semi-bold"></small>
-                    </sup> 4 ligas
-                    </h3>
+                    <h3 class="marketTotalLeague pull-right semi-bold"></h3>
                     <div class="clearfix"></div>
                   </div>
+
                   <div class="auto-overflow widget-11-2-table">
-                    <table class="table table-condensed table-hover">
-                      <tbody>
-                        <tr>
-                          <td class="font-montserrat all-caps fs-12 w-50">Primeira Liga</td>
-                          <td class="text-right b-r b-dashed b-grey w-25">
-                            <span class="hint-text small">Jogadores</span>
-                          </td>
-                          <td class="w-25">
-                            <span class="font-montserrat fs-18">25</span>
-                          </td>
-                        </tr>
-                      </tbody>
+                    <table class="table table-hover">
+                      <tbody role="row" class="row_league"></tbody>
                     </table>
                   </div>
                 </div>
@@ -510,25 +483,12 @@
                       <h2 class="text-success no-margin">Posição</h2>
                       <p class="no-margin">Totais por posição</p>
                     </div>
-                    <h3 class="pull-right semi-bold"><sup>
-                      <small class="semi-bold"></small>
-                    </sup> 9 posições
-                    </h3>
+                    <h3 class="marketTotalPosition pull-right semi-bold"></h3>
                     <div class="clearfix"></div>
                   </div>
                   <div class="auto-overflow widget-11-2-table">
-                    <table class="table table-condensed table-hover">
-                      <tbody>
-                        <tr>
-                          <td class="font-montserrat all-caps fs-12 w-50">Ponta de lança</td>
-                          <td class="text-right b-r b-dashed b-grey w-25">
-                            <span class="hint-text small">Jogadores</span>
-                          </td>
-                          <td class="w-25">
-                            <span class="font-montserrat fs-18">11</span>
-                          </td>
-                        </tr>
-                      </tbody>
+                    <table class="table table-hover">
+                      <tbody role="row" class="row_position"></tbody>
                     </table>
                   </div>
                 </div>
@@ -543,34 +503,12 @@
                       <h2 class="text-success no-margin">Aniversário</h2>
                       <p class="no-margin">O próximo aniversário</p>
                     </div>
-                    <h3 class="pull-right semi-bold"><sup>
-                      <small class="semi-bold"></small>
-                    </sup> 29 anos
-                    </h3>
                     <div class="clearfix"></div>
                   </div>
+
                   <div class="auto-overflow widget-11-2-table">
-                    <table class="table table-condensed table-hover">
-                      <tbody>
-                        <tr>
-                          <td class="font-montserrat all-caps fs-12 w-50">Fábio Abreu</td>
-                          <td class="text-right b-r b-dashed b-grey w-25">
-                            <span class="hint-text small">28 anos</span>
-                          </td>
-                          <td class="w-25">
-                            <span class="font-montserrat fs-18">29/01/1993</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="font-montserrat all-caps fs-12 w-50">Fábio Abreu</td>
-                          <td class="text-right b-r b-dashed b-grey w-25">
-                            <span class="hint-text small">28 anos</span>
-                          </td>
-                          <td class="w-25">
-                            <span class="font-montserrat fs-18">29/01/1993</span>
-                          </td>
-                        </tr>
-                      </tbody>
+                    <table class="table table-hover">
+                      <tbody role="row" class="row_birth"></tbody>
                     </table>
                   </div>
                 </div>
@@ -699,7 +637,7 @@
 
     <script type='text/javascript'>
       $(document).ready(function () {
-        list_value();
+        list_index();
         ///list_nationality();
       });
     </script>

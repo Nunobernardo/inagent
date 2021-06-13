@@ -312,7 +312,8 @@
               <div class="row h-100">
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="card-title">
-                    <h5>Adicionar Jogador</h5>
+                  <h3 class="marketTotalNationality pull-right semi-bold"></h3>
+                    <h5 class="titlePlayer"> Adicionar Jogador</h5>
                   </div>
                 </div>
                 <div class="col-lg-6 col-xs-12 my-auto">

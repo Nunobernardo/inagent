@@ -343,7 +343,6 @@
                         <th style="width:13%; text-align: center; vertical-align: middle;">Países</th>
                         <th style="width:13%; text-align: center; vertical-align: middle;">Data inicio</th>
                         <th style="width:13%; text-align: center; vertical-align: middle;">Data fim</th>
-                        <th style="width:10%; text-align: center; vertical-align: middle;">Documentos</th>
                       </tr>
                     </thead>
                     <tbody role="row" class="row_mandates" style="width:20%; text-align: center; vertical-align: middle;"></tbody>
