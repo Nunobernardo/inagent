@@ -61,7 +61,6 @@ function player(args) {
                 var player = me.datasource.player;
 
                 if (player.id > 0) {
-                    
                     ds.playername.val(player.name);
                     ds.playerfirstname.val(player.firstname);
                     ds.playerlastname.val(player.lastname);
@@ -69,53 +68,90 @@ function player(args) {
                     ds.playernationality.val(player.nationality);
                     ds.playerheight.val(player.height);
                     ds.playerweight.val(player.weight);
-                    //ds.playerfoot.val(player.foot);
-                    //ds.playerposition.val(player.position);
-                    //ds.playerclub.val(player.clubname);
                     ds.playervalue.val(player.value);
                     ds.playerpassport.val(player.passport);
                     ds.playerpassportval.val(player.passportval);
                     $('.titlePlayer').html('Editar Jogador');
-                };
 
-                ds.saveplayer.on('click', function(){
-                    var player = me.datasource.player;                   
-
-                    with(player) {
-                        age = ds.playerage.val();
-                        birth = ds.playerbirth.val();
-                        club = ds.playerclub.val();
-                        firstname = ds.playerfirstname.val();
-                        foot = ds.playerfoot.find('span.cs-placeholder').html();
-                        height = ds.playerheight.val();
-                        lastname = ds.playerlastname.val();
-                        name = ds.playername.val();
-                        nationality = ds.playernationality.val();
-                        passport = ds.playerpassport.val();
-                        passportval = ds.playerpassportval.val();
-                        position = ds.playerposition.find('span.cs-placeholder').html();
-                        value = ds.playervalue.val();
-                        weight = ds.playerweight.val();
-                    };
-
-                    controls.ajax({
-                        functionname: 'insert_player',
-                        data: {
-                            player: player
-                        }
-                    }, function (data) {
-                        if (ifUndefinedOrNull(data.success, false)) {
-                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                            window.open('players_list.php', '_self');
-                        } else {
-                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                    //EDITAR JOGADOR
+                    ds.saveplayer.on('click', function(){
+                        var player = me.datasource.player;                   
+    
+                        with(player) {
+                            age = ds.playerage.val();
+                            birth = ds.playerbirth.val();
+                            club = ds.playerclub.val();
+                            firstname = ds.playerfirstname.val();
+                            foot = ds.playerfoot.find('span.cs-placeholder').html();
+                            height = ds.playerheight.val();
+                            lastname = ds.playerlastname.val();
+                            name = ds.playername.val();
+                            nationality = ds.playernationality.val();
+                            passport = ds.playerpassport.val();
+                            passportval = ds.playerpassportval.val();
+                            position = ds.playerposition.find('span.cs-placeholder').html();
+                            value = ds.playervalue.val();
+                            weight = ds.playerweight.val();
                         };
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+    
+                        controls.ajax({
+                            functionname: 'update_player',
+                            data: {
+                                player: player
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('players_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
                     });
-                });
+                }else{
+                    ds.saveplayer.on('click', function(){
+                        var player = me.datasource.player;                   
+    
+                        with(player) {
+                            age = ds.playerage.val();
+                            birth = ds.playerbirth.val();
+                            club = ds.playerclub.val();
+                            firstname = ds.playerfirstname.val();
+                            foot = ds.playerfoot.find('span.cs-placeholder').html();
+                            height = ds.playerheight.val();
+                            lastname = ds.playerlastname.val();
+                            name = ds.playername.val();
+                            nationality = ds.playernationality.val();
+                            passport = ds.playerpassport.val();
+                            passportval = ds.playerpassportval.val();
+                            position = ds.playerposition.find('span.cs-placeholder').html();
+                            value = ds.playervalue.val();
+                            weight = ds.playerweight.val();
+                        };
+    
+                        controls.ajax({
+                            functionname: 'insert_player',
+                            data: {
+                                player: player
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('players_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+                };
             });
         },
         init: function() {
@@ -433,8 +469,6 @@ function representation(args) {
             savenewplayer: $('.btnSavePlayerNew'),
             addnewplayer: $('.addNewPlayer'),
             editplayer: $('.editPlayer')
-
-            
         },
         datasource: {
             base: undefined,
@@ -691,18 +725,50 @@ function representation(args) {
 function club(args) {
     var club = {
         design: {
-            clubplayername: $('.txtPlayerName'),
-            clubplayerfirstname: $('.txtPlayerFirstName'),
-            clubplayerlastname: $('.txtPlayerLastName'),
-            clubplayerbirth: $('.txtPlayerBirth'),
-            clubplayernationality: $('.txtPlayerNationality'),
-            clubplayerheight: $('.txtPlayerHeight'),
-            clubplayerweight: $('.txtPlayerWeight'),
-            clubplayerclub: $('.txtPalyerClub'),
-            clubplayervalue: $('.txtPLayerValue'),
-            clubplayerpassport: $('.txtPlayerPassport'),
-            clubplayerpassportval: $('.txtPlayerPassportVal'),
+            //DADOS DO CONTRATO
+            clubplayername: $('.txtPlayerNameClub'),
+            clubplayerfirstname: $('.txtPlayerFirstNameClub'),
+            clubplayerlastname: $('.txtPlayerLastNameClub'),
+            clubplayerbirth: $('.txtPlayerBirthClub'),
+            clubplayernationality: $('.txtPlayerNationalityClub'),
+            clubplayerheight: $('.txtPlayerHeightClub'),
+            clubplayerweight: $('.txtPlayerWeightClub'),
+            clubplayerclub: $('.txtPalyerClubClub'),
+            clubplayervalue: $('.txtPLayerValueClub'),
+            clubplayerpassport: $('.txtPlayerPassportClub'),
+            clubplayerpassportval: $('.txtPlayerPassportValClub'),
 
+            //NOVO JOGADOR
+            clubplayerclubnew: $('.txtPlayerClubNewClub'),
+            clubplayernamenew: $('.txtPlayerNameNewClub'),
+            clubplayerfirstnamenew: $('.txtPlayerFirstNameNewClub'),
+            clubplayerlastnamenew: $('.txtPlayerLastNameNewClub'),
+            clubplayerbirthnew: $('.txtPlayerBirthNewClub'),
+            clubplayernationalitynew: $('.txtPlayerNationalityNewClub'),
+            clubplayerheightnew: $('.txtPlayerHeightNewClub'),
+            clubplayerweightnew: $('.txtPlayerWeightNewClub'),
+            clubplayerpositionnew: $('div.ddlPlayerPositionNewClub'),
+            clubplayerfootnew: $('div.ddlPlayerFootNewClub'),
+            clubplayervaluenew: $('.txtPlayerValueNewClub'),
+            clubplayerpassportnew: $('.txtPlayerPassportNewClub'),
+            clubplayerpassportvalnew: $('.txtPlayerPassportValNewClub'),
+
+            //EDITAR JOGADOR
+            clubplayernameedit: $('.txtPlayerNameEditClub'),
+            clubplayerfirstnameedit: $('.txtPlayerFirstNameEditClub'),
+            clubplayerlastnameedit: $('.txtPlayerLastNameEditClub'),
+            clubplayerbirthedit: $('.txtPlayerBirthEditClub'),
+            clubplayernationalityedit: $('.txtPlayerNationalityEditClub'),
+            clubplayerheightedit: $('.txtPlayerHeightEditClub'),
+            clubplayerweightedit: $('.txtPlayerWeightEditClub'),
+            clubplayerpositionedit: $('div.ddlPlayerPositionEditClub'),
+            clubplayerfootedit: $('div.ddlPlayerFootEditClub'),
+            clubplayerclubedit: $('.txtPlayerClubEditClub'),
+            clubplayervalueedit: $('.txtPlayerValueEditClub'),
+            clubplayerpassportedit: $('.txtPlayerPassportEditClub'),
+            clubplayerpassportvaledit: $('.txtPlayerPassportValEditClub'),
+
+            //INSERIR CONTRATO
             clubplayer: $('div.ddlCclubPlayer'),
             clubclub: $('.txtCclub'),
             clubdatestart: $('.txtCclubDateStart'),
@@ -712,7 +778,13 @@ function club(args) {
             clubbonus: $('.txtCclubBonus'),
             clubcourt: $('.txtCclubCourt'),
             clubobs: $('.txtCclubObs'),
-            saveclub: $('.btnSaveCclub')
+
+            //BOTÕES
+            saveclub: $('.btnSaveCclub'),
+            saveeditplayerclub: $('.btnSavePlayerEditClub'),
+            savenewplayerclub: $('.btnSavePlayerNewClub'),
+            addnewplayerclub: $('.addNewPlayerClub'),
+            editplayerclub: $('.editPlayerClub')
         },
         datasource: {
             base: undefined,
@@ -778,9 +850,154 @@ function club(args) {
                     ds.clubbonus.val(club.bonus);
                     ds.clubcourt.val(club.court);
                     ds.clubobs.val(club.obs);
-                    $('.titleRepresentation').html('Editar contrato de representação');
-                };
+                    $('.titleClub').html('Editar contrato de clubes');
 
+                    ds.addnewplayerclub.remove();
+                } else {
+                    //ADICIONAR JOGADOR
+                    ds.addnewplayerclub.on('click', function(){
+                        ds.clubplayerclubnew.val('');
+                        ds.clubplayerfirstnamenew.val('');
+                        ds.clubplayerlastnamenew.val('');
+                        ds.clubplayerbirthnew.val('');
+                        ds.clubplayernationalitynew.val('');
+                        ds.clubplayerheightnew.val('');
+                        ds.clubplayerweightnew.val('');
+                        ds.clubplayerfootnew.find('span.cs-placeholder').html();
+                        ds.clubplayerpositionnew.find('span.cs-placeholder').html();
+                        ds.clubplayervaluenew.val('');
+                        ds.clubplayerpassportnew.val('');
+                        ds.clubplayerpassportvalnew.val('');
+                    });
+
+                    //BOTAO DE SALVAR ADICIONAR JOGADOR
+                    ds.savenewplayerclub.on('click', function(){
+                        var player = args.player;       
+                        
+                        with(player) {
+                            name = ds.clubplayernamenew.val();
+                            firstname = ds.clubplayerfirstnamenew.val();
+                            lastname = ds.clubplayerlastnamenew.val();
+                            birth = ds.clubplayerbirthnew.val();
+                            nationality = ds.clubplayernationalitynew.val();
+                            height = ds.clubplayerheightnew.val();
+                            weight = ds.clubplayerweightnew.val();
+                            foot = ds.clubplayerfootnew.find('span.cs-placeholder').html();
+                            position = ds.clubplayerpositionnew.find('span.cs-placeholder').html();
+                            value = ds.clubplayervaluenew.val();
+                            passport = ds.clubplayerpassportnew.val();
+                            passportval = ds.clubplayerpassportvalnew.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'insert_player',
+                            data: {
+                                player: player
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+
+                                //MOSTRAR DADOS ALTERADOS
+                                ds.clubplayerclub.val(player.clubname);
+                                ds.clubplayername.val(player.name);
+                                ds.clubplayerfirstname.val(player.firstname);
+                                ds.clubplayerlastname.val(player.lastname);
+                                ds.clubplayerbirth.val(player.birth);
+                                ds.clubplayernationality.val(player.nationality);
+                                ds.clubplayerheight.val(player.height);
+                                ds.clubplayerweight.val(player.weight);
+                                ds.clubplayervalue.val(player.value);
+                                ds.clubplayerpassport.val(player.passport);
+                                ds.clubplayerpassportval.val(player.passportval);
+                                
+                                controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                $("[data-dismiss=modal]").trigger({ type: "click" });
+                                //$('body').trigger('click');
+                                
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+                };             
+
+                //EDITAR DADOS DO JOGADOR
+                ds.editplayerclub.on('click', function(){
+                    ds.clubplayerclubedit.val(club.clubname);
+                    ds.clubplayernameedit.val(club.name);
+                    ds.clubplayerfirstnameedit.val(club.firstname);
+                    ds.clubplayerlastnameedit.val(club.lastname);
+                    ds.clubplayerbirthedit.val(club.birth);
+                    ds.clubplayernationalityedit.val(club.nationality);
+                    ds.clubplayerheightedit.val(club.height);
+                    ds.clubplayerweightedit.val(club.weight);
+                    ds.clubplayerfootedit.find('span.cs-placeholder').html();
+                    ds.clubplayerpositionedit.find('span.cs-placeholder').html();
+                    ds.clubplayervalueedit.val(club.value);
+                    ds.clubplayerpassportedit.val(club.passport);
+                    ds.clubplayerpassportvaledit.val(club.passportval);
+                });
+
+                //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
+                ds.saveeditplayerclub.on('click', function(){
+                    var player = args.player;       
+                    
+                    with(player) {
+                        id = club.player;
+                        name = ds.clubplayernameedit.val();
+                        firstname = ds.clubplayerfirstnameedit.val();
+                        lastname = ds.clubplayerlastnameedit.val();
+                        birth = ds.clubplayerbirthedit.val();
+                        nationality = ds.clubplayernationalityedit.val();
+                        height = ds.clubplayerheightedit.val();
+                        weight = ds.clubplayerweightedit.val();
+                        foot = ds.clubplayerfootedit.find('span.cs-placeholder').html();
+                        position = ds.clubplayerpositionedit.find('span.cs-placeholder').html();
+                        value = ds.clubplayervalueedit.val();
+                        passport = ds.clubplayerpassportedit.val();
+                        passportval = ds.clubplayerpassportvaledit.val();
+                    };
+
+                    controls.ajax({
+                        functionname: 'update_player',
+                        data: {
+                            player: player
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            
+                            //MOSTRAR DADOS ALTERADOS
+                            ds.clubplayername.val(player.name);
+                            ds.clubplayerfirstname.val(player.firstname);
+                            ds.clubplayerlastname.val(player.lastname);
+                            ds.clubplayerbirth.val(player.birth);
+                            ds.clubplayernationality.val(player.nationality);
+                            ds.clubplayerheight.val(player.height);
+                            ds.clubplayerweight.val(player.weight);
+                            ds.clubplayerclub.val(player.clubname);
+                            ds.clubplayervalue.val(player.value);
+                            ds.clubplayerpassport.val(player.passport);
+                            ds.clubplayerpassportval.val(player.passportval);
+                            
+                            controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
+                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                            //$('body').trigger('click');
+
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'O jogador não existe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                });  
+
+                //INSERIR CONTRATO CLUBES
                 ds.saveclub.on('click', function(){
                     var club = me.datasource.club;
 

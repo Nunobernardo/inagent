@@ -394,8 +394,8 @@
                 <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle full-height d-flex flex-column">
                   <div class="padding-25">
                     <div class="pull-left">
-                      <h2 class="text-success no-margin">Contratos representação</h2>
-                      <p class="no-margin">Data do fim de contratos</p>
+                      <h2 class="text-success no-margin">Contratos</h2>
+                      <p class="no-margin">Data fim do contrato</p>
                     </div>
                     <h3 class="marketTotalLeague pull-right semi-bold"></h3>
                     <div class="clearfix"></div>

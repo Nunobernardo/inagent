@@ -212,7 +212,9 @@
             return $this;
         }
 
-        public function set($id, $player, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $clubname, $value, $passport, $passportval, $child, $father, $mother, $datestart, $dateend, $commission, $file) {
+        public function set($id, $player, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $clubname, $value, $passport, $passportval,
+        $child, $father, $mother, $datestart, $dateend, $commission, $file) {
+
             $this->id = $id;
             $this->player = $player;
             $this->playername = $playername;
@@ -254,6 +256,8 @@
         public $nationality;
         public $height;
         public $weight;
+        public $foot;
+        public $position;
         public $valueplayer;
         public $passport;
         public $passportval;
@@ -280,6 +284,8 @@
                 $this->nationality = (isset($obj["nationality"])) ? $obj["nationality"] : null;
                 $this->height = (isset($obj["height"])) ? $obj["height"] : null;
                 $this->weight = (isset($obj["weight"])) ? $obj["weight"] : null;
+                $this->foot = (isset($obj["foot"])) ? $obj["foot"] : null;
+                $this->position = (isset($obj["position"])) ? $obj["position"] : null;
                 $this->valueplayer = (isset($obj["value"])) ? $obj["value"] : null;
                 $this->passport = (isset($obj["documents"])) ? $obj["documents"] : null;
                 $this->passportval = (isset($obj["documents_val"])) ? $obj["documents_val"] : null;
@@ -299,7 +305,9 @@
             return $this;
         }
 
-        public function set($id, $player, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $club, $clubname, $valueplayer, $passport, $passportval, $datestart, $dateend, $value, $clause, $bonus, $court, $obs, $file) {
+        public function set($id, $player, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $clubname, $valueplayer, $passport, $passportval,
+        $datestart, $dateend, $value, $clause, $bonus, $court, $obs, $file) {
+
             $this->id = $id;
             $this->player = $player;
             $this->playername = $playername;
@@ -309,6 +317,8 @@
             $this->nationality = $nationality;
             $this->height = $height;
             $this->weight = $weight;
+            $this->foot = $foot;
+            $this->position = $position;
             $this->club = $club;
             $this->clubname = $clubname;
             $this->valueplayer = $valueplayer;
