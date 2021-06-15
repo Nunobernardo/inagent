@@ -22,6 +22,7 @@
     <link href="pages/css/pages-icons.css" rel="stylesheet" type="text/css">
     <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/controls.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/controls.css" rel="stylesheet" type="text/css"/>
   </head>
   <body class="fixed-header ">
     <!-- BEGIN SIDEBAR-->

@@ -390,6 +390,47 @@
 
             <div class="row">
               <div class="col-lg-6 col-xl-4 m-b-10 hidden-xlg">
+                <!-- START WIDGET widget_tableWidgetBasic-->
+                <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle full-height d-flex flex-column">
+                  <div class="padding-25">
+                    <div class="pull-left">
+                      <h2 class="text-success no-margin">Contratos representação</h2>
+                      <p class="no-margin">Data do fim de contratos</p>
+                    </div>
+                    <h3 class="marketTotalLeague pull-right semi-bold"></h3>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="auto-overflow widget-11-2-table">
+                    <table class="table table-hover">
+                      <tbody role="row" class="row_league"></tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- END WIDGET -->
+              </div>
+
+              <div class="col-lg-6 col-xl-4 m-b-10 hidden-xlg">
+                <!-- START WIDGET widget_tableWidgetBasic-->
+                <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle full-height d-flex flex-column">
+                  <div class="padding-25">
+                    <div class="pull-left">
+                      <h2 class="text-success no-margin">Aniversário</h2>
+                      <p class="no-margin">O próximo aniversário</p>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="auto-overflow widget-11-2-table">
+                    <table class="table table-hover">
+                      <tbody role="row" class="row_birth"></tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- END WIDGET -->
+              </div>
+
+              <div class="col-lg-6 col-xl-4 m-b-10 hidden-xlg">
                 <!-- START TABLE MARKET VALUE-->
                 <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle full-height d-flex flex-column">
                   <div class="padding-25">
@@ -409,48 +450,6 @@
                 </div>
                 <!-- END WIDGET -->
               </div>
-              
-              <div class="col-lg-6 col-xl-4 m-b-10 hidden-xlg">
-                <!-- START WIDGET widget_tableWidgetBasic-->
-                <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle full-height d-flex flex-column">
-                  <div class="padding-25">
-                    <div class="pull-left">
-                      <h2 class="text-success no-margin">Nacionalidades</h2>
-                      <p class="no-margin">Totais por nacionalidades</p>
-                    </div>
-                    <h3 class="marketTotalNationality pull-right semi-bold"></h3>
-                    <div class="clearfix"></div>
-                  </div>
-                  
-                  <div class="auto-overflow widget-11-2-table">
-                    <table class="table table-hover">
-                      <tbody role="row" class="row_nationality"></tbody>
-                    </table>
-                  </div>
-                </div>
-                <!-- END WIDGET -->
-              </div>
-
-              <div class="col-lg-6 col-xl-4 m-b-10 hidden-xlg">
-                <!-- START WIDGET widget_tableWidgetBasic-->
-                <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle full-height d-flex flex-column">
-                  <div class="padding-25">
-                    <div class="pull-left">
-                      <h2 class="text-success no-margin">Clube</h2>
-                      <p class="no-margin">Jogadores por clube</p>
-                    </div>
-                    <h3 class="marketTotalClubs pull-right semi-bold"></h3>
-                    <div class="clearfix"></div>
-                  </div>
-
-                  <div class="auto-overflow widget-11-2-table">
-                    <table class="table table-hover">
-                      <tbody role="row" class="row_clubs_index"></tbody>
-                    </table>
-                  </div>
-                </div>
-                <!-- END WIDGET -->
-              </div>
             </div>
 
             <div class="row">
@@ -459,16 +458,16 @@
                 <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle full-height d-flex flex-column">
                   <div class="padding-25">
                     <div class="pull-left">
-                      <h2 class="text-success no-margin">Ligas</h2>
-                      <p class="no-margin">Jogadores por ligas</p>
+                      <h2 class="text-success no-margin">Clube</h2>
+                      <p class="no-margin">Total de clubes</p>
                     </div>
-                    <h3 class="marketTotalLeague pull-right semi-bold"></h3>
+                    <h3 class="marketTotalClubs pull-right semi-bold"></h3>
                     <div class="clearfix"></div>
                   </div>
 
                   <div class="auto-overflow widget-11-2-table">
                     <table class="table table-hover">
-                      <tbody role="row" class="row_league"></tbody>
+                      <tbody role="row" class="row_clubs_index"></tbody>
                     </table>
                   </div>
                 </div>
@@ -494,21 +493,22 @@
                 </div>
                 <!-- END WIDGET -->
               </div>
-
+             
               <div class="col-lg-6 col-xl-4 m-b-10 hidden-xlg">
                 <!-- START WIDGET widget_tableWidgetBasic-->
                 <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle full-height d-flex flex-column">
                   <div class="padding-25">
                     <div class="pull-left">
-                      <h2 class="text-success no-margin">Aniversário</h2>
-                      <p class="no-margin">O próximo aniversário</p>
+                      <h2 class="text-success no-margin">Nacionalidades</h2>
+                      <p class="no-margin">Totais por nacionalidades</p>
                     </div>
+                    <h3 class="marketTotalNationality pull-right semi-bold"></h3>
                     <div class="clearfix"></div>
                   </div>
-
+                  
                   <div class="auto-overflow widget-11-2-table">
                     <table class="table table-hover">
-                      <tbody role="row" class="row_birth"></tbody>
+                      <tbody role="row" class="row_nationality"></tbody>
                     </table>
                   </div>
                 </div>

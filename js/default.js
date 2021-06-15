@@ -376,6 +376,7 @@ function agent(args) {
 function representation(args) {
     var representation = {
         design: {
+            //DADOS DO JOGADOR
             representationplayer: $('.div.ddlRepresentationPlayer'),
             representationplayername: $('.txtPlayerName'),
             representationplayerfirstname: $('.txtPlayerFirstName'),
@@ -384,11 +385,13 @@ function representation(args) {
             representationplayernationality: $('.txtPlayerNationality'),
             representationplayerheight: $('.txtPlayerHeight'),
             representationplayerweight: $('.txtPlayerWeight'),
-            representationplayerclub: $('.txtPalyerClub'),
+            representationplayerclub: $('.txtPlayerClub'),
             representationplayervalue: $('.txtPLayerValue'),
             representationplayerpassport: $('.txtPlayerPassport'),
             representationplayerpassportval: $('.txtPlayerPassportVal'),
 
+            //NOVO JOGADOR
+            representationplayerclubnew: $('.txtPlayerClubNew'),
             representationplayernamenew: $('.txtPlayerNameNew'),
             representationplayerfirstnamenew: $('.txtPlayerFirstNameNew'),
             representationplayerlastnamenew: $('.txtPlayerLastNameNew'),
@@ -396,12 +399,13 @@ function representation(args) {
             representationplayernationalitynew: $('.txtPlayerNationalityNew'),
             representationplayerheightnew: $('.txtPlayerHeightNew'),
             representationplayerweightnew: $('.txtPlayerWeightNew'),
-            representationplayerclubnew: $('.txtPalyerClubNew'),
-            representationplayervaluenew: $('.txtPLayerValueNew'),
+            representationplayerpositionnew: $('div.ddlPlayerPositionNew'),
+            representationplayerfootnew: $('div.ddlPlayerFootNew'),
+            representationplayervaluenew: $('.txtPlayerValueNew'),
             representationplayerpassportnew: $('.txtPlayerPassportNew'),
             representationplayerpassportvalnew: $('.txtPlayerPassportValNew'),
 
-
+            //EDITAR JOGADOR
             representationplayernameedit: $('.txtPlayerNameEdit'),
             representationplayerfirstnameedit: $('.txtPlayerFirstNameEdit'),
             representationplayerlastnameedit: $('.txtPlayerLastNameEdit'),
@@ -409,22 +413,28 @@ function representation(args) {
             representationplayernationalityedit: $('.txtPlayerNationalityEdit'),
             representationplayerheightedit: $('.txtPlayerHeightEdit'),
             representationplayerweightedit: $('.txtPlayerWeightEdit'),
-            representationplayerclubedit: $('.txtPalyerClubEdit'),
-            representationplayervalueedit: $('.txtPLayerValueEdit'),
+            representationplayerpositionedit: $('div.ddlPlayerPositionEdit'),
+            representationplayerfootedit: $('div.ddlPlayerFootEdit'),
+            representationplayerclubedit: $('.txtPlayerClubEdit'),
+            representationplayervalueedit: $('.txtPlayerValueEdit'),
             representationplayerpassportedit: $('.txtPlayerPassportEdit'),
             representationplayerpassportvaledit: $('.txtPlayerPassportValEdit'),
 
-            // representationchild: $('.txtrepresentationchild'),
+            //NOVO CONTRATO DE REPRESENTAÇÃO
             representationfather: $('.txtRepresentationFather'),
             representationmother: $('.txtRepresentationMother'),
             representationdatestart: $('.txtRepresentationDateStart'),
             representationdateend: $('.txtRepresentationDateEnd'),
             representationcommission: $('.txtRepresentationCommission'),
 
+            //BOTÕES
             saverepresentation: $('.btnSaveRepresentation'),
-            saveeditrepresentation: $('.btnSavePlayerEdit'),
+            saveeditplayer: $('.btnSavePlayerEdit'),
+            savenewplayer: $('.btnSavePlayerNew'),
             addnewplayer: $('.addNewPlayer'),
             editplayer: $('.editPlayer')
+
+            
         },
         datasource: {
             base: undefined,
@@ -468,6 +478,7 @@ function representation(args) {
             me.methods.getrepresentation(function(){
                 var representation = me.datasource.representation;
 
+                //DADOS DO CONTRATO E JOGADOR
                 if (representation.id > 0) {
                     ds.representationplayer.val(representation.player);
                     ds.representationplayername.val(representation.name);
@@ -491,21 +502,80 @@ function representation(args) {
 
                     ds.addnewplayer.remove();
                 } else {
+                    //ADICIONAR JOGADOR
                     ds.addnewplayer.on('click', function(){
+                        ds.representationplayerclubnew.val('');
                         ds.representationplayerfirstnamenew.val('');
                         ds.representationplayerlastnamenew.val('');
                         ds.representationplayerbirthnew.val('');
                         ds.representationplayernationalitynew.val('');
                         ds.representationplayerheightnew.val('');
                         ds.representationplayerweightnew.val('');
-                        ds.representationplayerclubnew.val('');
+                        ds.representationplayerfootnew.find('span.cs-placeholder').html();
+                        ds.representationplayerpositionnew.find('span.cs-placeholder').html();
                         ds.representationplayervaluenew.val('');
                         ds.representationplayerpassportnew.val('');
                         ds.representationplayerpassportvalnew.val('');
                     });
+
+                    //BOTAO DE SALVAR ADICIONAR JOGADOR
+                    ds.savenewplayer.on('click', function(){
+                        var player = args.player;       
+                        
+                        with(player) {
+                            name = ds.representationplayernamenew.val();
+                            firstname = ds.representationplayerfirstnamenew.val();
+                            lastname = ds.representationplayerlastnamenew.val();
+                            birth = ds.representationplayerbirthnew.val();
+                            nationality = ds.representationplayernationalitynew.val();
+                            height = ds.representationplayerheightnew.val();
+                            weight = ds.representationplayerweightnew.val();
+                            foot = ds.representationplayerfootnew.find('span.cs-placeholder').html();
+                            position = ds.representationplayerpositionnew.find('span.cs-placeholder').html();
+                            value = ds.representationplayervaluenew.val();
+                            passport = ds.representationplayerpassportnew.val();
+                            passportval = ds.representationplayerpassportvalnew.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'insert_player',
+                            data: {
+                                player: player
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+
+                                //MOSTRAR DADOS ALTERADOS
+                                ds.representationplayerclub.val(player.clubname);
+                                ds.representationplayername.val(player.name);
+                                ds.representationplayerfirstname.val(player.firstname);
+                                ds.representationplayerlastname.val(player.lastname);
+                                ds.representationplayerbirth.val(player.birth);
+                                ds.representationplayernationality.val(player.nationality);
+                                ds.representationplayerheight.val(player.height);
+                                ds.representationplayerweight.val(player.weight);
+                                ds.representationplayervalue.val(player.value);
+                                ds.representationplayerpassport.val(player.passport);
+                                ds.representationplayerpassportval.val(player.passportval);
+                                
+                                controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                $("[data-dismiss=modal]").trigger({ type: "click" });
+                                //$('body').trigger('click');
+                                
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
                 };               
 
+                //EDITAR DADOS DO JOGADOR
                 ds.editplayer.on('click', function(){
+                    ds.representationplayerclubedit.val(representation.clubname);
                     ds.representationplayernameedit.val(representation.name);
                     ds.representationplayerfirstnameedit.val(representation.firstname);
                     ds.representationplayerlastnameedit.val(representation.lastname);
@@ -513,13 +583,15 @@ function representation(args) {
                     ds.representationplayernationalityedit.val(representation.nationality);
                     ds.representationplayerheightedit.val(representation.height);
                     ds.representationplayerweightedit.val(representation.weight);
-                    ds.representationplayerclubedit.val(representation.clubname);
+                    ds.representationplayerfootedit.find('span.cs-placeholder').html();
+                    ds.representationplayerpositionedit.find('span.cs-placeholder').html();
                     ds.representationplayervalueedit.val(representation.value);
                     ds.representationplayerpassportedit.val(representation.passport);
                     ds.representationplayerpassportvaledit.val(representation.passportval);
                 });
 
-                ds.saveeditrepresentation.on('click', function(){
+                //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
+                ds.saveeditplayer.on('click', function(){
                     var player = args.player;       
                     
                     with(player) {
@@ -531,6 +603,8 @@ function representation(args) {
                         nationality = ds.representationplayernationalityedit.val();
                         height = ds.representationplayerheightedit.val();
                         weight = ds.representationplayerweightedit.val();
+                        foot = ds.representationplayerfootedit.find('span.cs-placeholder').html();
+                        position = ds.representationplayerpositionedit.find('span.cs-placeholder').html();
                         value = ds.representationplayervalueedit.val();
                         passport = ds.representationplayerpassportedit.val();
                         passportval = ds.representationplayerpassportvaledit.val();
@@ -543,25 +617,26 @@ function representation(args) {
                         }
                     }, function (data) {
                         if (ifUndefinedOrNull(data.success, false)) {
+                            
                             //MOSTRAR DADOS ALTERADOS
-                            // ds.representationplayername.val(player.name);
-                            // ds.representationplayerfirstname.val(representation.firstnameedit);
-                            // ds.representationplayerlastname.val(representation.lastnameedit);
-                            // ds.representationplayerbirth.val(representation.birthedit);
-                            // ds.representationplayernationality.val(representation.nationalityedit);
-                            // ds.representationplayerheight.val(representation.heightedit);
-                            // ds.representationplayerweight.val(representation.weightedit);
-                            // ds.representationplayerclub.val(representation.clubnameedit);
-                            // ds.representationplayervalue.val(representation.valueedit);
-                            // ds.representationplayerpassport.val(representation.passportedit);
-                            // ds.representationplayerpassportval.val(representation.passportvaledit);
+                            ds.representationplayername.val(player.name);
+                            ds.representationplayerfirstname.val(player.firstname);
+                            ds.representationplayerlastname.val(player.lastname);
+                            ds.representationplayerbirth.val(player.birth);
+                            ds.representationplayernationality.val(player.nationality);
+                            ds.representationplayerheight.val(player.height);
+                            ds.representationplayerweight.val(player.weight);
+                            ds.representationplayerclub.val(player.clubname);
+                            ds.representationplayervalue.val(player.value);
+                            ds.representationplayerpassport.val(player.passport);
+                            ds.representationplayerpassportval.val(player.passportval);
                             
-                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                            $('body').trigger('click');
-                            
-                            //window.open('players_list.php', '_self');
+                            controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
+                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                            //$('body').trigger('click');
+
                         } else {
-                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            controls.message.bind({ type: 'error', message: 'O jogador não existe.' });
                         };
                     }, function () {
                         controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
@@ -570,7 +645,7 @@ function representation(args) {
                     });
                 });  
 
-
+                //INSERIR CONTRATO
                 ds.saverepresentation.on('click', function(){
                     var representation = me.datasource.representation;                   
 
@@ -1416,12 +1491,11 @@ function list_representation() {
 
                                 //[ OTHER COLUMNS ]
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckrepresentation{0}" data="{0}"><label for="ckrepresentation{0}" class="no-padding no-margin"></label></div>'.format(list_representation.id)));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.playername, '')));
+                                row.append(itemcolumn.format('{0} {1}'.format(list_representation.firstname, list_representation.lastname)));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.datestart, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.dateend, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.commission, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.child, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.documents, '')));
                             };
 
                             row.on('dblclick', function (e) {
@@ -2623,7 +2697,7 @@ function list_index() {
                                 var row = ds.rowtemplate.clone(),
                                     actionscolumn = '<div class="actions" data="{1}">{0}</div>',
                                     itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
-                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Ligas</span></td>',
+                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Termina</span></td>',
                                     itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
     
                                 with (row) {
@@ -2631,10 +2705,10 @@ function list_index() {
                                     attr('data', list_league.id);
     
                                     //[ OTHER COLUMNS ]
-                                    row.append(itemcolumn.format(ifUndefinedOrNull(list_league.league, '')));
+                                    row.append(itemcolumn.format('{0} {1}'.format(list_league.firstname, list_league.lastname)));
                                     row.append(itemcolumn2);
-                                    row.append(itemcolumn3.format(ifUndefinedOrNull(list_league.count, '')));
-
+                                    row.append(itemcolumn3.format(ifUndefinedOrNull(list_league.dateend, '')));
+                                    
                                     total = total +1;
                                 };
     
@@ -2647,7 +2721,7 @@ function list_index() {
                                 ds.rows.append(row);
                             });
 
-                            $('.marketTotalLeague').html(total + ' ligas');
+                            $('.marketTotalLeague').html(total + ' contratos');
     
                             ds.me.find('.btn-remove').on('click', function (e) {
                                 var selected = new Array();
@@ -2731,7 +2805,7 @@ function list_index() {
                                 var row = ds.rowtemplate.clone(),
                                     actionscolumn = '<div class="actions" data="{1}">{0}</div>',
                                     itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
-                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Ligas</span></td>',
+                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Total</span></td>',
                                     itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
     
                                 with (row) {

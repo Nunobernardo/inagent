@@ -341,7 +341,6 @@
                         <th style="width:17%; text-align: center; vertical-align: middle;">Data Fim</th>
                         <th style="width:15%; text-align: center; vertical-align: middle;">Valores</th>
                         <th style="width:17%; text-align: center; vertical-align: middle;">Menor</th>
-                        <th style="width:17%; text-align: center; vertical-align: middle;">Documento</th>
                       </tr>
                     </thead>
                       <tbody role="row" class="row_representation"  style="width:20%; text-align: center; vertical-align: middle;">

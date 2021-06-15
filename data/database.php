@@ -24,7 +24,8 @@
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "INSERT INTO players (id_player, id_club, image, first_name, last_name, name, nationality, birth_date, height, weight, foot, position, value, documents, documents_val)
-                          VALUES (NULL, '1', '', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', '$birthPlayer', '$player->height', '$player->weight', '$player->foot', '$player->position', '$player->value', '$player->passport', '$passportvalPlayer');";
+                          VALUES (NULL, '1', '', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', '$birthPlayer', '$player->height', 
+                          '$player->weight', '$player->foot', '$player->position', '$player->value', '$player->passport', '$passportvalPlayer');";
 
 
                 //[ EXECUTE QUERY ]
@@ -48,22 +49,20 @@
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "UPDATE players 
                           SET 
-                          id_club, 
+                          id_club = '2', 
                           first_name = '$player->firstname', 
-                          last_name, 
-                          name, 
-                          nationality, 
-                          birth_date, 
-                          height, 
-                          weight, 
-                          foot, 
-                          position, 
-                          value, 
-                          documents, 
-                          documents_val
+                          last_name = '$player->lastname', 
+                          name = '$player->name', 
+                          nationality = '$player->nationality', 
+                          birth_date = '$birthPlayer', 
+                          height = '$player->height', 
+                          weight = '$player->weight', 
+                          foot = '$player->foot', 
+                          position = '$player->position', 
+                          value = '$player->value', 
+                          documents = '$player->passport', 
+                          documents_val = '$passportvalPlayer'
                           WHERE id_player = $player->id ";
-                           // VALUES (NULL, '1', '', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', '$birthPlayer', '$player->height', '$player->weight', '$player->foot', '$player->position', '$player->value', '$player->passport', '$passportvalPlayer');";
-
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -462,7 +461,7 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT cr.id_contract_rep, cr.date_start, cr.date_end, cr.child, cr.commission, p.name as player_name 
+                $query = "SELECT cr.id_contract_rep, cr.date_start, cr.date_end, cr.child, cr.commission, p.first_name, p.last_name 
                             FROM contract_representation cr 
                             INNER JOIN players p ON cr.id_player = p.id_player
                             LIMIT $offset, $records";
@@ -1134,10 +1133,10 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT COUNT(c.id_club) AS total_records, c.league
-                            FROM players p
-                            INNER JOIN club c ON p.id_club = c.id_club 
-                            GROUP BY c.id_club
+                $query = "SELECT cr.id_contract_rep, p.first_name, p.last_name, cr.date_end
+                            FROM contract_representation cr
+                            INNER JOIN players p ON cr.id_player = p.id_player
+                            ORDER BY cr.date_end ASC
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
