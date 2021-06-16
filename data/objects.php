@@ -286,7 +286,7 @@
                 $this->weight = (isset($obj["weight"])) ? $obj["weight"] : null;
                 $this->foot = (isset($obj["foot"])) ? $obj["foot"] : null;
                 $this->position = (isset($obj["position"])) ? $obj["position"] : null;
-                $this->valueplayer = (isset($obj["value"])) ? $obj["value"] : null;
+                $this->valueplayer = (isset($obj["value_player"])) ? $obj["value_player"] : null;
                 $this->passport = (isset($obj["documents"])) ? $obj["documents"] : null;
                 $this->passportval = (isset($obj["documents_val"])) ? $obj["documents_val"] : null;
 
@@ -350,7 +350,9 @@
         public $playernationality;
         public $playerheight;
         public $playerweight;
-        public $playervalueplayer;
+        public $playerfoot;
+        public $playerposition;
+        public $playervalue;
         public $playerpassport;
         public $playerpassportval;
 
@@ -364,7 +366,7 @@
         public $agentbirth;
         public $agentnationality;
         public $agentpassport;
-        public $agentassportval;
+        public $agentpassportval;
         public $agentcompany;
         public $agentcontacts;
         public $agentobs;
@@ -381,14 +383,16 @@
                 $this->player = (isset($obj["id_player"])) ? $obj["id_player"] : null;
                 $this->playername = (isset($obj["p_name"])) ? $obj["p_name"] : null;
                 $this->playerclub = (isset($obj["id_club"])) ? $obj["id_club"] : null;
-                $this->playerclubname = (isset($obj["club_name"])) ? $obj["club_name"] : null;
+                $this->playerclubname = (isset($obj["club_name_player"])) ? $obj["club_name_player"] : null;
                 $this->playerfirstname = (isset($obj["p_first_name"])) ? $obj["p_first_name"] : null;
                 $this->playerlastname = (isset($obj["p_last_name"])) ? $obj["p_last_name"] : null;
                 $this->playerbirth = (isset($obj["p_birth_date"])) ? $obj["p_birth_date"] : null;
                 $this->playernationality = (isset($obj["p_nationality"])) ? $obj["p_nationality"] : null;
                 $this->playerheight = (isset($obj["p_height"])) ? $obj["p_height"] : null;
                 $this->playerweight = (isset($obj["p_weight"])) ? $obj["p_weight"] : null;
-                $this->playervalueplayer = (isset($obj["p_value"])) ? $obj["p_value"] : null;
+                $this->playerfoot = (isset($obj["p_foot"])) ? $obj["p_foot"] : null;
+                $this->playerposition = (isset($obj["p_position"])) ? $obj["p_position"] : null;
+                $this->playervalue = (isset($obj["p_value"])) ? $obj["p_value"] : null;
                 $this->playerpassport = (isset($obj["p_documents"])) ? $obj["p_documents"] : null;
                 $this->playerpassportval = (isset($obj["p_documentsval"])) ? $obj["p_documentsval"] : null;
                 
@@ -402,7 +406,7 @@
                 $this->agentbirth = (isset($obj["a_birth_date"])) ? $obj["a_birth_date"] : null;
                 $this->agentnationality = (isset($obj["a_nationality"])) ? $obj["a_nationality"] : null;
                 $this->agentpassport = (isset($obj["a_documents"])) ? $obj["a_documents"] : null;
-                $this->agentassportval = (isset($obj["a_documents_val"])) ? $obj["a_documents_val"] : null;
+                $this->agentpassportval = (isset($obj["a_documents_val"])) ? $obj["a_documents_val"] : null;
                 $this->agentcompany = (isset($obj["a_company"])) ? $obj["a_company"] : null;
                 $this->agentcontacts = (isset($obj["a_contacts"])) ? $obj["a_contacts"] : null;
                 $this->agentobs = (isset($obj["a_obs"])) ? $obj["a_obs"] : null;
@@ -418,16 +422,41 @@
             return $this;
         }
 
-        public function set($id, $player, $playername, $agent, $agentname, $agentcompany, $club, $clubname, $country, $datestart, $dateend,  $obs,  $file) {
+        public function set($id,  $player, $playername, $playerfirstname, $playerlastname, $playerbirth, $playernationality, $playerheight, $playerweight, $playerfoot, $playerposition, $playerclub, $playerclubname, $playervalue, $playerpassport, $passportval,
+        $agentclub, $agentclubname,  $agentcountry, $agentname, $agentfirstname, $agentlastname, $agentbirth, $agentnationality, $agentpassport, $agentpassportval, $agentcompany, $agentcontacts, $agentobs,
+        $datestart, $dateend,  $obs,  $file) {
             $this->id = $id;
+
             $this->player = $player;
             $this->playername = $playername;
-            $this->agent = $agent;
+            $this->playerfirstname = $playerfirstname;
+            $this->playerlastname = $playerlastname;
+            $this->playerbirth = $playerbirth;
+            $this->playernationality = $playernationality;
+            $this->playerheight = $playerheight;
+            $this->playerweight = $playerweight;
+            $this->playerfoot = $playerfoot;
+            $this->playerposition = $playerposition;
+            $this->playerclub = $playerclub;
+            $this->playerclubname = $playerclubname;
+            $this->playervalue = $playervalue;
+            $this->playerpassport = $playerpassport;
+            $this->playerpassportval = $playerpassportval;
+
+            $this->agentclub = $agentclub;
+            $this->agentclubname = $agentclubname;
+            $this->agentcountry = $agentcountry;
             $this->agentname = $agentname;
+            $this->agentfirstname = $agentfirstname;
+            $this->agentlastname = $agentlastname;
+            $this->agentbirth = $agentbirth;
+            $this->agentnationality = $agentnationality;
+            $this->agentpassport = $agentpassport;
+            $this->agentpassportval = $agentpassportval;
             $this->agentcompany = $agentcompany;
-            $this->club = $club;
-            $this->clubname = $clubname;
-            $this->country = $country;
+            $this->agentcontacts = $agentcontacts;
+            $this->agentobs = $agentobs;
+            
             $this->datestart = $datestart;
             $this->dateend = $dateend;
             $this->obs = $obs;

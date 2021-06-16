@@ -123,6 +123,36 @@
                 };
                 break;
 
+            case 'update_representation':
+                $representation = $object->{'representation'};
+                $repdatestart = date("Y-m-d", strtotime($representation->datestart));
+                $repdateend = date("Y-m-d", strtotime($representation->dateend));
+
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "UPDATE contract_representation SET 
+                            id_player = '50',
+                            child = '$representation->child',
+                            father_name = '$representation->father',
+                            mother_name = '$representation->mother',
+                            date_start = '$repdatestart',
+                            date_end = '$repdateend',
+                            commission = '$representation->commission'
+                            WHERE id_contract_rep = " . $representation->id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['representation_id'] = $conn->insert_id;
+
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = 'ERRO_INSERT_REPRESENTATION';
+                };
+                break;
+
             case 'insert_agent':
                 $agent = $object->{'agent'};
                 $birthagent = date("Y-m-d", strtotime($agent->birth));
@@ -166,7 +196,40 @@
                     $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
-                    $feedback['error'] = 'ERRO_INSERT_club';
+                    $feedback['error'] = 'ERRO_INSERT_CLUB';
+                    $feedback['XX'] = $query;
+                };
+                break;
+
+            case 'update_club':
+                $club = $object->{'club'};
+                $clubdatestart = date("Y-m-d", strtotime($club->datestart));
+                $clubdateend = date("Y-m-d", strtotime($club->dateend));
+
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "UPDATE contract_club SET 
+                            id_player = '50',
+                            id_club = '3',
+                            value = '$club->value',
+                            date_start = '$clubdatestart',
+                            date_end = '$clubdateend',
+                            clause = '$club->clause',
+                            court = '$club->court',
+                            bonus = '$club->bonus',
+                            obs = '$club->obs'
+                            WHERE id_contract_club = " . $club->id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+                $feedback['XXXXX'] = $result;
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['club_id'] = $conn->insert_id;
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = 'ERRO_INSERT_CLUB';
                     $feedback['XX'] = $query;
                 };
                 break;
@@ -513,54 +576,26 @@
                 break;
 
             case 'delete_representation':
-                $text = json_encode($object->{'representations_ids'});
-                $text = str_replace("[","", $text);
-                $text = str_replace("]", "", $text);
+                $representationid = json_encode($object->{'representations_ids'});
+                $representationid = str_replace("[","(", $representationid);
+                $representationid = str_replace("]", ")", $representationid);
 
-                // //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
-                // $query = "DELETE ph.*
-                //             FROM publications p
-                //             INNER JOIN publications_users pu ON pu.publication_id = p.id
-                //             INNER JOIN publications_history ph ON ph.publication_id = p.id
-                //             WHERE p.id in (" . $text . ")";
+                //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
+                $query = "DELETE 
+                            FROM contract_representation 
+                            WHERE contract_representation.id_contract_rep = " . $representationid;
 
-                // //[ EXECUTE QUERY ]
-                // $result = mysqli_query($conn, $query);
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
 
-                // //[ CHECK RESULTS ]
-                // if ($result) {
-                //     //[ SET QUERY TO DELETE PUBLICATIONS USERS ASSOCIATED TO SELECTED PUBLICATION ]
-                //     $query = "DELETE pu.*
-                //                 FROM publications p
-                //                 INNER JOIN publications_users pu ON pu.publication_id = p.id
-                //                 WHERE p.id = " . $publicationid;
-                    
-                //     //[ EXECUTE QUERY ]
-                //     $result = mysqli_query($conn, $query);
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                };
 
-                //     //[ CHECK RESULTS ]
-                //     if ($result) {
-                //         //[ SET QUERY TO DELETE SELECTED PUBLICATION ]
-                //         $query = "DELETE FROM publications WHERE id = " . $publicationid;
-
-                //         //[ EXECUTE QUERY ]
-                //         $result = mysqli_query($conn, $query);
-        
-                //         //[ CHECK RESULTS ]
-                //         if ($result) {
-                //             $feedback['success'] = true;
-                //         } else {
-                //             $feedback['success'] = false;
-                //             $feedback['error'] = "ERROR_REMOVING_REPRESENTATIONS";
-                //         };
-                //     } else {
-                //         $feedback['success'] = false;
-                //         $feedback['error'] = "ERROR_REMOVING_REPRESENTATIONS";
-                //     };
-                // } else {
-                //     $feedback['success'] = false;
-                //     $feedback['error'] = "ERROR_REMOVING_REPRESENTATIONS";
-                // };
                 break;
     
             case 'clubs':
@@ -616,7 +651,7 @@
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT cc.id_contract_club, p.id_player, cc.date_start, cc.date_end, cc.value,  cc.clause, cc.court, 
                             cc.bonus, cc.obs, p.name, p.first_name, p.last_name, p.birth_date, p.nationality, p.height, p.weight, 
-                            p.value, p.documents, p.documents_val, c.name_club as club_name
+                            p.value as value_player, p.documents, p.documents_val, c.name_club as club_name
                             FROM contract_club cc
                             INNER JOIN players p ON cc.id_player = p.id_player
                             INNER JOIN club c ON cc.id_club = c.id_club
@@ -635,56 +670,27 @@
                 break;
 
             case 'delete_club':
-                $text = json_encode($object->{'clubs_ids'});
-                $text = str_replace("[","", $text);
-                $text = str_replace("]", "", $text);
+                $clubid = json_encode($object->{'clubs_ids'});
+                $clubid = str_replace("[","(", $clubid);
+                $clubid = str_replace("]", ")", $clubid);
 
-                // //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
-                // $query = "DELETE ph.*
-                //             FROM publications p
-                //             INNER JOIN publications_users pu ON pu.publication_id = p.id
-                //             INNER JOIN publications_history ph ON ph.publication_id = p.id
-                //             WHERE p.id in (" . $text . ")";
+                //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
+                $query = "DELETE 
+                            FROM contract_club 
+                            WHERE contract_club.id_contract_club = " . $clubid;
 
-                // //[ EXECUTE QUERY ]
-                // $result = mysqli_query($conn, $query);
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
 
-                // //[ CHECK RESULTS ]
-                // if ($result) {
-                //     //[ SET QUERY TO DELETE PUBLICATIONS USERS ASSOCIATED TO SELECTED PUBLICATION ]
-                //     $query = "DELETE pu.*
-                //                 FROM publications p
-                //                 INNER JOIN publications_users pu ON pu.publication_id = p.id
-                //                 WHERE p.id = " . $publicationid;
-                    
-                //     //[ EXECUTE QUERY ]
-                //     $result = mysqli_query($conn, $query);
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                };
 
-                //     //[ CHECK RESULTS ]
-                //     if ($result) {
-                //         //[ SET QUERY TO DELETE SELECTED PUBLICATION ]
-                //         $query = "DELETE FROM publications WHERE id = " . $publicationid;
-
-                //         //[ EXECUTE QUERY ]
-                //         $result = mysqli_query($conn, $query);
-        
-                //         //[ CHECK RESULTS ]
-                //         if ($result) {
-                //             $feedback['success'] = true;
-                //         } else {
-                //             $feedback['success'] = false;
-                //             $feedback['error'] = "ERROR_REMOVING_CLUBS";
-                //         };
-                //     } else {
-                //         $feedback['success'] = false;
-                //         $feedback['error'] = "ERROR_REMOVING_CLUBS";
-                //     };
-                // } else {
-                //     $feedback['success'] = false;
-                //     $feedback['error'] = "ERROR_REMOVING_CLUBS";
-                // };
                 break;
-
                
             case 'mandates':
                 $mandates = array();
@@ -711,7 +717,7 @@
                 $query = "SELECT m.id_mandates, m.date_start AS m_date_start, m.date_end AS m_date_end, m.obs AS m_obs,
                             p.name AS p_name, p.first_name AS p_first_name, p.last_name AS p_last_name, p.nationality AS p_nationality,
                             p.birth_date AS p_birth_date, p.height AS p_height, p.weight AS p_weight, p.position AS p_position, 
-                            p.foot AS p_foot, p.value AS p_value, p.documents AS p_documents, p.documents_val AS p_documentsval, p.id_club,
+                            p.foot AS p_foot, p.value AS p_value, p.documents AS p_documents, p.documents_val AS p_documentsval, p.id_club, cp.name_club as club_name_player,
                             a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
                             a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, 
                             a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs,
@@ -719,9 +725,10 @@
                             FROM mandates m 
                             INNER JOIN players p ON p.id_player = m.id_player
                             INNER JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
+                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club AND ac.id_agent = ma.id_agent
                             INNER JOIN agent a ON a.id_agent = ac.id_agent
                             INNER JOIN club c ON c.id_club = ac.id_club
+                            INNER JOIN club cp ON cp.id_club = p.id_club
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -750,21 +757,21 @@
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT m.id_mandates, m.date_start AS m_date_start, m.date_end AS m_date_end, m.obs AS m_obs,
-                p.name AS p_name, p.first_name AS p_first_name, p.last_name AS p_last_name, p.nationality AS p_nationality,
-                p.birth_date AS p_birth_date, p.height AS p_height, p.weight AS p_weight, p.position AS p_position, 
-                p.foot AS p_foot, p.value AS p_value, p.documents AS p_documents, p.documents_val AS p_documentsval, p.id_club, cp.name_club as club_name_player,
-                a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
-                a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, 
-                a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs,
-                c.name_club as club_name_agent, c.country as country_name_agent
-                FROM mandates m 
-                INNER JOIN players p ON p.id_player = m.id_player
-                INNER JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club AND ac.id_agent = ma.id_agent
-                INNER JOIN agent a ON a.id_agent = ac.id_agent
-                INNER JOIN club c ON c.id_club = ac.id_club
-                INNER JOIN club cp ON cp.id_club = p.id_club
-                WHERE m.id_mandates = " . $mandateid;
+                            p.name AS p_name, p.first_name AS p_first_name, p.last_name AS p_last_name, p.nationality AS p_nationality,
+                            p.birth_date AS p_birth_date, p.height AS p_height, p.weight AS p_weight, p.position AS p_position, 
+                            p.foot AS p_foot, p.value AS p_value, p.documents AS p_documents, p.documents_val AS p_documentsval, p.id_club, cp.name_club as club_name_player,
+                            a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
+                            a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, 
+                            a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs,
+                            c.name_club as club_name_agent, c.country as country_name_agent
+                            FROM mandates m 
+                            INNER JOIN players p ON p.id_player = m.id_player
+                            INNER JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
+                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club AND ac.id_agent = ma.id_agent
+                            INNER JOIN agent a ON a.id_agent = ac.id_agent
+                            INNER JOIN club c ON c.id_club = ac.id_club
+                            INNER JOIN club cp ON cp.id_club = p.id_club
+                            WHERE m.id_mandates = " . $mandateid;
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);

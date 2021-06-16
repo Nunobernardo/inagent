@@ -438,7 +438,7 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportClub" required>
+                        <input type="text" class="form-control txtPlayerPassportNewClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
@@ -617,7 +617,7 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportClub" required>
+                        <input type="text" class="form-control txtPlayerPassportEditClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
@@ -846,13 +846,13 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Clube</label>
-                            <input type="text" class="form-control txtPalyerClubClub" disabled>
+                            <input type="text" class="form-control txtPlayerClubClub" disabled>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Valor de mercardo</label>
-                            <input type="text" class="form-control txtPLayerValueClub" disabled>
+                            <input type="text" class="form-control txtPlayerValueClub" disabled>
                           </div>
                         </div>
                       </div>

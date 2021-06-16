@@ -534,8 +534,73 @@ function representation(args) {
                     ds.representationcommission.val(representation.commission);
                     $('.titleRepresentation').html('Editar contrato de representação');
 
+                    //EDITAR CONTRATO
+                    ds.saverepresentation.on('click', function(){
+                        var representation = me.datasource.representation;
+
+                        with(representation) {
+                            id = representation.id;
+                            player = ds.representationplayer.val();
+                            father = ds.representationfather.val();
+                            mother = ds.representationmother.val();
+                            datestart = ds.representationdatestart.val();
+                            dateend = ds.representationdateend.val();
+                            commission = ds.representationcommission.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'update_representation',
+                            data: {
+                                representation: representation
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('representation_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
                     ds.addnewplayer.remove();
                 } else {
+                    //INSERIR NOVO CONTRATO
+                    ds.saverepresentation.on('click', function(){
+                        var representation = me.datasource.representation;                   
+
+                        with(representation) {
+                            player = ds.representationplayer.val();
+                            father = ds.representationfather.val();
+                            mother = ds.representationmother.val();
+                            datestart = ds.representationdatestart.val();
+                            dateend = ds.representationdateend.val();
+                            commission = ds.representationcommission.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'insert_representation',
+                            data: {
+                                representation: representation
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('representation_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
                     //ADICIONAR JOGADOR
                     ds.addnewplayer.on('click', function(){
                         ds.representationplayerclubnew.val('');
@@ -605,6 +670,8 @@ function representation(args) {
                             controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                         });
                     });
+
+                    ds.editplayer.remove();
                 };               
 
                 //EDITAR DADOS DO JOGADOR
@@ -678,38 +745,6 @@ function representation(args) {
                         controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                     });
                 });  
-
-                //INSERIR CONTRATO
-                ds.saverepresentation.on('click', function(){
-                    var representation = me.datasource.representation;                   
-
-                    with(representation) {
-                        player = ds.representationplayer.val();
-                        father = ds.representationfather.val();
-                        mother = ds.representationmother.val();
-                        datestart = ds.representationdatestart.val();
-                        dateend = ds.representationdateend.val();
-                        commission = ds.representationcommission.val();
-                    };
-
-                    controls.ajax({
-                        functionname: 'insert_representation',
-                        data: {
-                            representation: representation
-                        }
-                    }, function (data) {
-                        if (ifUndefinedOrNull(data.success, false)) {
-                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                            window.open('representation_list.php', '_self');
-                        } else {
-                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
-                        };
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    });
-                });
             });
         },
         init: function() {
@@ -733,8 +768,8 @@ function club(args) {
             clubplayernationality: $('.txtPlayerNationalityClub'),
             clubplayerheight: $('.txtPlayerHeightClub'),
             clubplayerweight: $('.txtPlayerWeightClub'),
-            clubplayerclub: $('.txtPalyerClubClub'),
-            clubplayervalue: $('.txtPLayerValueClub'),
+            clubplayerclub: $('.txtPlayerClubClub'),
+            clubplayervalue: $('.txtPlayerValueClub'),
             clubplayerpassport: $('.txtPlayerPassportClub'),
             clubplayerpassportval: $('.txtPlayerPassportValClub'),
 
@@ -826,34 +861,105 @@ function club(args) {
                 ds = me.design;     
                 
             me.methods.getclub(function(){
-                var club = me.datasource.club;
+                var clubs = me.datasource.club;
 
-                if (club.id > 0) {
-                    ds.clubplayername.val(club.name);
-                    ds.clubplayerfirstname.val(club.firstname);
-                    ds.clubplayerlastname.val(club.lastname);
-                    ds.clubplayerbirth.val(club.birth);
-                    ds.clubplayernationality.val(club.nationality);
-                    ds.clubplayerheight.val(club.height);
-                    ds.clubplayerweight.val(club.weight);
-                    ds.clubplayerclub.val(club.clubname);
-                    ds.clubplayervalue.val(club.valueplayer);
-                    ds.clubplayerpassport.val(club.passport);
-                    ds.clubplayerpassportval.val(club.passportval);
+                if (clubs.id > 0) {
+                    ds.clubplayername.val(clubs.name);
+                    ds.clubplayerfirstname.val(clubs.firstname);
+                    ds.clubplayerlastname.val(clubs.lastname);
+                    ds.clubplayerbirth.val(clubs.birth);
+                    ds.clubplayernationality.val(clubs.nationality);
+                    ds.clubplayerheight.val(clubs.height);
+                    ds.clubplayerweight.val(clubs.weight);
+                    ds.clubplayerclub.val(clubs.clubname);
+                    ds.clubplayervalue.val(clubs.valueplayer);
+                    ds.clubplayerpassport.val(clubs.passport);
+                    ds.clubplayerpassportval.val(clubs.passportval);
 
-                    ds.clubplayer.val(club.name);
-                    ds.clubclub.val(club.clubname);
-                    ds.clubdatestart.val(club.datestart);
-                    ds.clubdateend.val(club.dateend);
-                    ds.clubvalue.val(club.value);
-                    ds.clubclause.val(club.clause);
-                    ds.clubbonus.val(club.bonus);
-                    ds.clubcourt.val(club.court);
-                    ds.clubobs.val(club.obs);
+                    ds.clubplayer.val(clubs.name);
+                    ds.clubclub.val(clubs.clubname);
+                    ds.clubdatestart.val(clubs.datestart);
+                    ds.clubdateend.val(clubs.dateend);
+                    ds.clubvalue.val(clubs.value);
+                    ds.clubclause.val(clubs.clause);
+                    ds.clubbonus.val(clubs.bonus);
+                    ds.clubcourt.val(clubs.court);
+                    ds.clubobs.val(clubs.obs);
                     $('.titleClub').html('Editar contrato de clubes');
 
+                    
+                    //EDITAR CONTRATO CLUBES
+                    ds.saveclub.on('click', function(){
+                        var club = me.datasource.club;
+
+                        with(club) {
+                            player = ds.clubplayer.find('span.cs-placeholder').html();
+                            datestart = ds.clubdatestart.val();
+                            dateend = ds.clubdateend.val();
+                            value = ds.clubvalue.val();
+                            clause = ds.clubclause.val();
+                            bonus = ds.clubbonus.val();
+                            court = ds.clubcourt.val();
+                            obs = ds.clubobs.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'update_club',
+                            data: {
+                                club: club
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('clubs_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
                     ds.addnewplayerclub.remove();
+
                 } else {
+
+                    //INSERIR CONTRATO CLUBES
+                    ds.saveclub.on('click', function(){
+                        var club = me.datasource.club;
+
+                        with(club) {
+                            player = ds.clubplayer.find('span.cs-placeholder').html();
+                            datestart = ds.clubdatestart.val();
+                            dateend = ds.clubdateend.val();
+                            value = ds.clubvalue.val();
+                            clause = ds.clubclause.val();
+                            bonus = ds.clubbonus.val();
+                            court = ds.clubcourt.val();
+                            obs = ds.clubobs.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'insert_club',
+                            data: {
+                                club: club
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('clubs_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
                     //ADICIONAR JOGADOR
                     ds.addnewplayerclub.on('click', function(){
                         ds.clubplayerclubnew.val('');
@@ -923,23 +1029,26 @@ function club(args) {
                             controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                         });
                     });
+
+                    
+                    ds.editplayerclub.remove();
                 };             
 
                 //EDITAR DADOS DO JOGADOR
                 ds.editplayerclub.on('click', function(){
-                    ds.clubplayerclubedit.val(club.clubname);
-                    ds.clubplayernameedit.val(club.name);
-                    ds.clubplayerfirstnameedit.val(club.firstname);
-                    ds.clubplayerlastnameedit.val(club.lastname);
-                    ds.clubplayerbirthedit.val(club.birth);
-                    ds.clubplayernationalityedit.val(club.nationality);
-                    ds.clubplayerheightedit.val(club.height);
-                    ds.clubplayerweightedit.val(club.weight);
+                    ds.clubplayerclubedit.val(clubs.clubname);
+                    ds.clubplayernameedit.val(clubs.name);
+                    ds.clubplayerfirstnameedit.val(clubs.firstname);
+                    ds.clubplayerlastnameedit.val(clubs.lastname);
+                    ds.clubplayerbirthedit.val(clubs.birth);
+                    ds.clubplayernationalityedit.val(clubs.nationality);
+                    ds.clubplayerheightedit.val(clubs.height);
+                    ds.clubplayerweightedit.val(clubs.weight);
                     ds.clubplayerfootedit.find('span.cs-placeholder').html();
                     ds.clubplayerpositionedit.find('span.cs-placeholder').html();
-                    ds.clubplayervalueedit.val(club.value);
-                    ds.clubplayerpassportedit.val(club.passport);
-                    ds.clubplayerpassportvaledit.val(club.passportval);
+                    ds.clubplayervalueedit.val(clubs.value);
+                    ds.clubplayerpassportedit.val(clubs.passport);
+                    ds.clubplayerpassportvaledit.val(clubs.passportval);
                 });
 
                 //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
@@ -947,7 +1056,7 @@ function club(args) {
                     var player = args.player;       
                     
                     with(player) {
-                        id = club.player;
+                        id = clubs.player;
                         name = ds.clubplayernameedit.val();
                         firstname = ds.clubplayerfirstnameedit.val();
                         lastname = ds.clubplayerlastnameedit.val();
@@ -997,39 +1106,6 @@ function club(args) {
                     });
                 });  
 
-                //INSERIR CONTRATO CLUBES
-                ds.saveclub.on('click', function(){
-                    var club = me.datasource.club;
-
-                    with(club) {
-                        player = ds.clubplayer.find('span.cs-placeholder').html();
-                        datestart = ds.clubdatestart.val();
-                        dateend = ds.clubdateend.val();
-                        value = ds.clubvalue.val();
-                        clause = ds.clubclause.val();
-                        bonus = ds.clubbonus.val();
-                        court = ds.clubcourt.val();
-                        obs = ds.clubobs.val();
-                    };
-
-                    controls.ajax({
-                        functionname: 'insert_club',
-                        data: {
-                            club: club
-                        }
-                    }, function (data) {
-                        if (ifUndefinedOrNull(data.success, false)) {
-                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                            window.open('clubs_list.php', '_self');
-                        } else {
-                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
-                        };
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    });
-                });
             });
         },
         init: function() {
@@ -1045,27 +1121,100 @@ function club(args) {
 function mandates(args) {
     var mandates = {
         design: {
-            mandatesplayername: $('.txtPlayerName'),
-            mandatesplayerfirstname: $('.txtPlayerFirstName'),
-            mandatesplayerlastname: $('.txtPlayerLastName'),
-            mandatesplayerbirth: $('.txtPlayerBirth'),
-            mandatesplayernationality: $('.txtPlayerNationality'),
-            mandatesplayerheight: $('.txtPlayerHeight'),
-            mandatesplayerweight: $('.txtPlayerWeight'),
-            mandatesplayerclub: $('.txtPalyerClub'),
-            mandatesplayervalue: $('.txtPLayerValue'),
-            mandatesplayerpassport: $('.txtPlayerPassport'),
-            mandatesplayerpassportval: $('.txtPlayerPassportVal'),
+            //DADOS DO CONTRATO
+            mandateplayerfirstname: $('.txtPLayerMandatesFirstName'),
+            mandateplayerlastname: $('.txtPLayerMandatesLastName'),
+            mandateplayerclub: $('.txtPLayerMandatesClub'),
+            mandateplayervalue: $('.txtPLayerMandatesValue'),
+            mandateplayerpassport: $('.txtPLayerMandatesPassport'),
+            mandateplayerpassportval: $('.txtPLayerMandatesPassportVal'),
+            mandateagentfirstname: $('.txtAgentMandatesFirstName'),
+            mandateagentlastname: $('.txtAgentMandatesLastName'),
+            mandateagentclub: $('.txtAgentMandatesClub'),
+            mandateagentcountry: $('.txtAgentMandatesCountry'),
+            mandateagentpassport: $('.txtAgentMandatesPassport'),
+            mandateagentpassportval: $('.txtAgentMandatesPassportVal'),
 
-            mandatesplayer: $('div.ddlMandatesPlayer'),
-            mandatesagent: $('.ddlMandatesAgent'),
-            mandatesdatestart: $('.txtMandatesDateStart'),
-            mandatesdateend: $('.txtMandatesDateEnd'),
-            mandatesdateend: $('.txtmandatesCompany'),
-            mandatesdateend: $('.txtmandatesClub'),
-            mandatesdateend: $('.txtmandatesCountry'),
-            mandatesobs: $('.txtMandatesObs'),
-            savemandates: $('.btnSaveMandates')
+            //NOVO JOGADOR
+            mandateplayerclubnew: $('div.ddlPlayerClubNewMandate'),
+            mandateplayernamenew: $('.txtPlayerNameNewMandate'),
+            mandateplayerfirstnamenew: $('.txtPlayerFirstNameNewMandate'),
+            mandateplayerlastnamenew: $('.txtPlayerLastNameNewMandate'),
+            mandateplayerbirthnew: $('.txtPlayerBirthNewMandate'),
+            mandateplayernationalitynew: $('.txtPlayerNationalityNewMandate'),
+            mandateplayerheightnew: $('.txtPlayerHeightNewMandate'),
+            mandateplayerweightnew: $('.txtPlayerWeightNewMandate'),
+            mandateplayerpositionnew: $('div.ddlPlayerFootNewMandate'),
+            mandateplayerfootnew: $('div.ddlPlayerPositionNewMandate'),
+            mandateplayervaluenew: $('.txtPlayerValueNewMandate'),
+            mandateplayerpassportnew: $('.txtPlayerPassportNewMandate'),
+            mandateplayerpassportvalnew: $('.txtPlayerPassportValNewMandate'),
+
+            //EDITAR JOGADOR
+            mandateplayernameedit: $('.txtPlayerNameEditMandate'),
+            mandateplayerfirstnameedit: $('.txtPlayerFirstNameEditMandate'),
+            mandateplayerlastnameedit: $('.txtPlayerLastNameEditMandate'),
+            mandateplayerbirthedit: $('.txtPlayerBirthEditMandate'),
+            mandateplayernationalityedit: $('.txtPlayerNationalityEditMandate'),
+            mandateplayerheightedit: $('.txtPlayerHeightEditMandate'),
+            mandateplayerweightedit: $('.txtPlayerWeightEditMandate'),
+            mandateplayerpositionedit: $('div.ddlPlayerPositionEditMandate'),
+            mandateplayerfootedit: $('div.ddlPlayerFootEditMandate'),
+            mandateplayerclubedit: $('div.ddlPlayerClubEditMandate'),
+            mandateplayervalueedit: $('.txtPlayerValueEditMandate'),
+            mandateplayerpassportedit: $('.txtPlayerPassportEditMandate'),
+            mandateplayerpassportvaledit: $('.txtPlayerPassportValEditMandate'),
+
+            //NOVO AGENTE
+            mandateagentclubnew: $('.txtAgentClubNewMandate'),
+            mandateagentnamenew: $('.txtAgentNewMandate'),
+            mandateagentfirstnamenew: $('.txtAgentFirstNameNewMandate'),
+            mandateagentlastnamenew: $('.txtAgentLastNameNewMandate'),
+            mandateagentbirthnew: $('.txtAgentBirthNewMandate'),
+            mandateagentnationalitynew: $('.txtAgentnationalityNewMandate'),
+            mandateagentcompanynew: $('.txtAgentCompanyNewMandate'),
+            mandateagentcountrynew: $('.txtAgentCountryNewMandate'),
+            mandateagentcontactnew: $('txtAgentContactNewMandate'),
+            mandateagentobsnew: $('txtAgentObsNewMandate'),
+            mandateagentpassportnew: $('.txtAgentPassportNewMandate'),
+            mandateagentpassportvalnew: $('.txtAgentPassporValNewMandate'),
+
+            //EDITAR AGENTE
+            mandateagentclubedit: $('.txtAgentClubEditMandate'),
+            mandateagentnameedit: $('.txtAgentEditMandate'),
+            mandateagentfirstnameedit: $('.txtAgentFirstNameEditMandate'),
+            mandateagentlastnameedit: $('.txtAgentLastNameEditMandate'),
+            mandateagentbirthedit: $('.txtAgentBirthEditMandate'),
+            mandateagentnationalityedit: $('.txtAgentnationalityEditMandate'),
+            mandateagentcompanyedit: $('.txtAgentCompanyEditMandate'),
+            mandateagentcountryedit: $('.txtAgentCountryEditMandate'),
+            mandateagentcontactedit: $('txtAgentContactEditMandate'),
+            mandateagentobsedit: $('txtAgentObsEditMandate'),
+            mandateagentpassportedit: $('.txtAgentPassportEditMandate'),
+            mandateagentpassportvaledit: $('.txtAgentPassporValEditMandate'),
+
+            //INSERIR MANDATO
+            mandateplayer: $('div.ddlMandatesPlayer'),
+            mandateagent: $('.ddlMandatesAgent'),
+            mandatedatestart: $('.txtMandatesDateStart'),
+            mandatedateend: $('.txtMandatesDateEnd'),
+            mandatecompany: $('.txtMandatesCompany'),
+            mandatecountry: $('.txtMandatesCountry'),
+            mandateclub: $('.txtMandatesClub'),
+            mandateobs: $('.txtMandatesObs'),
+
+            //BOTÕES
+            savemandates: $('.btnSaveMandates'),
+
+            saveeditplayermandate: $('.btnSavePlayerEditMandate'),
+            savenewplayermandate: $('.btnSavePlayerNewMandate'),
+            addnewplayermandate: $('.addNewPlayerMandate'),
+            editplayermandate: $('.editPlayerMandate'),
+
+            saveeditagentmandate: $('.btnSaveAgentEditMandate'),
+            savenewagentmandate: $('.btnSaveAgentNewMandate'),
+            addnewagentmandate: $('.addNewAgentMandate'),
+            editagentmandate: $('.editAgentMandate')
         },
         datasource: {
             base: undefined,
@@ -1110,26 +1259,29 @@ function mandates(args) {
                 var mandates = me.datasource.mandates;
 
                 if (mandates.id > 0) {
-                    ds.mandatesplayer.val(mandates.player);
-                    ds.mandatesplayername.val(mandates.name);
-                    ds.mandatesplayerfirstname.val(mandates.firstname);
-                    ds.mandatesplayerlastname.val(mandates.lastname);
-                    ds.mandatesplayerbirth.val(mandates.birth);
-                    ds.mandatesplayernationality.val(mandates.nationality);
-                    ds.mandatesplayerheight.val(mandates.height);
-                    ds.mandatesplayerweight.val(mandates.weight);
-                    ds.mandatesplayerclub.val(mandates.clubname);
-                    ds.mandatesplayervalue.val(mandates.value);
-                    ds.mandatesplayerpassport.val(mandates.passport);
-                    ds.mandatesplayerpassportval.val(mandates.passportval);
-                    $('.titlePlayer').html('Editar Mandato');
+                    ds.mandateplayerfirstname.val(mandates.playerfirstname);
+                    ds.mandateplayerlastname.val(mandates.playerlastname);
+                    ds.mandateplayerclub.val(mandates.playerclubname);
+                    ds.mandateplayervalue.val(mandates.playervalue);
+                    ds.mandateplayerpassport.val(mandates.playerpassport);
+                    ds.mandateplayerpassportval.val(mandates.playerpassportval);
 
-                    ds.mandatesdatestart.val(mandates.datestart);
-                    ds.mandatesdatestart.val(mandates.dateend);
-                    ds.mandatesdatestart.val(mandates.agentcompany);
-                    ds.mandatesdatestart.val(mandates.agentclub);
-                    ds.mandatesdatestart.val(mandates.agentcountry);
-                    ds.mandatesdatestart.val(mandates.obs);
+                    ds.mandateagentfirstname.val(mandates.agentfirstname);
+                    ds.mandateagentlastname.val(mandates.agentlastname);
+                    ds.mandateagentclub.val(mandates.agentclubname);
+                    ds.mandateagentcountry.val(mandates.agentcountry);
+                    ds.mandateagentpassport.val(mandates.agentpassport);
+                    ds.mandateagentpassportval.val(mandates.agentpassportval);
+                    
+
+                    ds.mandatedatestart.val(mandates.datestart);
+                    ds.mandatedateend.val(mandates.dateend);
+                    ds.mandatecompany.val(mandates.agentcompany);
+                    ds.mandatecountry.val(mandates.agentcountry);
+                    ds.mandateclub.val(mandates.agentclubname);
+                    ds.mandateobs.val(mandates.obs);
+
+                    $('.titleMandate').html('Editar Mandato');
                 };
 
                 ds.savemandates.on('click', function(){
@@ -1626,7 +1778,7 @@ function list_representation() {
                                                 me.methods.grid.bind();
                                             }
                                         });
-                                    } else {
+                                     } else {
                                         controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
                                     };
                                 }, function () {

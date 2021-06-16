@@ -15,10 +15,10 @@ var controls = {
 			template: $('<div class="feedback"><ul class="messages"><li class="feed Template"><i></i><span></span><div class="window-alert-timer"></div></li></ul></div>')
 		},
 		message: {
-			template: $('<div class="modal-message"><div class="box"><div class="title"></div><div class="wrapper"><div class="icon"></div><div class="message"></div><ul class="options"><li class="btnYes"><button id="btnYes" class="btn btn-primary">Sim</button></li><li class="btnNo"><button id="btnNo" class="btn btn-primary">Não</button></li><li class="btnOk"><cite></cite><button id="btnOk" class="btn btn-primary">Ok</button></li></ul></div></div></div>')
+			template: $('<div class="modal-message"><div class="box"><div class="title"></div><div class="wrapper"><div class="icon"></div><div class="message" style="color:black;"></div><ul class="options"><li class="btnYes"><button id="btnYes" class="btn btn-primary">Sim</button></li><li class="btnNo"><button id="btnNo" class="btn btn-primary">Não</button></li><li class="btnOk"><cite></cite><button id="btnOk" class="btn btn-primary">Ok</button></li></ul></div></div></div>')
 		},
 		update_password: {
-			template: $('<div class="modal-message update-user-password"><div class="box"><div class="title"><i class="fas fa-key"/>Alterar senha de acesso</div><div class="wrapper"><div class="password-info"><p>A senha de acesso deverá obedecer às seguintes regras:</p><ul><li>ter entre 8 e 15 caracteres</li><li>ter pelo menos uma letra maiúscula e uma minúscula</li><li>ter pelo menos um algarismo</li></ul></div><div class="form-content"><div class="fields no-gutters col-12"><div class="form-fields row ctrCurrentPassword"><label class="col-xs-12 col-md-5"><span>Senha de acesso atual: <cite class="label-mandatory">*</cite></span></label><div class="form-field col-xs-12 col-md-7"><div class="form-field-group-append"><i class="fas fa-key"/></div><div class="form-field-group"><input id="txtCurrentPassword" class="form-control mandatory-field" type="password" maxlength="15"></div></div></div><div class="clear ctrCurrentPassword"/><div class="form-fields row ctrNewPassword"><label class="col-xs-12 col-md-5"><span>nova senha de acesso: <cite class="label-mandatory">*</cite></span></label><div class="form-field col-xs-12 col-md-7"><div class="form-field-group-append"><i class="fas fa-key"/></div><div class="form-field-group"><input id="txtNewPassword" class="form-control mandatory-field" type="password" maxlength="15"></div></div></div><div class="clear ctrNewPassword"/><div class="form-fields row ctrConfirmNewPassword"><label class="col-xs-12 col-md-5"><span>Confirmar senha de acesso: <cite class="label-mandatory">*</cite></span></label><div class="form-field col-xs-12 col-md-7"><div class="form-field-group-append"><i class="fas fa-key"/></div><div class="form-field-group"><input id="txtConfirmNewPassword" class="form-control mandatory-field" type="password" maxlength="15"></div></div></div><div class="clear ctrConfirmNewPassword"/></div><div class="clear"/></div><ul class="options"><li class="btnSave"><button id="btnSave" class="btn btn-primary">Guardar</button></li><li class="btnCancel"><button id="btnCancel" class="btn btn-primary">Cancelar</button></li></ul></div></div></div>')
+			template: $('<div class="modal-message update-user-password"><div class="box"><div class="title"><i class="fa fa-key"/>Alterar senha de acesso</div><div class="wrapper"><div class="password-info"><p>A senha de acesso deverá obedecer às seguintes regras:</p><ul><li>ter entre 8 e 15 caracteres</li><li>ter pelo menos uma letra maiúscula e uma minúscula</li><li>ter pelo menos um algarismo</li></ul></div><div class="form-content"><div class="fields no-gutters col-12"><div class="form-fields row ctrCurrentPassword"><label class="col-xs-12 col-md-5"><span>Senha de acesso atual: <cite class="label-mandatory">*</cite></span></label><div class="form-field col-xs-12 col-md-7"><div class="form-field-group-append"><i class="fas fa-key"/></div><div class="form-field-group"><input id="txtCurrentPassword" class="form-control mandatory-field" type="password" maxlength="15"></div></div></div><div class="clear ctrCurrentPassword"/><div class="form-fields row ctrNewPassword"><label class="col-xs-12 col-md-5"><span>nova senha de acesso: <cite class="label-mandatory">*</cite></span></label><div class="form-field col-xs-12 col-md-7"><div class="form-field-group-append"><i class="fas fa-key"/></div><div class="form-field-group"><input id="txtNewPassword" class="form-control mandatory-field" type="password" maxlength="15"></div></div></div><div class="clear ctrNewPassword"/><div class="form-fields row ctrConfirmNewPassword"><label class="col-xs-12 col-md-5"><span>Confirmar senha de acesso: <cite class="label-mandatory">*</cite></span></label><div class="form-field col-xs-12 col-md-7"><div class="form-field-group-append"><i class="fas fa-key"/></div><div class="form-field-group"><input id="txtConfirmNewPassword" class="form-control mandatory-field" type="password" maxlength="15"></div></div></div><div class="clear ctrConfirmNewPassword"/></div><div class="clear"/></div><ul class="options"><li class="btnSave"><button id="btnSave" class="btn btn-primary">Guardar</button></li><li class="btnCancel"><button id="btnCancel" class="btn btn-primary">Cancelar</button></li></ul></div></div></div>')
 		}
 	},
 	feedback: {
@@ -45,22 +45,22 @@ var controls = {
 					switch (ifUndefinedOrNull(parameters.type, '')) {
 						case 'error':
 							addClass('label-danger');
-							find('i').addClass('fas fa-times');
+							find('i').addClass('fa fa-times');
 							break;
 
 						case 'success':
 							addClass('label-success');
-							find('i').addClass('fas fa-check');
+							find('i').addClass('fa fa-check');
 							break;
 
 						case 'warning':
 							addClass('label-warning');
-							find('i').addClass('fas fa-info-circle');
+							find('i').addClass('fa fa-info-circle');
 							break;
 
 						case 'info':
 							addClass('label-info');
-							find('i').addClass('fas fa-exclamation-circle');
+							find('i').addClass('fa fa-exclamation-circle');
 							break;
 
 						default:
@@ -116,7 +116,7 @@ var controls = {
 					case 'error':
 						prop('class', 'box danger');
 						title = 'Erro';
-						icon = '<i class="fas fa-times-circle"></i>';
+						icon = '<i class="fa fa-times-circle"></i>';
 
 						//[ SET OPTIONS ]
 						with (options) {
@@ -129,7 +129,7 @@ var controls = {
 					case 'success':
 						prop('class', 'box success');
 						title = 'Sucesso';
-						icon = '<i class="fas fa-check-circle"></i>';
+						icon = '<i class="fa fa-check-circle"></i>';
 
 						//[ SET OPTIONS ]
 						with (options) {
@@ -142,7 +142,7 @@ var controls = {
 					case 'warning':
 						prop('class', 'box warning');
 						title = 'Aviso';
-						icon = '<i class="fas fa-exclamation-circle"></i>';
+						icon = '<i class="fa fa-exclamation-circle"></i>';
 
 						//[ SET OPTIONS ]
 						with (options) {
@@ -155,7 +155,7 @@ var controls = {
 					case 'info':
 						prop('class', 'box info');
 						title = 'Informação';
-						icon = '<i class="fas fa-info-circle"></i>';
+						icon = '<i class="fa fa-info-circle"></i>';
 
 						//[ SET OPTIONS ]
 						with (options) {
@@ -168,7 +168,7 @@ var controls = {
 					case 'question':
 						prop('class', 'box question');
 						title = 'Questão';
-						icon = '<i class="fas fa-question-circle"></i>';
+						icon = '<i class="fa fa-question"></i>';
 
 						//[ SET OPTIONS ]
 						with (options) {
