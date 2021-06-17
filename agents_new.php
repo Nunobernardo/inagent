@@ -312,7 +312,7 @@
               <div class="row h-100">
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="card-title">
-                    <h5>Adicionar Agente</h5>
+                    <h5 class="titleAgent">ADICIONAR AGENTE</h5>
                   </div>
                 </div>
                 <div class="col-lg-6 col-xs-12 my-auto">

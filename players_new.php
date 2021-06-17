@@ -314,7 +314,7 @@
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="card-title">
                   <h3 class="marketTotalNationality pull-right semi-bold"></h3>
-                    <h5 class="titlePlayer"> Adicionar Jogador</h5>
+                    <h5 class="titlePlayer"> ADICIONAR JOGADOR</h5>
                   </div>
                 </div>
                 <div class="col-lg-6 col-xs-12 my-auto">
@@ -448,7 +448,7 @@
                             <option value="selected" disabled="disabled">Escolha o pé dominante</option>
                             <option value="g">Esquerdo</option>
                             <option value="dd">Direito</option>
-                            <option value="dc">Ambos</option>
+                            <option value="dc" >Ambos</option>
                           </select> 
                         </div>
                       </div>
@@ -484,16 +484,7 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClub" data-init-plugin="select2">
-                              <optgroup label="Portugal">
-                                <option value="AK">F.C.Porto</option>
-                                <option value="HI">S.L.Benfica</option>
-                              </optgroup>
-                              <optgroup label="Espanha">
-                                <option value="CA">Real Madrid</option>
-                                <option value="NV">Barcelona F.C.</option>
-                              </optgroup>
-                            </select>
+                            <select class="full-width ddlPlayerClub" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>

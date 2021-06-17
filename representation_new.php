@@ -317,7 +317,7 @@
                 <div class="container-xs-height full-height">
                   <div class="row-xs-height">
                     <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">Adicionar Jogador</h5>
+                      <h5 style="text-align:center">ADICIONAR JOGADOR</h5>
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
@@ -496,7 +496,7 @@
                 <div class="container-xs-height full-height">
                   <div class="row-xs-height">
                     <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">Adicionar Jogador</h5>
+                      <h5 style="text-align:center">EDITAR JOGADOR </h5>
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
@@ -671,7 +671,7 @@
               <div class="row h-100">
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="card-title">
-                  <h5 class="titleRepresentation">Adicionar contrato de representação</h5>
+                  <h5 class="titleRepresentation">ADICIONAR CONTRATO DE REPRESENTAÇÃO</h5>
                   </div>
                 </div>
                 <div class="col-lg-6 col-xs-12 my-auto">

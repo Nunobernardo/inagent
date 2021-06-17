@@ -47,7 +47,7 @@
         function __construct($obj) {
             if (isset($obj)) {
                 $this->id = (isset($obj["id_player"])) ? intval($obj["id_player"]) : null;
-                $this->club = (isset($obj["id_club"])) ? $obj["id_club"] : null;
+                $this->club = (isset($obj["id_club"])) ? intval($obj["id_club"]) : null;
                 $this->clubname = (isset($obj["club_name"])) ? $obj["club_name"] : null;
                 $this->name = (isset($obj["name"])) ? $obj["name"] : null;
                 $this->firstname = (isset($obj["first_name"])) ? $obj["first_name"] : null;
@@ -691,4 +691,32 @@
             return $this;
         }
     }
+
+    class clubs_list {
+        public $id = 0;
+        public $name_club;
+        public $country;
+
+        function __construct($obj) {
+            if (isset($obj)) {
+                $this->id = (isset($obj["id_club"])) ? intval($obj["id_club"]) : null;
+                $this->name_club = (isset($obj["name_club"])) ? $obj["name_club"] : null;
+                $this->country = (isset($obj["country"])) ? ($obj["country"]) : null;
+            };
+        }
+
+        public function get() {
+            return $this;
+        }
+
+        public function set($id, $nameclub, $country) {
+            $this->id = $id;
+            $this->name_club = $name_club;
+            $this->country = $country;
+            
+            return $this;
+        }
+    }
+
+
 ?>

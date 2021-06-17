@@ -9,18 +9,19 @@ function player(args) {
             playernationality: $('.txtPlayerNationality'),
             playerheight: $('.txtPlayerHeight'),
             playerweight: $('.txtPlayerWeight'),
-            playerfoot: $('div.ddlPlayerFoot'),
+            playerfoot: $('select.ddlPlayerFoot'),
             playerposition: $('div.ddlPlayerPosition'),
-            playerclub: $('.txtPlayerClub'),
             playervalue: $('.txtPlayerValue'),
             playerpassport: $('.txtPlayerPassport'),
             playerpassportval: $('.txtPlayerPassportVal'),
+            playerclub: $('.ddlPlayerClub'),
             saveplayer: $('.btnSavePlayer')
         },
         datasource: {
             base: undefined,
             id: ifUndefinedOrNull(args.data.player_id, 0),
-            player: undefined
+            player: undefined,
+            clubs: new Array()
         },
         methods: {
             base: undefined,
@@ -51,107 +52,157 @@ function player(args) {
 
                     if (!isUndefinedOrNull(after)) { after(); };
                 };
+            },
+            getclubs: function (after) {
+                var me = this.base;
+
+                controls.ajax({
+                    functionname: 'clubs_list',
+                }, function (data) {
+                    //[ SET list_player LIST ]
+                    me.datasource.clubs = data.clubs;
+
+                    if (!isUndefinedOrNull(after)) { after(); };
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                });
             }
         },
         load: function() {
             var me = this,
                 ds = me.design;            
 
-            me.methods.getplayer(function(){
-                var player = me.datasource.player;
+            me.methods.getclubs(function(){
+                me.methods.getplayer(function(){
+                    var player = me.datasource.player,
+                        clubs = me.datasource.clubs,
+                        selectedfoot;
+                    
+                    $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
+                        var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
+                            countryclubs = clubs.filter(function(c){ return (c.country == country); });
 
-                if (player.id > 0) {
-                    ds.playername.val(player.name);
-                    ds.playerfirstname.val(player.firstname);
-                    ds.playerlastname.val(player.lastname);
-                    ds.playerbirth.val(player.birth);
-                    ds.playernationality.val(player.nationality);
-                    ds.playerheight.val(player.height);
-                    ds.playerweight.val(player.weight);
-                    ds.playervalue.val(player.value);
-                    ds.playerpassport.val(player.passport);
-                    ds.playerpassportval.val(player.passportval);
-                    $('.titlePlayer').html('Editar Jogador');
+                        $.each(countryclubs, function (index, club) {
+                            group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                        });
 
-                    //EDITAR JOGADOR
-                    ds.saveplayer.on('click', function(){
-                        var player = me.datasource.player;                   
-    
-                        with(player) {
-                            age = ds.playerage.val();
-                            birth = ds.playerbirth.val();
-                            club = ds.playerclub.val();
-                            firstname = ds.playerfirstname.val();
-                            foot = ds.playerfoot.find('span.cs-placeholder').html();
-                            height = ds.playerheight.val();
-                            lastname = ds.playerlastname.val();
-                            name = ds.playername.val();
-                            nationality = ds.playernationality.val();
-                            passport = ds.playerpassport.val();
-                            passportval = ds.playerpassportval.val();
-                            position = ds.playerposition.find('span.cs-placeholder').html();
-                            value = ds.playervalue.val();
-                            weight = ds.playerweight.val();
-                        };
-    
-                        controls.ajax({
-                            functionname: 'update_player',
-                            data: {
-                                player: player
-                            }
-                        }, function (data) {
-                            if (ifUndefinedOrNull(data.success, false)) {
-                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                                window.open('players_list.php', '_self');
-                            } else {
-                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
-                            };
-                        }, function () {
-                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                        }, function () {
-                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                        });
+                        ds.playerclub.append(group);
                     });
-                }else{
-                    ds.saveplayer.on('click', function(){
-                        var player = me.datasource.player;                   
-    
-                        with(player) {
-                            age = ds.playerage.val();
-                            birth = ds.playerbirth.val();
-                            club = ds.playerclub.val();
-                            firstname = ds.playerfirstname.val();
-                            foot = ds.playerfoot.find('span.cs-placeholder').html();
-                            height = ds.playerheight.val();
-                            lastname = ds.playerlastname.val();
-                            name = ds.playername.val();
-                            nationality = ds.playernationality.val();
-                            passport = ds.playerpassport.val();
-                            passportval = ds.playerpassportval.val();
-                            position = ds.playerposition.find('span.cs-placeholder').html();
-                            value = ds.playervalue.val();
-                            weight = ds.playerweight.val();
-                        };
-    
-                        controls.ajax({
-                            functionname: 'insert_player',
-                            data: {
-                                player: player
-                            }
-                        }, function (data) {
-                            if (ifUndefinedOrNull(data.success, false)) {
-                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                                window.open('players_list.php', '_self');
-                            } else {
-                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+
+                    //SELECIINAR JOGADOR
+                    // $.each(countryclubs, function (index, club) {
+                    //     ds.playerclub.append('<option value="{0}">{1}</option>'.format(club.id_club, club.name_club));
+                    // });
+
+                    if (player.id > 0) {
+                        ds.playername.val(player.name);
+                        ds.playerfirstname.val(player.firstname);
+                        ds.playerlastname.val(player.lastname);
+                        ds.playerbirth.val(player.birth);
+                        ds.playernationality.val(player.nationality);
+                        ds.playerheight.val(player.height);
+                        ds.playerweight.val(player.weight);
+                        ds.playervalue.val(player.value);
+                        ds.playerpassport.val(player.passport);
+                        ds.playerpassportval.val(player.passportval);
+                        ds.playerclub.val(player.club);
+                        ds.playerclub.trigger('change');
+
+                        // $.each(ds.playerfoot.find('option'), function (index, element) {
+                        //     if ($(element).html() == player.foot) {
+                        //         $(element).attr('selected', 'selected');
+                        //         return false;
+                        //     }
+                        // });
+
+                        // ds.playerfoot.trigger('change');  
+
+                        $('.titlePlayer').html('EDITAR JOGADOR');
+
+                        //EDITAR JOGADOR
+                        ds.saveplayer.on('click', function(){
+                            var player = me.datasource.player;                   
+
+                            with(player) {
+                                age = ds.playerage.val();
+                                birth = ds.playerbirth.val();
+                                club = ds.playerclub.find('option:selected').val();
+                                firstname = ds.playerfirstname.val();
+                                foot = ds.playerfoot.find('span.cs-placeholder').html();
+                                height = ds.playerheight.val();
+                                lastname = ds.playerlastname.val();
+                                name = ds.playername.val();
+                                nationality = ds.playernationality.val();
+                                passport = ds.playerpassport.val();
+                                passportval = ds.playerpassportval.val();
+                                position = ds.playerposition.find('span.cs-placeholder').html();
+                                value = ds.playervalue.val();
+                                weight = ds.playerweight.val();
                             };
-                        }, function () {
-                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                        }, function () {
-                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+        
+                            controls.ajax({
+                                functionname: 'update_player',
+                                data: {
+                                    player: player
+                                }
+                            }, function (data) {
+                                if (ifUndefinedOrNull(data.success, false)) {
+                                    controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                    window.open('players_list.php', '_self');
+                                } else {
+                                    controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                                };
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                            });
                         });
-                    });
-                };
+                    }else{
+                        ds.saveplayer.on('click', function(){
+                            var player = me.datasource.player;                   
+        
+                            with(player) {
+                                age = ds.playerage.val();
+                                birth = ds.playerbirth.val();
+                                club = ds.playerclub.val();
+                                firstname = ds.playerfirstname.val();
+                                foot = ds.playerfoot.find('span.cs-placeholder').html();
+                                height = ds.playerheight.val();
+                                lastname = ds.playerlastname.val();
+                                name = ds.playername.val();
+                                nationality = ds.playernationality.val();
+                                passport = ds.playerpassport.val();
+                                passportval = ds.playerpassportval.val();
+                                position = ds.playerposition.find('span.cs-placeholder').html();
+                                value = ds.playervalue.val();
+                                weight = ds.playerweight.val();
+                            };
+        
+                            controls.ajax({
+                                functionname: 'insert_player',
+                                data: {
+                                    player: player
+                                }
+                            }, function (data) {
+                                if (ifUndefinedOrNull(data.success, false)) {
+                                    controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                    window.open('players_list.php', '_self');
+                                } else {
+                                    controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                                };
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                            });
+                        });
+                    };
+                });
             });
         },
         init: function() {
@@ -236,46 +287,87 @@ function coach(args) {
                     ds.coachvalue.val(coach.value);
                     ds.coachpassport.val(coach.passport);
                     ds.coachpassportval.val(coach.passportval);
-                    $('.titleCoach').html('Editar Treinador');
-                };
+                    $('.titleCoach').html('EDITAR TREINADOR');
 
-                ds.savecoach.on('click', function(){
-                    var coach = me.datasource.coach;                   
 
-                    with(coach) {
-                        age = ds.coachage.val();
-                        birth = ds.coachbirth.val();
-                        club = ds.coachclub.val();
-                        firstname = ds.coachfirstname.val();
-                        formation = ds.coachformation.find('span.cs-placeholder').html();
-                        height = ds.coachheight.val();
-                        lastname = ds.coachlastname.val();
-                        name = ds.coachname.val();
-                        nationality = ds.coachnationality.val();
-                        passport = ds.coachpassport.val();
-                        passportval = ds.coachpassportval.val();
-                        value = ds.coachvalue.val();
-                        weight = ds.coachweight.val();
-                    };
-    
-                    controls.ajax({
-                        functionname: 'insert_coach',
-                        data: {
-                            coach: coach
-                        }
-                    }, function (data) {
-                        if (ifUndefinedOrNull(data.success, false)) {
-                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                            window.open('coaches_list.php', '_self');
-                        } else {
-                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                    ds.savecoach.on('click', function(){
+                        var coach = me.datasource.coach;                   
+
+                        with(coach) {
+                            age = ds.coachage.val();
+                            birth = ds.coachbirth.val();
+                            club = ds.coachclub.val();
+                            firstname = ds.coachfirstname.val();
+                            formation = ds.coachformation.find('span.cs-placeholder').html();
+                            height = ds.coachheight.val();
+                            lastname = ds.coachlastname.val();
+                            name = ds.coachname.val();
+                            nationality = ds.coachnationality.val();
+                            passport = ds.coachpassport.val();
+                            passportval = ds.coachpassportval.val();
+                            value = ds.coachvalue.val();
+                            weight = ds.coachweight.val();
                         };
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+        
+                        controls.ajax({
+                            functionname: 'update_coach',
+                            data: {
+                                coach: coach
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('coaches_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
                     });
-                });
+                } else {
+
+                    ds.savecoach.on('click', function(){
+                        var coach = me.datasource.coach;                   
+    
+                        with(coach) {
+                            age = ds.coachage.val();
+                            birth = ds.coachbirth.val();
+                            club = ds.coachclub.val();
+                            firstname = ds.coachfirstname.val();
+                            formation = ds.coachformation.find('span.cs-placeholder').html();
+                            height = ds.coachheight.val();
+                            lastname = ds.coachlastname.val();
+                            name = ds.coachname.val();
+                            nationality = ds.coachnationality.val();
+                            passport = ds.coachpassport.val();
+                            passportval = ds.coachpassportval.val();
+                            value = ds.coachvalue.val();
+                            weight = ds.coachweight.val();
+                        };
+        
+                        controls.ajax({
+                            functionname: 'insert_coach',
+                            data: {
+                                coach: coach
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('coaches_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
+                }
             });
         },
         init: function() {
@@ -360,43 +452,85 @@ function agent(args) {
                     ds.agentcompany.val(agent.agentcompany);
                     ds.agentcontacts.val(agent.contacts);
                     ds.agentobs.val(agent.obs);
-                };
+                    $('.titleAgent').html('EDITAR AGENTE');
 
-                ds.saveagent.on('click', function(){
-                    var agent = me.datasource.agent;                   
+                    //EDITAR AGENTE
+                    ds.saveagent.on('click', function(){
+                        var agent = me.datasource.agent;                   
 
-                    with(agent) {
-                        name = ds.agentname.val();
-                        club = ds.agentclub.val();
-                        firstname = ds.agentfirstname.val();
-                        lastname = ds.agentlastname.val();
-                        birth = ds.agentbirth.val();
-                        nationality = ds.agentnationality.val();
-                        passport = ds.agentdocuments.val();
-                        passportval = ds.agentdocumentsval.val();
-                        agentcompany = ds.agentcompany.val();
-                        contacts = ds.agentcontacts.val();
-                        obs = ds.agentobs.val();
-                    };
-
-                    controls.ajax({
-                        functionname: 'insert_agent',
-                        data: {
-                            agent: agent
-                        }
-                    }, function (data) {
-                        if (ifUndefinedOrNull(data.success, false)) {
-                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                            window.open('agents_list.php', '_self');
-                        } else {
-                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                        with(agent) {
+                            name = ds.agentname.val();
+                            club = ds.agentclub.val();
+                            firstname = ds.agentfirstname.val();
+                            lastname = ds.agentlastname.val();
+                            birth = ds.agentbirth.val();
+                            nationality = ds.agentnationality.val();
+                            passport = ds.agentdocuments.val();
+                            passportval = ds.agentdocumentsval.val();
+                            agentcompany = ds.agentcompany.val();
+                            contacts = ds.agentcontacts.val();
+                            obs = ds.agentobs.val();
                         };
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                    }, function () {
-                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+
+                        controls.ajax({
+                            functionname: 'update_agent',
+                            data: {
+                                agent: agent
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('agents_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
                     });
-                });
+                } else {
+
+                    //NOVO AGENTE
+                    ds.saveagent.on('click', function(){
+                        var agent = me.datasource.agent;                   
+
+                        with(agent) {
+                            name = ds.agentname.val();
+                            club = ds.agentclub.val();
+                            firstname = ds.agentfirstname.val();
+                            lastname = ds.agentlastname.val();
+                            birth = ds.agentbirth.val();
+                            nationality = ds.agentnationality.val();
+                            passport = ds.agentdocuments.val();
+                            passportval = ds.agentdocumentsval.val();
+                            agentcompany = ds.agentcompany.val();
+                            contacts = ds.agentcontacts.val();
+                            obs = ds.agentobs.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'insert_agent',
+                            data: {
+                                agent: agent
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('agents_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
+                }
+
             });
         },
         init: function() {
@@ -532,7 +666,7 @@ function representation(args) {
                     ds.representationdatestart.val(representation.datestart);
                     ds.representationdateend.val(representation.dateend);
                     ds.representationcommission.val(representation.commission);
-                    $('.titleRepresentation').html('Editar contrato de representação');
+                    $('.titleRepresentation').html('EDITAR CONTRATO DE REPRESENTAÇÃO');
 
                     //EDITAR CONTRATO
                     ds.saverepresentation.on('click', function(){
@@ -885,7 +1019,7 @@ function club(args) {
                     ds.clubbonus.val(clubs.bonus);
                     ds.clubcourt.val(clubs.court);
                     ds.clubobs.val(clubs.obs);
-                    $('.titleClub').html('Editar contrato de clubes');
+                    $('.titleClub').html('EDITAR CONTRATO DE CLUBES');
 
                     
                     //EDITAR CONTRATO CLUBES
@@ -1282,7 +1416,7 @@ function mandates(args) {
                     ds.mandateclub.val(mandates.agentclubname);
                     ds.mandateobs.val(mandates.obs);
 
-                    $('.titleMandate').html('Editar Mandato');
+                    $('.titleMandate').html('EDITAR MANDATO');
 
                     //EDITAR MANDATO
                     ds.savemandates.on('click', function(){
@@ -2474,14 +2608,14 @@ function list_mandate() {
                                     if (ifUndefinedOrNull(data.success, false)) {
                                         controls.message.bind({
                                             type: 'success',
-                                            message: 'Os jogadores foram removidos com sucesso',
+                                            message: 'O mandato foi removido com sucesso',
                                             afterok: function () {
                                                 //[ BIND list_mandate GRID ]
                                                 me.methods.grid.bind();
                                             }
                                         });
                                     } else {
-                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover os jogadores, por favor tente mais tarde.' });
+                                        controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao tentar remover o mandato, por favor tente mais tarde.' });
                                     };
                                 }, function () {
                                     //[ ERROR ]
@@ -2762,7 +2896,7 @@ function list_agent() {
 
                                 //[ OTHER COLUMNS ]
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckagent{0}" data="{0}"><label for="ckagent{0}" class="no-padding no-margin"></label></div>'.format(list_agent.id)));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.name, '')));
+                                row.append(itemcolumn.format('{0} {1}'.format(list_agent.firstname, list_agent.lastname)));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.agentcompany, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.clubname, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.country, '')));
