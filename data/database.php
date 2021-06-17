@@ -73,7 +73,7 @@
                     $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
-                    $feedback['error'] = 'ERRO_INSERT_PLAYER';
+                    $feedback['error'] = 'ERRO_UPDATE_PLAYER';
                 };
                 break;
 
@@ -149,7 +149,7 @@
                     $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
-                    $feedback['error'] = 'ERRO_INSERT_REPRESENTATION';
+                    $feedback['error'] = 'ERRO_UPDATE_REPRESENTATION';
                 };
                 break;
 
@@ -174,6 +174,40 @@
                     $feedback['success'] = false;
                     $feedback['error'] = 'ERRO_INSERT_AGENT';
                     $feedback['XX'] = $query;
+                };
+                break;
+
+            case 'update_agent':
+                $agent = $object->{'agent'};
+                $birthagent = date("Y-m-d", strtotime($agent->birth));
+                $passportvalagent = date("Y-m-d", strtotime($agent->passportval));
+
+                //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                $query = "UPDATE agent 
+                            SET   
+                            name = '$agent->name', 
+                            first_name = '$agent->firstname', 
+                            last_name = '$agent->lastname',
+                            nationality = '$agent->nationality', 
+                            birth_date = '$birthagent', 
+                            documents = '$agent->passport', 
+                            documents_val = '$passportvalagent',
+                            company = '$agent->agentcompany',
+                            contacts = '$agent->contacts',
+                            obs = '$agent->obs'
+                            WHERE id_agent = $agent->id ";
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+                $feedback['XXXXXXXXXX'] = $query;
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['agent_id'] = $conn->insert_id;
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = 'ERRO_UPDATE_PLAYER';
                 };
                 break;
 
@@ -229,7 +263,7 @@
                     $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
-                    $feedback['error'] = 'ERRO_INSERT_CLUB';
+                    $feedback['error'] = 'ERRO_UPDATE_CLUB';
                     $feedback['XX'] = $query;
                 };
                 break;
@@ -714,21 +748,16 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT m.id_mandates, m.date_start AS m_date_start, m.date_end AS m_date_end, m.obs AS m_obs,
-                            p.name AS p_name, p.first_name AS p_first_name, p.last_name AS p_last_name, p.nationality AS p_nationality,
-                            p.birth_date AS p_birth_date, p.height AS p_height, p.weight AS p_weight, p.position AS p_position, 
-                            p.foot AS p_foot, p.value AS p_value, p.documents AS p_documents, p.documents_val AS p_documentsval, p.id_club, cp.name_club as club_name_player,
-                            a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
-                            a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, 
-                            a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs,
+                $query = "SELECT m.id_mandates, m.date_start AS m_date_start, m.date_end AS m_date_end,
+                            p.first_name AS p_first_name, p.last_name AS p_last_name, 
+                            a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
                             c.name_club as club_name_agent, c.country as country_name_agent
                             FROM mandates m 
                             INNER JOIN players p ON p.id_player = m.id_player
                             INNER JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club AND ac.id_agent = ma.id_agent
+                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
                             INNER JOIN agent a ON a.id_agent = ac.id_agent
                             INNER JOIN club c ON c.id_club = ac.id_club
-                            INNER JOIN club cp ON cp.id_club = p.id_club
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -757,10 +786,10 @@
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT m.id_mandates, m.date_start AS m_date_start, m.date_end AS m_date_end, m.obs AS m_obs,
-                            p.name AS p_name, p.first_name AS p_first_name, p.last_name AS p_last_name, p.nationality AS p_nationality,
+                            p.id_player, p.name AS p_name, p.first_name AS p_first_name, p.last_name AS p_last_name, p.nationality AS p_nationality,
                             p.birth_date AS p_birth_date, p.height AS p_height, p.weight AS p_weight, p.position AS p_position, 
                             p.foot AS p_foot, p.value AS p_value, p.documents AS p_documents, p.documents_val AS p_documentsval, p.id_club, cp.name_club as club_name_player,
-                            a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
+                            ac.id_agent, a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
                             a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, 
                             a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs,
                             c.name_club as club_name_agent, c.country as country_name_agent

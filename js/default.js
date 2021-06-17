@@ -963,6 +963,7 @@ function club(args) {
                     //ADICIONAR JOGADOR
                     ds.addnewplayerclub.on('click', function(){
                         ds.clubplayerclubnew.val('');
+                        ds.clubplayernamenew.val('');
                         ds.clubplayerfirstnamenew.val('');
                         ds.clubplayerlastnamenew.val('');
                         ds.clubplayerbirthnew.val('');
@@ -1122,12 +1123,12 @@ function mandates(args) {
     var mandates = {
         design: {
             //DADOS DO CONTRATO
-            mandateplayerfirstname: $('.txtPLayerMandatesFirstName'),
-            mandateplayerlastname: $('.txtPLayerMandatesLastName'),
-            mandateplayerclub: $('.txtPLayerMandatesClub'),
-            mandateplayervalue: $('.txtPLayerMandatesValue'),
-            mandateplayerpassport: $('.txtPLayerMandatesPassport'),
-            mandateplayerpassportval: $('.txtPLayerMandatesPassportVal'),
+            mandateplayerfirstname: $('.txtPlayerMandatesFirstName'),
+            mandateplayerlastname: $('.txtPlayerMandatesLastName'),
+            mandateplayerclub: $('.txtPlayerMandatesClub'),
+            mandateplayervalue: $('.txtPlayerMandatesValue'),
+            mandateplayerpassport: $('.txtPlayerMandatesPassport'),
+            mandateplayerpassportval: $('.txtPlayerMandatesPassportVal'),
             mandateagentfirstname: $('.txtAgentMandatesFirstName'),
             mandateagentlastname: $('.txtAgentMandatesLastName'),
             mandateagentclub: $('.txtAgentMandatesClub'),
@@ -1174,8 +1175,8 @@ function mandates(args) {
             mandateagentnationalitynew: $('.txtAgentnationalityNewMandate'),
             mandateagentcompanynew: $('.txtAgentCompanyNewMandate'),
             mandateagentcountrynew: $('.txtAgentCountryNewMandate'),
-            mandateagentcontactnew: $('txtAgentContactNewMandate'),
-            mandateagentobsnew: $('txtAgentObsNewMandate'),
+            mandateagentcontactnew: $('.txtAgentContactNewMandate'),
+            mandateagentobsnew: $('.txtAgentObsNewMandate'),
             mandateagentpassportnew: $('.txtAgentPassportNewMandate'),
             mandateagentpassportvalnew: $('.txtAgentPassporValNewMandate'),
 
@@ -1185,14 +1186,14 @@ function mandates(args) {
             mandateagentfirstnameedit: $('.txtAgentFirstNameEditMandate'),
             mandateagentlastnameedit: $('.txtAgentLastNameEditMandate'),
             mandateagentbirthedit: $('.txtAgentBirthEditMandate'),
-            mandateagentnationalityedit: $('.txtAgentnationalityEditMandate'),
+            mandateagentnationalityedit: $('.txtAgentNationalityEditMandate'),
             mandateagentcompanyedit: $('.txtAgentCompanyEditMandate'),
             mandateagentcountryedit: $('.txtAgentCountryEditMandate'),
-            mandateagentcontactedit: $('txtAgentContactEditMandate'),
-            mandateagentobsedit: $('txtAgentObsEditMandate'),
+            mandateagentcontactedit: $('.txtAgentContactEditMandate'),
+            mandateagentobsedit: $('.txtAgentObsEditMandate'),
             mandateagentpassportedit: $('.txtAgentPassportEditMandate'),
-            mandateagentpassportvaledit: $('.txtAgentPassporValEditMandate'),
-
+            mandateagentpassportvaledit: $('.txtAgentPassportValEditMandate'),
+            
             //INSERIR MANDATO
             mandateplayer: $('div.ddlMandatesPlayer'),
             mandateagent: $('.ddlMandatesAgent'),
@@ -1282,37 +1283,341 @@ function mandates(args) {
                     ds.mandateobs.val(mandates.obs);
 
                     $('.titleMandate').html('Editar Mandato');
+
+                    //EDITAR MANDATO
+                    ds.savemandates.on('click', function(){
+                        var mandates = me.datasource.mandates;
+    
+                        with(mandates) {
+                            player = ds.mandateplayer.find('span.cs-placeholder').html();
+                            agent = ds.mandateagent.find('span.cs-placeholder').html();
+                            datestart = ds.mandatedatestart.val();
+                            dateend = ds.mandatedateend.val();
+                            obs = ds.mandateobs.val();
+                        };
+    
+                        controls.ajax({
+                            functionname: 'insert_mandates',
+                            data: {
+                                mandates: mandates
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('mandates_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
+                    ds.addnewplayermandate.remove();
+                    ds.addnewagentmandate.remove();
+                } else {
+
+                    //INSERIR NOVO MANDATO
+                    ds.savemandates.on('click', function(){
+                        var mandates = me.datasource.mandates;
+    
+                        with(mandates) {
+                            player = ds.mandateplayer.find('span.cs-placeholder').html();
+                            agent = ds.mandateagent.find('span.cs-placeholder').html();
+                            //company = ds.mandatecompany.val();
+                            datestart = ds.mandatedatestart.val();
+                            dateend = ds.mandatedateend.val();
+                            obs = ds.mandateobs.val();
+                        };
+    
+                        controls.ajax({
+                            functionname: 'insert_mandates',
+                            data: {
+                                mandates: mandates
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+                                controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                window.open('mandates_list.php', '_self');
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
+                    //ADICIONAR JOGADOR
+                    ds.addnewplayermandate.on('click', function(){
+                        ds.mandateplayerclubnew.val('');
+                        ds.mandateplayernamenew.val('');
+                        ds.mandateplayerfirstnamenew.val('');
+                        ds.mandateplayerlastnamenew.val('');
+                        ds.mandateplayerbirthnew.val('');
+                        ds.mandateplayernationalitynew.val('');
+                        ds.mandateplayerheightnew.val('');
+                        ds.mandateplayerweightnew.val('');
+                        ds.mandateplayerfootnew.find('span.cs-placeholder').html();
+                        ds.mandateplayerpositionnew.find('span.cs-placeholder').html();
+                        ds.mandateplayervaluenew.val('');
+                        ds.mandateplayerpassportnew.val('');
+                        ds.mandateplayerpassportvalnew.val('');
+                    });
+
+                    //BOTAO DE SALVAR ADICIONAR JOGADOR
+                    ds.savenewplayermandate.on('click', function(){
+                        var player = args.player;       
+                        
+                        with(player) {
+                            name = ds.mandateplayernamenew.val();
+                            firstname = ds.mandateplayerfirstnamenew.val();
+                            lastname = ds.mandateplayerlastnamenew.val();
+                            birth = ds.mandateplayerbirthnew.val();
+                            nationality = ds.mandateplayernationalitynew.val();
+                            height = ds.mandateplayerheightnew.val();
+                            weight = ds.mandateplayerweightnew.val();
+                            foot = ds.mandateplayerfootnew.find('span.cs-placeholder').html();
+                            position = ds.mandateplayerpositionnew.find('span.cs-placeholder').html();
+                            value = ds.mandateplayervaluenew.val();
+                            passport = ds.mandateplayerpassportnew.val();
+                            passportval = ds.mandateplayerpassportvalnew.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'insert_player',
+                            data: {
+                                player: player
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+
+                                //MOSTRAR DADOS ALTERADOS
+                                ds.mandateplayerclub.val(player.clubname);
+                                ds.mandateplayerfirstname.val(player.firstname);
+                                ds.mandateplayerlastname.val(player.lastname);
+                                ds.mandateplayervalue.val(player.value);
+                                ds.mandateplayerpassport.val(player.passport);
+                                ds.mandateplayerpassportval.val(player.passportval);
+                                
+                                controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                $("[data-dismiss=modal]").trigger({ type: "click" });
+                                //$('body').trigger('click');
+                                
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
+                    //ADICIONAR AGENTE
+                    ds.addnewagentmandate.on('click', function(){
+                        ds.mandateagentclubnew.val('');
+                        ds.mandateagentnamenew.val('');
+                        ds.mandateagentfirstnamenew.val('');
+                        ds.mandateagentlastnamenew.val('');
+                        ds.mandateagentbirthnew.val('');
+                        ds.mandateagentnationalitynew.val('');
+                        ds.mandateagentpassportnew.val('');
+                        ds.mandateagentpassportvalnew.val('');
+                        ds.mandateagentcompanynew.val('');
+                        ds.mandateagentcountrynew.val('');
+                        ds.mandateagentcontactnew.val('');
+                        ds.mandateagentobsnew.val('');
+                    });
+                    
+                    //BOTAO DE SALVAR ADICIONAR JOGADOR
+                    ds.savenewagentmandate.on('click', function(){
+                        var agent = args.agent;       
+                        
+                        with(agent) {
+                            name = ds.mandateagentnamenew.val();
+                            firstname = ds.mandateagentfirstnamenew.val();
+                            lastname = ds.mandateagentlastnamenew.val();
+                            birth = ds.mandateagentbirthnew.val();
+                            nationality = ds.mandateagentnationalitynew.val();
+                            passport = ds.mandateagentpassportnew.val();
+                            passportval = ds.mandateagentpassportvalnew.val();
+                            agentcompany = ds.mandateagentcompanynew.val();
+                            country = ds.mandateagentcountrynew.val();
+                            contacts = ds.mandateagentcontactnew.val();
+                            obs = ds.mandateagentobsnew.val();
+                        };
+
+                        controls.ajax({
+                            functionname: 'insert_agent',
+                            data: {
+                                agent: agent
+                            }
+                        }, function (data) {
+                            if (ifUndefinedOrNull(data.success, false)) {
+
+                                //MOSTRAR DADOS ALTERADOS
+                                ds.mandateagentclub.val(agent.clubname);
+                                ds.mandateagentfirstname.val(agent.firstname);
+                                ds.mandateagentlastname.val(agent.lastname);
+                                ds.mandateagentcountry.val(agent.country);
+                                ds.mandateagentpassport.val(agent.passport);
+                                ds.mandateagentpassportval.val(agent.passportval);
+                                ds.mandatecompany.val(agent.agentcompany);
+                                
+                                controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                $("[data-dismiss=modal]").trigger({ type: "click" });
+                                //$('body').trigger('click');
+                                
+                            } else {
+                                controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                            };
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        }, function () {
+                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                        });
+                    });
+
+                    ds.editplayermandate.remove();
+                    ds.editagentmandate.remove();
                 };
+                
+                //EDITAR DADOS DO JOGADOR
+                ds.editplayermandate.on('click', function(){
+                    ds.mandateplayerclubedit.val(mandates.playerclubname);
+                    ds.mandateplayernameedit.val(mandates.playername);
+                    ds.mandateplayerfirstnameedit.val(mandates.playerfirstname);
+                    ds.mandateplayerlastnameedit.val(mandates.playerlastname);
+                    ds.mandateplayerbirthedit.val(mandates.playerbirth);
+                    ds.mandateplayernationalityedit.val(mandates.playernationality);
+                    ds.mandateplayerheightedit.val(mandates.playerheight);
+                    ds.mandateplayerweightedit.val(mandates.playerweight);
+                    ds.mandateplayerfootedit.find('span.cs-placeholder').html();
+                    ds.mandateplayerpositionedit.find('span.cs-placeholder').html();
+                    ds.mandateplayervalueedit.val(mandates.playervalue);
+                    ds.mandateplayerpassportedit.val(mandates.playerpassport);
+                    ds.mandateplayerpassportvaledit.val(mandates.playerpassportval);
+                });
 
-                ds.savemandates.on('click', function(){
-                    var mandates = me.datasource.mandates;
-
-                    with(mandates) {
-                        player = ds.mandatesplayer.find('span.cs-placeholder').html();
-                        agent = ds.mandatesagent.find('span.cs-placeholder').html();
-                        datestart = ds.mandatesdatestart.val();
-                        dateend = ds.mandatesdateend.val();
-                        obs = ds.mandatesobs.val();
+                //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
+                ds.saveeditplayermandate.on('click', function(){
+                    var player = args.player;       
+                    
+                    with(player) {
+                        id = mandates.player;
+                        name = ds.mandateplayernameedit.val();
+                        firstname = ds.mandateplayerfirstnameedit.val();
+                        lastname = ds.mandateplayerlastnameedit.val();
+                        birth = ds.mandateplayerbirthedit.val();
+                        nationality = ds.mandateplayernationalityedit.val();
+                        height = ds.mandateplayerheightedit.val();
+                        weight = ds.mandateplayerweightedit.val();
+                        foot = ds.mandateplayerfootedit.find('span.cs-placeholder').html();
+                        position = ds.mandateplayerpositionedit.find('span.cs-placeholder').html();
+                        value = ds.mandateplayervalueedit.val();
+                        passport = ds.mandateplayerpassportedit.val();
+                        passportval = ds.mandateplayerpassportvaledit.val();
                     };
 
                     controls.ajax({
-                        functionname: 'insert_mandates',
+                        functionname: 'update_player',
                         data: {
-                            mandates: mandates
+                            player: player
                         }
                     }, function (data) {
                         if (ifUndefinedOrNull(data.success, false)) {
-                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                            window.open('mandates_list.php', '_self');
+                            
+                            //MOSTRAR DADOS ALTERADOS
+                            ds.mandateplayerfirstname.val(player.firstname);
+                            ds.mandateplayerlastname.val(player.lastname);
+                            ds.mandateplayerclub.val(player.clubname);
+                            ds.mandateplayervalue.val(player.value);
+                            ds.mandateplayerpassport.val(player.passport);
+                            ds.mandateplayerpassportval.val(player.passportval);
+                            
+                            controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
+                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                            //$('body').trigger('click');
+
                         } else {
-                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                            controls.message.bind({ type: 'error', message: 'Não foi possivel editar os dados do jogador.' });
                         };
                     }, function () {
                         controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                     }, function () {
                         controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                     });
+                });  
+
+                //EDITAR DADOS DO AGENTE
+                ds.editagentmandate.on('click', function(){
+                    ds.mandateagentclubedit.val(mandates.agentclubname);
+                    ds.mandateagentnameedit.val(mandates.agentname);
+                    ds.mandateagentfirstnameedit.val(mandates.agentfirstname);
+                    ds.mandateagentlastnameedit.val(mandates.agentlastname);
+                    ds.mandateagentbirthedit.val(mandates.agentbirth);
+                    ds.mandateagentnationalityedit.val(mandates.agentnationality);
+                    ds.mandateagentpassportedit.val(mandates.agentpassport);
+                    ds.mandateagentpassportvaledit.val(mandates.agentpassportval);
+                    ds.mandateagentcompanyedit.val(mandates.agentcompany);
+                    ds.mandateagentcountryedit.val(mandates.agentcountry);
+                    ds.mandateagentcontactedit.val(mandates.agentcontacts);
+                    ds.mandateagentobsedit.val(mandates.agentobs);
                 });
+
+                //BOTAO DE SALVAR EDIÇÃO DE AGENTE
+                ds.saveeditagentmandate.on('click', function(){
+                    var agent = args.agent;       
+                    
+                    with(agent) {
+                        id = mandates.agentid;
+                        name = ds.mandateagentnameedit.val();
+                        firstname = ds.mandateagentfirstnameedit.val();
+                        lastname = ds.mandateagentlastnameedit.val();
+                        birth = ds.mandateagentbirthedit.val();
+                        nationality = ds.mandateagentnationalityedit.val();
+                        passport = ds.mandateagentpassportedit.val();
+                        passportval = ds.mandateagentpassportvaledit.val();
+                        agentcompany = ds.mandateagentcompanyedit.val();
+                        country = ds.mandateagentcountryedit.val();
+                        contacts = ds.mandateagentcontactedit.val();
+                        obs = ds.mandateagentobsedit.val();
+                    };
+
+                    controls.ajax({
+                        functionname: 'update_agent',
+                        data: {
+                            agent: agent
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            
+                            //MOSTRAR DADOS ALTERADOS
+                            ds.mandateagentfirstname.val(agent.firstname);
+                            ds.mandateagentlastname.val(agent.lastname);
+                            ds.mandateagentclub.val(agent.clubname);
+                            ds.mandateagentcountry.val(agent.agentcountry);
+                            ds.mandateagentpassport.val(agent.passport);
+                            ds.mandateagentpassportval.val(agent.passportval);
+                            
+                            controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
+                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                            //$('body').trigger('click');
+
+                        } else {
+                            controls.message.bind({ type: 'error', message: 'Não foi possivel editar os dados do jogador.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                }); 
+
             });
         },
         init: function() {

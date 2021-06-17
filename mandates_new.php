@@ -937,6 +937,10 @@
                         </div>
                       </div>
                       <div class="form-group form-group-default disabled">
+                        <label>Empresa do agente</label>
+                        <input type="text" class="form-control txtMandatesCompany">
+                      </div>
+                      <div class="form-group form-group-default disabled">
                         <label>Clubes do mandato</label>
                         <input type="text" class="form-control txtMandatesClub">
                       </div>
@@ -989,13 +993,13 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Primeiro nome</label>
-                            <input type="text" class="form-control txtPLayerMandatesFirstName">
+                            <input type="text" class="form-control txtPlayerMandatesFirstName">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Último nome</label>
-                            <input type="text" class="form-control txtPLayerMandatesLastName">
+                            <input type="text" class="form-control txtPlayerMandatesLastName">
                           </div>
                         </div>
                       </div>
@@ -1003,13 +1007,13 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Clube</label>
-                            <input type="text" class="form-control txtPLayerMandatesClub">
+                            <input type="text" class="form-control txtPlayerMandatesClub">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Valor de mercardo</label>
-                            <input type="text" class="form-control txtPLayerMandatesValue">
+                            <input type="text" class="form-control txtPlayerMandatesValue">
                           </div>
                         </div>
                       </div>
@@ -1017,14 +1021,14 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled ">
                             <label>CC/Passaporte</label>
-                            <input type="text" class="form-control txtPLayerMandatesPassport" required>
+                            <input type="text" class="form-control txtPlayerMandatesPassport" required>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group form-group-default input-group disabled">
                             <div class="form-input-group">
                               <label>Validade</label>
-                              <input type="email" class="form-control txtPLayerMandatesPassportVal" placeholder="Selecione a data" id="datepicker-component2">
+                              <input type="email" class="form-control txtPlayerMandatesPassportVal" placeholder="Selecione a data" id="datepicker-component2">
                             </div>
                             <div class="input-group-append ">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -1265,7 +1269,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>});
+        mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, agent: <?php echo json_encode(new agent(null)); ?>});
       });
     </script>
   </body>

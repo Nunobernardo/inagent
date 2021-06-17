@@ -505,7 +505,7 @@
             return $this;
         }
 
-        public function set($id, $club, $clubname,  $country, $name, $firstname, $lastname,$birth, $nationality, $passport, $passportval, $agentcompany, $contacts, $obs) {
+        public function set($id, $club, $clubname, $country, $name, $firstname, $lastname,$birth, $nationality, $passport, $passportval, $agentcompany, $contacts, $obs) {
             $this->id = $id;
             $this->club = $club;
             $this->clubname = $clubname;
