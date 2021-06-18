@@ -59,12 +59,12 @@
 
         $("#example_5").ionRangeSlider({
             values: [
-                "January", "February",
-                "March", "April",
-                "May", "June",
-                "July", "August",
-                "September", "October",
-                "November", "December"
+                "Janeiro", "Fevereiro",
+                "Março", "Abril",
+                "Maio", "junho",
+                "julho", "Agosto",
+                "Setembro", "Outubro",
+                "Novembro", "Dezembro"
             ],
             type: 'single',
             grid: true

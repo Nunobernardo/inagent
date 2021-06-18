@@ -24,7 +24,7 @@
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "INSERT INTO players (id_player, id_club, image, first_name, last_name, name, nationality, birth_date, height, weight, foot, position, value, documents, documents_val)
-                          VALUES (NULL, '1', '', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', '$birthPlayer', '$player->height', 
+                          VALUES (NULL, '$player->club', '', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', '$birthPlayer', '$player->height', 
                           '$player->weight', '$player->foot', '$player->position', '$player->value', '$player->passport', '$passportvalPlayer');";
 
 
@@ -49,7 +49,7 @@
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "UPDATE players 
                           SET 
-                          id_club = '2', 
+                          id_club = '$player->club', 
                           first_name = '$player->firstname', 
                           last_name = '$player->lastname', 
                           name = '$player->name', 
@@ -84,7 +84,7 @@
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "INSERT INTO coach (id_coach, id_club, first_name, last_name, name, nationality, birth_date, height, weight, formation, value, documents, documents_val)
-                            VALUES (NULL, '1', '$coach->firstname', '$coach->lastname', '$coach->name', '$coach->nationality', '$birthCoach', '$coach->height', '$coach->weight', '$coach->formation', '$coach->value', '$coach->passport', '$passportvalCoach');";
+                            VALUES (NULL, '$coach->club', '$coach->firstname', '$coach->lastname', '$coach->name', '$coach->nationality', '$birthCoach', '$coach->height', '$coach->weight', '$coach->formation', '$coach->value', '$coach->passport', '$passportvalCoach');";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -107,7 +107,7 @@
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "UPDATE coach
                             SET 
-                            id_club = '2', 
+                            id_club = '$coach->club', 
                             first_name = '$coach->firstname', 
                             last_name = '$coach->lastname', 
                             name = '$coach->name', 
@@ -193,6 +193,7 @@
                 $birthagent = date("Y-m-d", strtotime($agent->birth));
                 $passportvalsagent = date("Y-m-d", strtotime($agent->passportval));
 
+
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "INSERT INTO agent (id_agent, name, first_name, last_name, birth_date, nationality, company, documents, documents_val, contacts, obs)
                             VALUES (NULL, '$agent->name', '$agent->firstname', '$agent->lastname', '$birthagent', '$agent->nationality', '$agent->agentcompany', '$agent->passport', '$passportvalsagent', '$agent->contacts', '$agent->obs');";
@@ -200,15 +201,23 @@
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
 
-                //[ CHECK RESULTS ]
                 if ($result) {
-                    $feedback['agent_id'] = $conn->insert_id;
+                    $query = "INSERT INTO agent_club (id_agent_club, id_agent, id_club)
+                                VALUES (NULL, $conn->insert_id, $agent->club)";
 
-                    $feedback['success'] = true;
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+
+                    //[ CHECK RESULTS ]
+                    if ($result) {
+                        $feedback['success'] = true;
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                    };
                 } else {
                     $feedback['success'] = false;
-                    $feedback['error'] = 'ERRO_INSERT_AGENT';
-                    $feedback['XX'] = $query;
+                    $feedback['error'] = "ERROR_REMOVING_PLAYERS";
                 };
                 break;
 
@@ -234,15 +243,27 @@
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
-                $feedback['XXXXXXXXXX'] = $query;
 
-                //[ CHECK RESULTS ]
                 if ($result) {
-                    $feedback['agent_id'] = $conn->insert_id;
-                    $feedback['success'] = true;
+                    $query = "UPDATE agent_club
+                                SET
+                                id_club = $agent->club,
+                                id_agent = $agent->id
+                                WHERE id_agent_club = $agent->agentclubid ";
+
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+
+                    //[ CHECK RESULTS ]
+                    if ($result) {
+                        $feedback['success'] = true;
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                    };
                 } else {
                     $feedback['success'] = false;
-                    $feedback['error'] = 'ERRO_UPDATE_PLAYER';
+                    $feedback['error'] = "ERROR_REMOVING_PLAYERS";
                 };
                 break;
 
@@ -930,7 +951,7 @@
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT a.id_agent, a.name, a.first_name, a.last_name, a.birth_date, a.nationality, a.documents, 
-                            a.documents_val, a.company, a.contacts, a.obs, c.name_club as club_name, c.country as country_name
+                            a.documents_val, a.company, a.contacts, a.obs, c.name_club as club_name, c.country as country_name, ac.id_agent_club
                             FROM agent a
                             INNER JOIN agent_club ac ON ac.id_agent = a.id_agent
                             INNER JOIN club c ON c.id_club = ac.id_club
@@ -949,54 +970,54 @@
                 break;
 
             case 'delete_agent':
-                $text = json_encode($object->{'agents_ids'});
-                $text = str_replace("[","", $text);
-                $text = str_replace("]", "", $text);
+                $agentid = json_encode($object->{'agents_ids'});
+                $agentid = str_replace("[","(",  $agentid);
+                $agentid = str_replace("]", ")", $agentid);
 
-                // //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
-                // $query = "DELETE ph.*
-                //             FROM publications p
-                //             INNER JOIN publications_users pu ON pu.publication_id = p.id
-                //             INNER JOIN publications_history ph ON ph.publication_id = p.id
-                //             WHERE p.id in (" . $text . ")";
+                //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
+                $query = "DELETE ac
+                            FROM agent a
+                            INNER JOIN agent_club ac ON ac.id_agent = a.id_agent
+                            WHERE a.id_agent in " . $agentid;
 
-                // //[ EXECUTE QUERY ]
-                // $result = mysqli_query($conn, $query);
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
 
-                // //[ CHECK RESULTS ]
-                // if ($result) {
-                //     //[ SET QUERY TO DELETE PUBLICATIONS USERS ASSOCIATED TO SELECTED PUBLICATION ]
-                //     $query = "DELETE pu.*
-                //                 FROM publications p
-                //                 INNER JOIN publications_users pu ON pu.publication_id = p.id
-                //                 WHERE p.id = " . $publicationid;
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $query = "DELETE ma
+                                FROM agent a
+                                INNER JOIN mandates_agent ma ON ma.id_agent = a.id_agent
+                                WHERE a.id_agent in " . $agentid;
                     
-                //     //[ EXECUTE QUERY ]
-                //     $result = mysqli_query($conn, $query);
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
 
-                //     //[ CHECK RESULTS ]
-                //     if ($result) {
-                //         //[ SET QUERY TO DELETE SELECTED PUBLICATION ]
-                //         $query = "DELETE FROM publications WHERE id = " . $publicationid;
+                    //[ CHECK RESULTS ]
+                    if ($result) {
+                        $query = "DELETE a
+                                    FROM agent a
+                                    WHERE a.id_agent in " . $agentid;
 
-                //         //[ EXECUTE QUERY ]
-                //         $result = mysqli_query($conn, $query);
-        
-                //         //[ CHECK RESULTS ]
-                //         if ($result) {
-                //             $feedback['success'] = true;
-                //         } else {
-                //             $feedback['success'] = false;
-                //             $feedback['error'] = "ERROR_REMOVING_CLUBS";
-                //         };
-                //     } else {
-                //         $feedback['success'] = false;
-                //         $feedback['error'] = "ERROR_REMOVING_CLUBS";
-                //     };
-                // } else {
-                //     $feedback['success'] = false;
-                //     $feedback['error'] = "ERROR_REMOVING_CLUBS";
-                // };
+                        //[ EXECUTE QUERY ]
+                        $result = mysqli_query($conn, $query);
+
+                        //[ CHECK RESULTS ]
+                        if ($result) {
+                            $feedback['success'] = true;
+                        } else {
+                            $feedback['success'] = false;
+                            $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                        };
+                        
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                    };
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                };
                 break;
     
             case 'values':

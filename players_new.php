@@ -53,6 +53,9 @@
             </a>
             <span class="icon-thumbnail"><i class="pg-home"></i></span>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Agenciados<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Jogadores</span>
             <span class=" arrow"></span></a>
@@ -83,6 +86,9 @@
               </li>
             </ul>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Contratos<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Representação</span>
             <span class=" arrow"></span></a>
@@ -113,6 +119,9 @@
               </li>
             </ul>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Mandatos<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Mandatos</span>
             <span class=" arrow"></span></a>
@@ -265,47 +274,47 @@
 
         <!-- Modal Profile -->
         <div class="modal fade slide-right" id="modalSlideLeft_profile" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-              <div class="modal-content-wrapper">
-                <div class="modal-content">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
-                  </button>
-                  <div class="container-xs-height full-height">
-                    <div class="row-xs-height">
-                      <div class="modal-body col-xs-height col-middle">
-                        <h5 style="text-align:center">Perfil</h5>
-                        <br>
-                        <div class="form-group form-group-default required">
-                          <label>Nome completo</label>
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group form-group-default required">
-                          <label>Primeiro nome</label>
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group form-group-default required">
-                          <label>último nome</label>
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group form-group-default">
-                          <label>Alterar password</label>
-                          <input type="text" class="form-control" required>
-                        </div>
-                        <br>
-                        <button type="button" onclick="location.href='players_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
-                          <span>Guardar</span>
-                        </button>
-                        <button type="button" onclick="location.href='players_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
-                          <span>Cancelar</span>
-                        </button>
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content-wrapper">
+              <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+                </button>
+                <div class="container-xs-height full-height">
+                  <div class="row-xs-height">
+                    <div class="modal-body col-xs-height col-middle">
+                      <h5 style="text-align:center">Perfil</h5>
+                      <br>
+                      <div class="form-group form-group-default required">
+                        <label>Nome completo</label>
+                        <input type="text" class="form-control">
                       </div>
+                      <div class="form-group form-group-default required">
+                        <label>Primeiro nome</label>
+                        <input type="text" class="form-control">
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>último nome</label>
+                        <input type="text" class="form-control">
+                      </div>
+                      <div class="form-group form-group-default">
+                        <label>Alterar password</label>
+                        <input type="text" class="form-control" required>
+                      </div>
+                      <br>
+                      <button type="button" onclick="location.href='players_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
+                        <span>Guardar</span>
+                      </button>
+                      <button type="button" onclick="location.href='players_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
+                        <span>Cancelar</span>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- END Modal -->
+        </div>
+        <!-- END Modal -->
 
           <!-- START CONTAINER FLUID -->
           <div class=" container-fluid container-fixed-lg">

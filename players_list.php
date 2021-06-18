@@ -53,14 +53,17 @@
             </a>
             <span class="icon-thumbnail"><i class="pg-home"></i></span>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Agenciados<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Jogadores</span>
             <span class=" arrow"></span></a>
-            <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+            <span class="bg-secondary icon-thumbnail"><i class="fa fa-user"></i></span>
             <ul class="sub-menu">
               <li class="">
                 <a href="players_list.php">Lista de jogadores</a>
-                <span class="icon-thumbnail"><i class="fa fa-users"></i></span>
+                <span class="bg-secondary icon-thumbnail"><i class="fa fa-users"></i></span>
               </li>
               <li class="">
                 <a href="players_new.php">Adicionar jogador</a>
@@ -83,6 +86,9 @@
               </li>
             </ul>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Contratos<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Representação</span>
             <span class=" arrow"></span></a>
@@ -113,6 +119,9 @@
               </li>
             </ul>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Mandatos<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Mandatos</span>
             <span class=" arrow"></span></a>
@@ -131,11 +140,11 @@
           <li>
             <a href="javascript:;"><span class="title">Agentes</span>
             <span class=" arrow"></span></a>
-            <span class="bg-secondary icon-thumbnail"><i class="pg-suitcase"></i></span>
+            <span class="icon-thumbnail"><i class="pg-suitcase"></i></span>
             <ul class="sub-menu">
               <li class="">
                 <a href="agents_list.php">Lista de agentes</a>
-                <span class="bg-secondary icon-thumbnail"><i class="fa fa-list-ul"></i></span>
+                <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
                 <a href="agents_new.php">Adicionar agente</a>

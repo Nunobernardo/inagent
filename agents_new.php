@@ -53,6 +53,9 @@
             </a>
             <span class="icon-thumbnail"><i class="pg-home"></i></span>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Agenciados<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Jogadores</span>
             <span class=" arrow"></span></a>
@@ -83,6 +86,9 @@
               </li>
             </ul>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Contratos<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Representação</span>
             <span class=" arrow"></span></a>
@@ -113,6 +119,9 @@
               </li>
             </ul>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Mandatos<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Mandatos</span>
             <span class=" arrow"></span></a>
@@ -409,9 +418,13 @@
                         <label>Nome da Empresa</label>
                         <input type="text" class="form-control txtAgentCompany" required>
                       </div>
-                      <div class="form-group form-group-default required">
-                        <label>Clubes</label>
-                        <input type="text" class="form-control txtAgentClub" required>
+                      <div class="form-group form-group-default required ">
+                        <label>Clube</label>
+                        <form role="form">
+                          <div class="form-group ">
+                            <select class="full-width ddlAgentClub" data-init-plugin="select2"></select>
+                          </div>
+                        </form>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Países</label>

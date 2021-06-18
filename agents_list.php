@@ -49,6 +49,10 @@
             </a>
             <span class="icon-thumbnail"><i class="pg-home"></i></span>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Agenciados<br></h3>
+          </div>
+          <li>
           <li>
             <a href="javascript:;"><span class="title">Jogadores</span>
             <span class=" arrow"></span></a>
@@ -79,6 +83,10 @@
               </li>
             </ul>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Contratos<br></h3>
+          </div>
+          <li>
           <li>
             <a href="javascript:;"><span class="title">Representação</span>
             <span class=" arrow"></span></a>
@@ -109,6 +117,9 @@
               </li>
             </ul>
           </li>
+          <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
+            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Mandatos<br></h3>
+          </div>
           <li>
             <a href="javascript:;"><span class="title">Mandatos</span>
             <span class=" arrow"></span></a>

@@ -469,6 +469,7 @@
     class agent {
         public $id = 0;
         public $club;
+        public $agentclubid;
         public $clubname;
         public $country;
         public $name;
@@ -485,6 +486,7 @@
         function __construct($obj) {
             if (isset($obj)) {
                 $this->id = (isset($obj["id_agent"])) ? intval($obj["id_agent"]) : null;
+                $this->agentclubid = (isset($obj["id_agent_club"])) ? $obj["id_agent_club"] : null;
                 $this->club = (isset($obj["id_club"])) ? $obj["id_club"] : null;
                 $this->clubname = (isset($obj["club_name"])) ? $obj["club_name"] : null;
                 $this->country = (isset($obj["country_name"])) ? $obj["country_name"] : null;
@@ -505,8 +507,9 @@
             return $this;
         }
 
-        public function set($id, $club, $clubname, $country, $name, $firstname, $lastname,$birth, $nationality, $passport, $passportval, $agentcompany, $contacts, $obs) {
+        public function set($id, $agentclubid, $club, $clubname, $country, $name, $firstname, $lastname,$birth, $nationality, $passport, $passportval, $agentcompany, $contacts, $obs) {
             $this->id = $id;
+            $this->agentclubid = $agentclubid;
             $this->club = $club;
             $this->clubname = $clubname;
             $this->country = $country;
