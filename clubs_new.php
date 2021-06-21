@@ -419,22 +419,13 @@
                         </div>
                       </div>
                       <div class="form-group form-group-default required ">
-                      <label>Clube</label>
-                      <form role="form">
-                        <div class="form-group ">
-                          <select class="full-width ddlPlayerClubNewClub" data-init-plugin="select2">
-                            <optgroup label="Portugal">
-                              <option value="AK">F.C.Porto</option>
-                              <option value="HI">S.L.Benfica</option>
-                            </optgroup>
-                            <optgroup label="Espanha">
-                              <option value="CA">Real Madrid</option>
-                              <option value="NV">Barcelona F.C.</option>
-                            </optgroup>
-                          </select>
-                        </div>
-                      </form>
-                    </div>
+                        <label>Clube</label>
+                        <form role="form">
+                          <div class="form-group ">
+                            <select class="full-width ddlPlayerClubNewClub" data-init-plugin="select2"></select>
+                          </div>
+                        </form>
+                      </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
@@ -598,22 +589,13 @@
                         </div>
                       </div>
                       <div class="form-group form-group-default required ">
-                      <label>Clube</label>
-                      <form role="form">
-                        <div class="form-group ">
-                          <select class="full-width ddlPlayerClubEditClub" data-init-plugin="select2">
-                            <optgroup label="Portugal">
-                              <option value="AK">F.C.Porto</option>
-                              <option value="HI">S.L.Benfica</option>
-                            </optgroup>
-                            <optgroup label="Espanha">
-                              <option value="CA">Real Madrid</option>
-                              <option value="NV">Barcelona F.C.</option>
-                            </optgroup>
-                          </select>
-                        </div>
-                      </form>
-                    </div>
+                        <label>Clube</label>
+                        <form role="form">
+                          <div class="form-group ">
+                            <select class="full-width ddlPlayerClubEditClub" data-init-plugin="select2"></select>
+                          </div>
+                        </form>
+                      </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
@@ -718,9 +700,13 @@
                           </select> 
                         </div>
                       </div>
-                      <div class="form-group form-group-default required">
-                        <label>Nome do clube</label>
-                        <input type="text" class="form-control txtCclub">
+                      <div class="form-group form-group-default required ">
+                        <label>Clube</label>
+                        <form role="form">
+                          <div class="form-group ">
+                            <select class="full-width ddlCclubClub" data-init-plugin="select2"></select>
+                          </div>
+                        </form>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Data inicio e fim</label>

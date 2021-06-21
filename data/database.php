@@ -298,8 +298,8 @@
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "UPDATE contract_club SET 
-                            id_player = '50',
-                            id_club = '3',
+                            id_player = '44',
+                            id_club = '$club->club',
                             value = '$club->value',
                             date_start = '$clubdatestart',
                             date_end = '$clubdateend',
@@ -311,7 +311,6 @@
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
-                $feedback['XXXXX'] = $result;
 
                 //[ CHECK RESULTS ]
                 if ($result) {
@@ -395,7 +394,7 @@
                 $playerid = intval(urldecode($object->{'player_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT p.id_player,c.id_club, p.name, p.first_name, p.last_name, p.height, p.weight, p.birth_date, p.nationality, p.foot, p.position, p.value, p.documents, p.documents_val,  c.name_club as club_name
+                $query = "SELECT p.id_player,c.id_club, p.name, p.first_name, p.last_name, p.height, p.weight, p.birth_date, p.nationality, p.foot, p.position, p.value, p.documents, p.documents_val, c.name_club AS club_name
                             FROM players p
                             INNER JOIN club c ON p.id_club = c.id_club
                             WHERE
@@ -520,7 +519,8 @@
                 $coachid = intval(urldecode($object->{'coach_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT co.id_coach, co.name, co.first_name, co.last_name, co.birth_date, co.nationality, co.height, co. weight, co.formation, co.value, co.documents, co.documents_val, c.name_club as club_name 
+                $query = "SELECT co.id_coach, co.name, co.first_name, co.last_name, co.birth_date, co.nationality, co.height,
+                             co. weight, co.formation, co.value, co.documents, co.documents_val, c.name_club as club_name, co.id_club
                             FROM coach co
                             INNER JOIN club c ON co.id_club = c.id_club
                             WHERE
@@ -642,7 +642,7 @@
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT cr.id_contract_rep, p.id_player, cr.date_start, cr.date_end, cr.child,  cr.father_name, cr.mother_name, 
                             cr.commission, p.name, p.first_name, p.last_name, p.birth_date, p.nationality, p.height, p.weight, p.value, p.documents, 
-                            p.documents_val, c.name_club
+                            p.documents_val, c.name_club, p.id_club
                             FROM contract_representation cr
                             INNER JOIN players p ON cr.id_player = p.id_player
                             INNER JOIN club c ON p.id_club = c.id_club
@@ -734,7 +734,7 @@
                 $clubid = intval(urldecode($object->{'club_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT cc.id_contract_club, p.id_player, cc.date_start, cc.date_end, cc.value,  cc.clause, cc.court, 
+                $query = "SELECT cc.id_contract_club, p.id_player, c.id_club, cc.date_start, cc.date_end, cc.value,  cc.clause, cc.court, 
                             cc.bonus, cc.obs, p.name, p.first_name, p.last_name, p.birth_date, p.nationality, p.height, p.weight, 
                             p.value as value_player, p.documents, p.documents_val, c.name_club as club_name
                             FROM contract_club cc
