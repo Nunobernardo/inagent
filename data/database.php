@@ -847,7 +847,7 @@
                             FROM mandates m 
                             INNER JOIN players p ON p.id_player = m.id_player
                             INNER JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club AND ac.id_agent = ma.id_agent
+                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
                             INNER JOIN agent a ON a.id_agent = ac.id_agent
                             INNER JOIN club c ON c.id_club = ac.id_club
                             INNER JOIN club cp ON cp.id_club = p.id_club
@@ -855,6 +855,7 @@
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
+                $feedback['XXXXXXXXXXXXX'] = $query;
 
                 //[ CHECK RESULTS ]
                 if ($result->num_rows > 0) {   

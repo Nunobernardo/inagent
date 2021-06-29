@@ -326,10 +326,10 @@
                 </div>
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="float-right">
-                      <button type="button" onclick="location.href='agents_list.php'" class="btn btn-primary btn-cons btn-animated from-left pg pg-close">
+                      <button type="button" onclick="location.href='agents_list.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
                         <span>Cancelar</span>
                       </button>
-                      <button type="button" class="btn btn-primary btn-cons btn-animated from-left pg pg-save btnSaveAgent">
+                      <button type="button" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-save btnSaveAgent">
                         <span>Guardar</span>
                       </button>
                   </div>
@@ -421,8 +421,16 @@
                       <div class="form-group form-group-default required ">
                         <label>Clube</label>
                         <form role="form">
-                          <div class="form-group ">
-                            <select class="full-width ddlAgentClub" data-init-plugin="select2"></select>
+                          <div class="row">
+                            <div class="col-md-10">    
+                              <div class="form-group ">
+                                <select class="full-width ddlAgentClub" data-init-plugin="select2"></select>
+                              </div>
+                            </div>
+                            <div class="col-md-2 align-self-center d-flex justify-content-center">
+                              <button type="button" class="btn3 btn-primary"style="margin-right: 7px;" ><i class="fa fa-plus"></i></button>
+                              <button type="button" class="btn3 btn-primary"><i class="fa fa-minus"></i></button>
+                            </div>
                           </div>
                         </form>
                       </div>

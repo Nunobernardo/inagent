@@ -1015,7 +1015,7 @@ function club(args) {
             clubplayernationality: $('.txtPlayerNationalityClub'),
             clubplayerheight: $('.txtPlayerHeightClub'),
             clubplayerweight: $('.txtPlayerWeightClub'),
-            clubplayerclub: $('.ddlCclubClub'),
+            clubplayerclub: $('.txtPlayerClubClub'),
             clubplayervalue: $('.txtPlayerValueClub'),
             clubplayerpassport: $('.txtPlayerPassportClub'),
             clubplayerpassportval: $('.txtPlayerPassportValClub'),
@@ -1139,7 +1139,7 @@ function club(args) {
                             group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
                         });
 
-                        ds.clubplayerclub.append(group);
+                        ds.clubclub.append(group);
                     });
 
                     if (clubs.id > 0) {
