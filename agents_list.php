@@ -326,7 +326,7 @@
                   </div>
                   <div class="col-lg-6 col-xs-12 my-auto">
                     <div class="float-right">
-                        <button type="button" onclick="location.href='agents_new.php'" class="btn btn-primary btn-cons btn-animated from-left pg pg-close">
+                        <button type="button" onclick="location.href='agents_new.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
                           <span>Adicionar</span>
                         </button>
                     </div>

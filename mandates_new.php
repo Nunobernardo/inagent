@@ -894,10 +894,10 @@
                 </div>
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="float-right">
-                      <button type="button" onclick="location.href='mandates_list.php'" class="btn btn-primary btn-cons btn-animated from-left pg pg-close">
+                      <button type="button" onclick="location.href='mandates_list.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
                         <span>Cancelar</span>
                       </button>
-                      <button type="button" class="btn btn-primary btn-cons btn-animated from-left pg pg-save btnSaveMandates">
+                      <button type="button" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-save btnSaveMandates">
                         <span>Guardar</span>
                       </button>
                   </div>
@@ -988,9 +988,9 @@
                           <div class="col-lg-6 col-xs-12 my-auto">
                             <div class="float-right">
                               <div class="btn-group">
-                              <button type="button" class="btn btn-primary addNewPlayerMandate" data-target="#modalSlideLeft_playerNewMandate" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
+                              <button type="button" class="btn3 btn-primary addNewPlayerMandate" data-target="#modalSlideLeft_playerNewMandate" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary editPlayerMandate" data-target="#modalSlideLeft_playerEditMandate" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
+                                <button type="button" class="btn3 btn-primary editPlayerMandate" data-target="#modalSlideLeft_playerEditMandate" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
                                 </button>
                               </div>
                             </div>
@@ -1062,9 +1062,9 @@
                           <div class="col-lg-6 col-xs-12 my-auto">
                             <div class="float-right">
                               <div class="btn-group">
-                              <button type="button" class="btn btn-primary addNewAgentMandate" data-target="#modalSlideLeft_agentNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
+                              <button type="button" class="btn3 btn-primary addNewAgentMandate" data-target="#modalSlideLeft_agentNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary editAgentMandate" data-target="#modalSlideLeft_agentEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
+                                <button type="button" class="btn3 btn-primary editAgentMandate" data-target="#modalSlideLeft_agentEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
                                 </button>
                               </div>
                             </div>
