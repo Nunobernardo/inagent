@@ -695,9 +695,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide ddlRepresentationPlayer" data-init-plugin="cs-select">
-                            <option value="sightseeing">Fábio Abreu</option>
-                            <option value="business">Antunes</option>
+                          <select class="full-width ddlRepresentationPlayer" data-init-plugin="select2">
                           </select> 
                         </div>
                       </div>
@@ -708,8 +706,9 @@
                               <label class="inline">Menor</label>
                             </div>
                             <div class="input-group-append h-c-50">
-                              <span class="input-group-text transparent">
-                                  <input type="checkbox" id = "boxchecked" name="CheckboxGroup1" data-size="small" data-color="success" />
+                              <span class="input-group-text container">
+                                  <input type="checkbox"  id = "boxchecked" name="CheckboxGroup1" data-size="small" data-color="success" class="ckChild" />
+                                  <span class="ckChildCheckmark checkmark"></span>
                               </span>
                             </div>
                           </div>
@@ -1022,7 +1021,12 @@
       });
       
       $(document).ready(function(){
-        $("#boxchecked").click(function ()
+        $(".ckChildCheckmark").on('click', function ()
+        {
+          $('.ckChild').trigger('click')
+        });
+
+        $(".ckChild").click(function ()
         {
           if ($("#boxchecked").is(':checked'))
           {

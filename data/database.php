@@ -165,8 +165,8 @@
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "UPDATE contract_representation SET 
-                            id_player = '50',
-                            child = '$representation->child',
+                            id_player = '$representation->player',
+                            child = $representation->child,
                             father_name = '$representation->father',
                             mother_name = '$representation->mother',
                             date_start = '$repdatestart',
@@ -177,6 +177,8 @@
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
 
+                $feedback['q'] = $query;
+                
                 //[ CHECK RESULTS ]
                 if ($result) {
                     $feedback['representation_id'] = $conn->insert_id;
