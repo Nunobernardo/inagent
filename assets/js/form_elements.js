@@ -100,10 +100,10 @@
         //Autonumeric plug-in - automatic addition of dollar signs,etc controlled by tag attributes
         $('.autonumeric').autoNumeric('init');
 
-        //Drag n Drop up-loader
+        /* //Drag n Drop up-loader
         $("div#myId").dropzone({
             url: "/file/post"
-        });
+        }); */
         //Single instance of tag inputs - can be initiated with simply using data-role="tagsinput" attribute in any input field
         $('.custom-tag-input').tagsinput({
 

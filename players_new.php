@@ -513,6 +513,33 @@
                 <!-- END card -->
               </div>
 
+              <div class="ctrFiles col-lg-12" style="padding-left: 30px;padding-right: 30px;">
+                <!-- START card -->
+                <div class="card card-default">
+                  <div class="card-header ">
+                    <div class="card-title">
+                      Documentos
+                    </div>
+                  </div>
+                  <div class="card-body no-scroll no-padding ctrUploader">
+                    <div class="dropzone no-margin">
+                        <div class="files">
+                        <!-- <input name="file" type="file" multiple/> -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="timeline-new-attachments">
+                      <div id="box">
+                          <div class="files">
+                              
+                          </div>
+                      </div>
+                  </div> -->
+                </div>
+                <!-- END card -->
+              </div>
+
               <div class="col-lg-12" style="padding-left: 30px;padding-right: 30px;">
                 <!-- START card -->
                 <div class="card card-default">
@@ -527,13 +554,21 @@
                       <a class="remove" href="javascript:;"></a>
                     </div>
                   </div>
-                  <div class="card-body no-scroll no-padding">
-                    <form action="/file-upload" class="dropzone no-margin">
-                      <div class="fallback">
-                        <input name="file" type="file" multiple/>
+                  <div class="card-body no-scroll no-padding ctrUploader">
+                    <div id="box" class="dropzone no-margin">
+                        <div class="files dz-default dz-message">
+                        <!-- <input name="file" type="file" multiple/> -->
                       </div>
-                    </form>
+                    </div>
                   </div>
+
+                  <!-- <div class="timeline-new-attachments">
+                      <div id="box">
+                          <div class="files">
+                              
+                          </div>
+                      </div>
+                  </div> -->
                 </div>
                 <!-- END card -->
               </div>
@@ -637,7 +672,6 @@
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
       <script src="assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
      <script type="text/javascript" src="assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
-     <script type="text/javascript" src="assets/plugins/dropzone/dropzone.min.js"></script>
      <script type="text/javascript" src="assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
      <script type="text/javascript" src="assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
      <script src="assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
@@ -650,6 +684,7 @@
      <script src="assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
      <script src="assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
      <script src="assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+     <script src="js/dropzone/file-dropzone.js"></script>
      <!-- END VENDOR JS -->
     <!-- BEGIN CORE TEMPLATE JS -->
     <script src="pages/js/pages.js"></script>

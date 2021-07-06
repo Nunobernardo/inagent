@@ -19,6 +19,7 @@
         switch(strtolower($_POST['functionname'])) {
             case 'insert_player':
                 $player = $object->{'player'};
+                $attachments = $object->{'attachments'};
                 $birthPlayer = date("Y-m-d", strtotime($player->birth));
                 $passportvalPlayer = date("Y-m-d", strtotime($player->passportval));
 
@@ -30,9 +31,19 @@
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
-
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO players_files(id, id_player, file_name, file) 
+                                      VALUES (NULL, $conn->insert_id, '$value->AttachmentName', '$value->Attachment')";
+    
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
+
                     $feedback['player_id'] = $conn->insert_id;
                     $feedback['success'] = true;
                 } else {
@@ -43,6 +54,7 @@
 
             case 'update_player':
                 $player = $object->{'player'};
+                $attachments = $object->{'attachments'};
                 $birthPlayer = date("Y-m-d", strtotime($player->birth));
                 $passportvalPlayer = date("Y-m-d", strtotime($player->passportval));
 
@@ -69,6 +81,17 @@
 
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO players_files(id, id_player, file_name, file) 
+                                      VALUES (NULL, $value->PlayerID, '$value->AttachmentName', '$value->Attachment')";
+
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
+                    
                     $feedback['player_id'] = $conn->insert_id;
                     $feedback['success'] = true;
                 } else {
@@ -225,6 +248,7 @@
 
             case 'update_agent':
                 $agent = $object->{'agent'};
+                $clubs = $object->{'clubs'};
                 $birthagent = date("Y-m-d", strtotime($agent->birth));
                 $passportvalagent = date("Y-m-d", strtotime($agent->passportval));
 
@@ -247,14 +271,22 @@
                 $result = mysqli_query($conn, $query);
 
                 if ($result) {
-                    $query = "UPDATE agent_club
-                                SET
-                                id_club = $agent->club,
-                                id_agent = $agent->id
-                                WHERE id_agent_club = $agent->agentclubid ";
+                    //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                    $query = "DELETE FROM agent_club WHERE id_agent = " . $agent->id;
 
                     //[ EXECUTE QUERY ]
                     $result = mysqli_query($conn, $query);
+
+                    if (count($clubs) > 0) {
+                        foreach ($clubs as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO agent_club(id_agent_club, id_agent, id_club) 
+                                      VALUES (NULL, $agent->id, $value)";
+
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
 
                     //[ CHECK RESULTS ]
                     if ($result) {
@@ -393,6 +425,7 @@
                     break;
             
             case 'player':
+                $attachments = array();
                 $playerid = intval(urldecode($object->{'player_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
@@ -410,8 +443,25 @@
                     $player = new player($result->fetch_array(MYSQLI_ASSOC));
                 };
 
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "SELECT *
+                            FROM players_files
+                            WHERE
+                            id_player = " . $playerid;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {   
+                    while($row = $result->fetch_assoc()) {
+                        array_push($attachments, $row);
+                    };
+                };
+
                 $feedback['success'] = true;
                 $feedback['player'] = $player;
+                $feedback['attachments'] = $attachments;
                 break;
 
             case 'delete_player':
@@ -447,6 +497,24 @@
                         //[ EXECUTE QUERY ]
                         $result = mysqli_query($conn, $query);
         
+                        $query = "DELETE cc
+                                FROM players p
+                                INNER JOIN contract_club cc ON cc.id_player = p.id_player
+                                WHERE p.id_player in " . $playerid;
+                    
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+
+                    //[ CHECK RESULTS ]
+                    if ($result) {
+                        $query = "DELETE m
+                                    FROM players p
+                                    INNER JOIN players_files m ON m.id_player = p.id_player
+                                    WHERE p.id_player in " . $playerid;
+
+                        //[ EXECUTE QUERY ]
+                        $result = mysqli_query($conn, $query);
+        
                         if ($result) {
                             $query = "DELETE p
                                         FROM players p
@@ -463,6 +531,10 @@
                                 $feedback['error'] = "ERROR_REMOVING_PLAYERS";
                             };
                         } 
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                    };
                     } else {
                         $feedback['success'] = false;
                         $feedback['error'] = "ERROR_REMOVING_PLAYERS";
@@ -911,9 +983,7 @@
                 
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
                 $total_pages_query = "SELECT COUNT(*) AS total_records 
-                                        FROM agent a
-                                        INNER JOIN agent_club ac ON ac.id_agent = a.id_agent
-                                        INNER JOIN club c ON c.id_club = ac.id_club";
+                                        FROM agent a";
 
                 $result = mysqli_query($conn, $total_pages_query);
 
@@ -922,23 +992,50 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT a.id_agent, a.first_name, a.last_name, a.company, a.contacts, c.name_club as club_name, c.country as country_name
+                $query = "SELECT a.id_agent, a.first_name, a.last_name, a.company, a.contacts
                             FROM agent a
-                            INNER JOIN agent_club ac ON ac.id_agent = a.id_agent
-                            INNER JOIN club c ON c.id_club = ac.id_club
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
 
                 //[ CHECK RESULTS ]
-                if ($result->num_rows > 0) {   
+                if ($result->num_rows > 0) {
+                    $ids = array();
+
                     while($row = $result->fetch_assoc()) {
                         array_push($agents, new agent($row));
+
+                        if(!in_array(intval($row["id_agent"]), $ids, true)){
+                            array_push($ids, intval($row["id_agent"]));
+                        }
                     };
-                    
+
+                    //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
+                    $ids2 = json_encode($ids);
+                    $ids2 = str_replace("[","(",  $ids2);
+                    $ids2 = str_replace("]", ")", $ids2);
+
+                    $query = "SELECT ac.id_agent, c.name_club as club_name, c.country as country_name
+                                FROM  agent_club ac
+                                LEFT JOIN club c ON c.id_club = ac.id_club
+                                WHERE
+                                ac.id_agent in " .$ids2;
+
+                    $result = mysqli_query($conn, $query);
+
+                    if ($result->num_rows > 0) {
+                        $clubs = array();
+    
+                        while($row = $result->fetch_assoc()) {
+                            array_push($clubs, $row);
+                        };
+                    };
+
                     //[ SET TOTAL ]
                     $total = $result->num_rows;
+
+                    $feedback['agents_clubs'] = $clubs;
                 };
 
                 $feedback['success'] = true;
@@ -954,10 +1051,10 @@
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT a.id_agent, a.name, a.first_name, a.last_name, a.birth_date, a.nationality, a.documents, 
-                            a.documents_val, a.company, a.contacts, a.obs, c.name_club as club_name, c.country as country_name, ac.id_agent_club
+                            a.documents_val, a.company, a.contacts, a.obs, c.name_club as club_name, c.country as country_name, ac.id_agent_club, c.id_club
                             FROM agent a
-                            INNER JOIN agent_club ac ON ac.id_agent = a.id_agent
-                            INNER JOIN club c ON c.id_club = ac.id_club
+                            LEFT JOIN agent_club ac ON ac.id_agent = a.id_agent
+                            LEFT JOIN club c ON c.id_club = ac.id_club
                             WHERE a.id_agent = " . $agentid;
 
                 //[ EXECUTE QUERY ]
@@ -966,6 +1063,24 @@
                 //[ CHECK RESULTS ]
                 if ($result->num_rows > 0) {   
                     $agent = new agent($result->fetch_array(MYSQLI_ASSOC));
+
+                    $query = "SELECT ac.id_agent, c.name_club as club_name, c.country as country_name, c.id_club
+                                FROM  agent_club ac
+                                LEFT JOIN club c ON c.id_club = ac.id_club
+                                WHERE
+                                ac.id_agent = " .$agentid;
+
+                    $result = mysqli_query($conn, $query);
+
+                    if ($result->num_rows > 0) {
+                        $clubs = array();
+    
+                        while($row = $result->fetch_assoc()) {
+                            array_push($clubs, $row);
+                        };
+                    };
+
+                    $feedback['agent_clubs'] = $clubs;
                 };
 
                 $feedback['success'] = true;
@@ -1298,6 +1413,26 @@
                     $feedback['success'] = true;
                     $feedback['clubs'] = $clubs;
                     break; 
+            
+            case 'delete_attachment':
+                $id = intval(urldecode($object->{'id'}));
+
+                //[ SET QUERY TO DELETE attachment ]
+                $query = "DELETE a
+                          FROM players_files a
+                          WHERE id = " . $id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_DELETE_FILES";
+                };
+                break;
             
             default:
                 $feedback['error'] = Feedback::FUNCTION_NAME_IS_NOT_SET . $_POST['functionname'];

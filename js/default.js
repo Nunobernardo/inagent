@@ -15,13 +15,17 @@ function player(args) {
             playerpassport: $('.txtPlayerPassport'),
             playerpassportval: $('.txtPlayerPassportVal'),
             playerclub: $('.ddlPlayerClub'),
-            saveplayer: $('.btnSavePlayer')
+            saveplayer: $('.btnSavePlayer'),
+            ctrfiles: $('.ctrFiles'), //anexos
+            ctruploader: $('.ctrUploader') //anexos
         },
         datasource: {
             base: undefined,
             id: ifUndefinedOrNull(args.data.player_id, 0),
             player: undefined,
-            clubs: new Array()
+            clubs: new Array(),
+            attachments: new Array(), //anexos
+            selectedattachments: new Array() //anexos
         },
         methods: {
             base: undefined,
@@ -38,6 +42,7 @@ function player(args) {
                     }, function (data) {
                         //[ SET list_player LIST ]
                         me.datasource.player = data.player;
+                        me.datasource.attachments = data.attachments; //anexos
 
                         if (!isUndefinedOrNull(after)) { after(); };
                     }, function () {
@@ -70,7 +75,53 @@ function player(args) {
                     //[ ERROR ]
                     controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                 });
-            }
+            },
+            downloadattachment: function (attachment) {
+                if (!isStringVoid(attachment.file)) {
+                    const downloadLink = document.createElement("a");
+
+                    with (downloadLink) {
+                        href = attachment.file;
+                        download = attachment.file_name;
+                        click();
+                    };
+                };
+            },
+            deleteattachment: function (id, after) {
+                var me = this.base;
+
+                //[ DELETE ATTACHMENT ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.message.bind({
+                        type: 'question',
+                        message: 'Pretende remover o documento selecionado?',
+                        afteryes: function () {
+                            controls.ajax({
+                                functionname: 'delete_attachment',
+                                data: {
+                                    id: id
+                                }
+                            }, function (data) {
+                                if (ifUndefinedOrNull(data.success, false)) {
+                                    controls.message.bind({
+                                        type: 'success',
+                                        message: 'O documento foi removido com sucesso.',
+                                        afterok: function () {
+                                            if (!isUndefinedOrNull(after)) { after(data); };
+                                        }
+                                    });
+                                } else {
+                                    controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                                };
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                            });
+                        }
+                    });
+                };
+            },
         },
         load: function() {
             var me = this,
@@ -93,10 +144,118 @@ function player(args) {
                         ds.playerclub.append(group);
                     });
 
-                    //SELECIINAR JOGADOR
-                    // $.each(countryclubs, function (index, club) {
-                    //     ds.playerclub.append('<option value="{0}">{1}</option>'.format(club.id_club, club.name_club));
-                    // });
+                    //anexos
+                    ds.uploader = new FileDropzone({
+                        target: ds.ctruploader.find('#box'),
+                        clickable: true,
+                        multiple: true,
+                        forceReplace: false,
+                        paramName: 'my-file',
+                        accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
+                        onChange: function () {
+                            var files = new Array(),
+                                elem = this.element.find('.files');
+
+                            elem.empty();
+
+                            $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
+                                var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
+                                    idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
+
+                                if (isnewfile && idvalidsize) {
+                                    files.push(file);
+                                };
+                            });
+
+                            ds.uploader.clickable = false;
+
+                            $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
+                                var reader = new FileReader(),
+                                    element = $('<div class="file-name"><div class="remove" data="{1}"><i class="grid-action fa fa-trash"></i></div><div class="file"><i class="fa fa-file"></i></div>{0}</div>'.format(item.name, index));
+
+                                reader.addEventListener('load', function (e) {
+                                    var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
+
+                                    if (isnewfile) {
+                                        var messageattachment = {
+                                                Attachment: null,
+                                                AttachmentName: null,
+                                                ID: 0,
+                                                PlayerID: 0
+                                            },
+                                            url;
+
+                                        messageattachment.index = index;
+
+                                        if (item.type.split('/')[0] === 'image') {
+                                            var image = new Image();
+
+                                            //[ RESIZE IMAGE ]
+                                            image.onload = function () {
+                                                var canvas = document.createElement("canvas"),
+                                                    context = canvas.getContext("2d");
+
+                                                canvas.width = image.width / 4;
+                                                canvas.height = image.height / 4;
+                                                context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+
+                                                with (messageattachment) {
+                                                    Attachment = canvas.toDataURL();
+                                                    AttachmentName = item.name;
+                                                };
+
+                                                me.datasource.selectedattachments.push(messageattachment);
+                                            };
+
+                                            image.src = e.target.result;
+                                        } else {
+                                            with (messageattachment) {
+                                                Attachment = reader.result;
+                                                AttachmentName = item.name;
+                                            };
+
+                                            me.datasource.selectedattachments.push(messageattachment);
+                                        };
+                                    };
+                                }, false);
+
+                                if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
+
+                                //[ REMOVE ]
+                                element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
+                                    var id = $(this).attr('data');
+
+                                    me.datasource.selectedattachments.removeField('index', id);
+                                    $(this).parent().remove();
+
+                                    if (me.datasource.selectedattachments.length == 0) {
+                                        ds.uploader.clearAll();
+
+                                        elem.html(controls.resources.attachment_upload_info);
+
+                                        setTimeout(function () {
+                                            ds.uploader.clickable = true;
+                                        }, 1000);
+                                    };
+
+                                    e.preventDefault();
+                                });
+
+                                elem.append(element);
+                            });
+
+                            if (ifUndefinedOrNull(files, new Array()).length == 0) {
+                                with (ds.uploader.element.find('.files')) {
+                                    empty();
+                                    addClass('dz-default dz-message');
+                                };
+                            } else {
+                                with (ds.uploader.element.find('.files')) {
+                                    removeClass('dz-default dz-message');
+                                };
+                            };
+                        }
+                    });
 
                     if (player.id > 0) {
                         ds.playername.val(player.name);
@@ -140,6 +299,50 @@ function player(args) {
 
                         $('.titlePlayer').html('EDITAR JOGADOR');
 
+                        //anexos
+                        if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
+                            $.each(me.datasource.attachments, function (index, attachment) {
+                                var filename = attachment.file_name,
+                                    lastindex = filename.lastIndexOf('.'),
+                                    html = $('<div class="file-name" data="{0}"><div class="file"><div class="file-type">{2}</div>{1}</div><div class="actions"><div class="delete" data="{0}"><i class="grid-action fa fa-trash"></i></div><div class="download" data="{0}"><i class="grid-action fa fa-download"></i></div></div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
+
+                                with (html) {
+                                    //[ DELETE FILE ]
+                                    find('.delete').on('click', function (e) {
+                                        var element = $(this),
+                                            id = parseInt($(this).attr('data')),
+                                            parent = $(this).parents('.file-name');
+
+                                        me.methods.deleteattachment(id, function () {
+                                            //[ REMOVE ATTACHMENT FROM ARRAY ]
+                                            me.datasource.attachments.removeField('id', id);
+
+                                            //[ REMOVE ATTACHMENT HTML ]
+                                            parent.remove();
+
+                                            if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
+                                                ds.ctrfiles.remove();
+                                            }
+                                        });
+                                        e.preventDefault();
+                                    });
+
+                                    //[ DOWNLOAD FILE ]
+                                    find('.download').on('click', function (e) {
+                                        var id = parseInt($(this).attr('data')),
+                                            selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
+
+                                        me.methods.downloadattachment(selectedfile);
+                                        e.preventDefault();
+                                    });
+                                };
+
+                                ds.ctrfiles.find('.files').append(html);
+                            });
+                        } else {
+                            ds.ctrfiles.remove();
+                        };
+
                         //EDITAR JOGADOR
                         ds.saveplayer.on('click', function(){
                             var player = me.datasource.player;                   
@@ -160,11 +363,19 @@ function player(args) {
                                 value = ds.playervalue.val();
                                 weight = ds.playerweight.val();
                             };
+
+                            //anexos
+                            if (ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).length > 0) {
+                                $.each(me.datasource.selectedattachments, function (index, attachment) {
+                                    attachment.PlayerID = player.id;
+                                });
+                            };
         
                             controls.ajax({
                                 functionname: 'update_player',
                                 data: {
-                                    player: player
+                                    player: player,
+                                    attachments: me.datasource.selectedattachments//anexos
                                 }
                             }, function (data) {
                                 if (ifUndefinedOrNull(data.success, false)) {
@@ -180,6 +391,8 @@ function player(args) {
                             });
                         });
                     }else{
+                        ds.ctrfiles.remove(); //anexos
+
                         ds.saveplayer.on('click', function(){
                             var player = me.datasource.player;                   
         
@@ -188,22 +401,23 @@ function player(args) {
                                 birth = ds.playerbirth.val();
                                 club = ds.playerclub.val();
                                 firstname = ds.playerfirstname.val();
-                                //foot = ds.playerfoot.find('span.cs-placeholder').html();
+                                foot = ds.playerfoot.prev().find('.cs-selected span').html();
                                 height = ds.playerheight.val();
                                 lastname = ds.playerlastname.val();
                                 name = ds.playername.val();
                                 nationality = ds.playernationality.val();
                                 passport = ds.playerpassport.val();
                                 passportval = ds.playerpassportval.val();
-                                position = ds.playerposition.find('span.cs-placeholder').html();
-                                value = ds.playervalue.val();
+                                position = ds.playerposition.prev().find('.cs-selected span').html();
+                                value = (!isStringVoid(ds.playervalue.val())) ? ds.playervalue.val() : 0;
                                 weight = ds.playerweight.val();
                             };
         
                             controls.ajax({
                                 functionname: 'insert_player',
                                 data: {
-                                    player: player
+                                    player: player,
+                                    attachments: me.datasource.selectedattachments//anexos
                                 }
                             }, function (data) {
                                 if (ifUndefinedOrNull(data.success, false)) {
@@ -446,13 +660,17 @@ function agent(args) {
             agentcompany: $('.txtAgentCompany'),
             agentcontacts: $('.txtAgentContacts'),
             agentobs: $('.txtAgentObs'),
-            saveagent: $('.btnSaveAgent')
+            saveagent: $('.btnSaveAgent'),
+            ctrclubslist: $('.ctrClubsList'),
+            btnaddclub: $('.btnAddClub'),
+            btndeleteclub: $('.btnDeleteClub')
         },
         datasource: {
             base: undefined,
             id: ifUndefinedOrNull(args.data.agent_id, 0),
             agent: undefined,
-            clubs: new Array()
+            clubs: new Array(),
+            agent_clubs: new Array()
         },
         methods: {
             base: undefined,
@@ -469,6 +687,7 @@ function agent(args) {
                     }, function (data) {
                         //[ SET list_agent LIST ]
                         me.datasource.agent = data.agent;
+                        me.datasource.agent_clubs = data.agent_clubs;
 
                         if (!isUndefinedOrNull(after)) { after(); };
                     }, function () {
@@ -504,15 +723,18 @@ function agent(args) {
         },
         load: function() {
             var me = this,
-                ds = me.design;            
+                ds = me.design;
+
             me.methods.getclubs(function(){
                 me.methods.getagent(function(){
                     var agent = me.datasource.agent,
-                    clubs = me.datasource.clubs;
+                        clubs = me.datasource.clubs;
 
                     $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
                         var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
                             countryclubs = clubs.filter(function(c){ return (c.country == country); });
+
+                        ds.agentclub.append('<option value="0">Selecionar</option>');
 
                         $.each(countryclubs, function (index, club) {
                             group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
@@ -521,11 +743,47 @@ function agent(args) {
                         ds.agentclub.append(group);
                     });
 
+                    if (ds.ctrclubslist.find('.form-group').length == 1) {
+                        ds.btndeleteclub.hide();
+                    };
+
+                    ds.btnaddclub.on('click', function(){
+                        var element = $('<div class="form-group "><select class="full-width ddlAgentClub" data-init-plugin="select2"></select></div>');
+
+                        element.find('select').append('<option value="0">Selecionar</option>');
+
+                        $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
+                            var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
+                                countryclubs = clubs.filter(function(c){ return (c.country == country); });
+    
+                            $.each(countryclubs, function (index, club) {
+                                group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                            });
+    
+                            element.find('select').append(group);
+                        });
+
+                        element.find('select').select2();
+
+                        ds.ctrclubslist.append(element);
+
+                        if (ds.ctrclubslist.find('.form-group').length > 1) {
+                            ds.btndeleteclub.show();
+                        }
+                    });
+    
+                    ds.btndeleteclub.on('click', function() {
+                        ds.ctrclubslist.find('.form-group').last().remove();
+
+                        if (ds.ctrclubslist.find('.form-group').length == 1) {
+                            $(this).hide();
+                        }
+                    });
+
                     if (agent.id > 0) {
                         ds.agentname.val(agent.name);
                         ds.agentclub.val(agent.club);
                         ds.agentclub.trigger('change');
-                        ds.agentcountry.val(agent.country);
                         ds.agentfirstname.val(agent.firstname);
                         ds.agentlastname.val(agent.lastname);
                         ds.agentbirth.val(agent.birth);
@@ -537,9 +795,44 @@ function agent(args) {
                         ds.agentobs.val(agent.obs);
                         $('.titleAgent').html('EDITAR AGENTE');
 
+                        if (ifUndefinedOrNull(me.datasource.agent_clubs, new Array()).length > 0) {
+                            $.each(me.datasource.agent_clubs, function (index, club) {
+                                if (index > 0) {
+                                    var element = $('<div class="form-group "><select class="full-width ddlAgentClub" data-init-plugin="select2"></select></div>');
+    
+                                    element.find('select').append('<option value="0">Selecionar</option>');
+    
+                                    $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
+                                        var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
+                                            countryclubs = clubs.filter(function(c){ return (c.country == country); });
+                
+                                            
+
+                                        $.each(countryclubs, function (index, club) {
+                                            group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                                        });
+                
+                                        element.find('select').append(group);
+                                    });
+    
+                                    element.find('select').select2();
+
+                                    element.find('select').val(club.id_club);
+                                    element.find('select').trigger('change');
+    
+                                    ds.ctrclubslist.append(element);
+
+                                    if (ds.ctrclubslist.find('.form-group').length > 1) {
+                                        ds.btndeleteclub.show();
+                                    }
+                                }
+                            });
+                        };
+
                         //EDITAR AGENTE
                         ds.saveagent.on('click', function(){
-                            var agent = me.datasource.agent;                   
+                            var agent = me.datasource.agent,
+                                clubs = new Array();                   
 
                             with(agent) {
                                 name = ds.agentname.val();
@@ -555,10 +848,19 @@ function agent(args) {
                                 obs = ds.agentobs.val();
                             };
 
+                            $.each(ds.ctrclubslist.find('.ddlAgentClub'), function (index, element) {
+                               var value = $(element).find('option:selected').val();
+                               
+                               if (parseInt(value) > 0) {
+                                   clubs.push(parseInt(value));
+                               }
+                            });
+
                             controls.ajax({
                                 functionname: 'update_agent',
                                 data: {
-                                    agent: agent
+                                    agent: agent,
+                                    clubs: clubs
                                 }
                             }, function (data) {
                                 if (ifUndefinedOrNull(data.success, false)) {
@@ -574,7 +876,6 @@ function agent(args) {
                             });
                         });
                     } else {
-
                         //NOVO AGENTE
                         ds.saveagent.on('click', function(){
                             var agent = me.datasource.agent;                   
@@ -808,9 +1109,9 @@ function representation(args) {
                             ds.representationcommission.val(representation.commission);
                             $('.titleRepresentation').html('EDITAR CONTRATO DE REPRESENTAÇÃO');
 
-if (representation.child == 1){
-    ds.child.trigger('click')    
-}
+                            if (representation.child == 1){
+                                ds.child.trigger('click')    
+                            }
 
                             //EDITAR CONTRATO
                             ds.saverepresentation.on('click', function(){
@@ -1839,7 +2140,7 @@ function mandates(args) {
                     ds.editplayermandate.remove();
                     ds.editagentmandate.remove();
                 };
-                
+
                 //EDITAR DADOS DO JOGADOR
                 ds.editplayermandate.on('click', function(){
                     ds.mandateplayerclubedit.val(mandates.playerclubname);
@@ -2999,6 +3300,7 @@ function list_agent() {
             base: undefined,
             list_agent: new Array(),
             list_agentusers: new Array(),
+            agents_clubs: new Array(),
             total: 0
         },
         methods: {
@@ -3064,6 +3366,7 @@ function list_agent() {
                     }, function (data) {
                         //[ SET list_agent LIST ]
                         me.datasource.list_agent = ifUndefinedOrNull(data.agents, new Array());
+                        me.datasource.agents_clubs = ifUndefinedOrNull(data.agents_clubs, new Array());
                         me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
 
                         if (data.total > 0) {
@@ -3111,6 +3414,30 @@ function list_agent() {
                                 itemcolumn = '<td class="v-align-middle">{0}</td>';
 
                             with (row) {
+                                var agent_club = me.datasource.agents_clubs.filter(function(ac){ return (ac.id_agent == list_agent.id); }),
+                                    club = '',
+                                    country = '';
+
+                                if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
+                                    $.each(agent_club, function (index, ac) {
+                                        if (country.indexOf(ac.club_name) == -1) {
+                                            if(index > 0) {
+                                                club += ', ';
+                                            }
+    
+                                            club += ac.club_name;
+                                        };
+
+                                        if (country.indexOf(ac.country_name) == -1) {
+                                            if(index > 0) {
+                                                country += ', ';
+                                            }
+
+                                            country += ac.country_name;
+                                        };
+                                    });
+                                }
+
                                 //[ SAVE list_agent ID ]
                                 attr('data', list_agent.id);
 
@@ -3118,8 +3445,8 @@ function list_agent() {
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckagent{0}" data="{0}"><label for="ckagent{0}" class="no-padding no-margin"></label></div>'.format(list_agent.id)));
                                 row.append(itemcolumn.format('{0} {1}'.format(list_agent.firstname, list_agent.lastname)));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.agentcompany, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.clubname, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.country, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(club, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(country, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_agent.contacts, '')));
                             };
 

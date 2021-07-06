@@ -420,16 +420,16 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Clube</label>
+                        <div class="col ctrClubsActions">
+                              <button type="button" class="btn3 btn-primary float-right btnAddClub"style="margin-left: 7px; margin-top: 11px;" ><i class="fa fa-plus"></i></button>
+                              <button type="button" class="btn3 btn-primary float-right btnDeleteClub" style="margin-top: 11px;" ><i class="fa fa-minus"></i></button>
+                        </div>
                         <form role="form">
                           <div class="row">
-                            <div class="col-md-10">    
+                            <div class="col-md-11 ctrClubsList">    
                               <div class="form-group ">
                                 <select class="full-width ddlAgentClub" data-init-plugin="select2"></select>
                               </div>
-                            </div>
-                            <div class="col-md-2 align-self-center d-flex justify-content-center">
-                              <button type="button" class="btn3 btn-primary"style="margin-right: 7px;" ><i class="fa fa-plus"></i></button>
-                              <button type="button" class="btn3 btn-primary"><i class="fa fa-minus"></i></button>
                             </div>
                           </div>
                         </form>
