@@ -510,67 +510,42 @@
                     </form>
                   </div>
                 </div>
-                <!-- END card -->
               </div>
-
-              <div class="ctrFiles col-lg-12" style="padding-left: 30px;padding-right: 30px;">
-                <!-- START card -->
-                <div class="card card-default">
-                  <div class="card-header ">
-                    <div class="card-title">
-                      Documentos
-                    </div>
-                  </div>
-                  <div class="card-body no-scroll no-padding ctrUploader">
-                    <div class="dropzone no-margin">
-                        <div class="files">
-                        <!-- <input name="file" type="file" multiple/> -->
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- <div class="timeline-new-attachments">
-                      <div id="box">
-                          <div class="files">
-                              
-                          </div>
-                      </div>
-                  </div> -->
-                </div>
-                <!-- END card -->
               </div>
-
-              <div class="col-lg-12" style="padding-left: 30px;padding-right: 30px;">
-                <!-- START card -->
-                <div class="card card-default">
-                  <div class="card-header ">
-                    <div class="card-title">
-                      upload de documentos
+              <div class="row">
+                <div class=" ctrFiles col-md-6"  style="padding-left: 30px;padding-right: 30px;">
+                  <div class="card card-default">
+                    <div class="card-header ">
+                      <div class="card-title">
+                        Documentos
+                      </div>
                     </div>
-                    <div class="tools">
-                      <a class="collapse" href="javascript:;"></a>
-                      <a class="config" data-toggle="modal" href="#grid-config"></a>
-                      <a class="reload" href="javascript:;"></a>
-                      <a class="remove" href="javascript:;"></a>
-                    </div>
-                  </div>
-                  <div class="card-body no-scroll no-padding ctrUploader">
-                    <div id="box" class="dropzone no-margin">
-                        <div class="files dz-default dz-message">
-                        <!-- <input name="file" type="file" multiple/> -->
+                    <div class="card-body no-scroll no-padding ctrUploader">
+                      <div class="dropzone no-margin">
+                          <div class="files"></div>
                       </div>
                     </div>
                   </div>
-
-                  <!-- <div class="timeline-new-attachments">
-                      <div id="box">
-                          <div class="files">
-                              
-                          </div>
-                      </div>
-                  </div> -->
                 </div>
-                <!-- END card -->
+                <div class="col-md-6" style="padding-left: 30px;padding-right: 30px;">
+                  <div class="card card-default">
+                    <div class="card-header ">
+                      <div class="card-title">
+                        upload de documentos
+                      </div>
+                      <div class="tools">
+                        <a class="collapse" href="javascript:;"></a>
+                        <a class="config" data-toggle="modal" href="#grid-config"></a>
+                        <a class="reload" href="javascript:;"></a>
+                        <a class="remove" href="javascript:;"></a>
+                      </div>
+                    </div>
+                    <div class="card-body no-scroll no-padding ctrUploader">
+                      <div id="box" class="dropzone no-margin">
+                          <div class="files dz-default dz-message"></div>
+                      </div>
+                    </div>
+                </div>
               </div>
             </div>
           </div>

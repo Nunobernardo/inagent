@@ -102,6 +102,7 @@
 
             case 'insert_coach':
                 $coach = $object->{'coach'};
+                $attachments = $object->{'attachments'};
                 $birthCoach = date("Y-m-d", strtotime($coach->birth));
                 $passportvalCoach = date("Y-m-d", strtotime($coach->passportval));
 
@@ -114,6 +115,16 @@
 
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO coach_files(id, id_coach, file_name, file) 
+                                      VALUES (NULL, $conn->insert_id, '$value->AttachmentName', '$value->Attachment')";
+    
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
                     $feedback['coach_id'] = $conn->insert_id;
                     $feedback['success'] = true;
                 } else {
@@ -124,6 +135,7 @@
 
             case 'update_coach':
                 $coach = $object->{'coach'};
+                $attachments = $object->{'attachments'};
                 $birthcoach = date("Y-m-d", strtotime($coach->birth));
                 $passportvalcoach = date("Y-m-d", strtotime($coach->passportval));
 
@@ -149,6 +161,16 @@
 
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO coach_files(id, id_coach, file_name, file) 
+                                        VALUES (NULL, $value->CoachID, '$value->AttachmentName', '$value->Attachment')";
+            
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
                     $feedback['coach_id'] = $conn->insert_id;
                     $feedback['success'] = true;
                 } else {
@@ -164,7 +186,7 @@
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "INSERT INTO contract_representation (id_contract_rep, id_player, child, father_name, mother_name, date_start, date_end, commission)
-                            VALUES (NULL, '44', '', '$representation->father', '$representation->mother', '$repdatestart', '$repdateend', '$representation->commission');";
+                            VALUES (NULL, '$representation->player', '$representation->child', '$representation->father', '$representation->mother', '$repdatestart', '$repdateend', '$representation->commission');";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -199,13 +221,10 @@
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
-
-                $feedback['q'] = $query;
                 
                 //[ CHECK RESULTS ]
                 if ($result) {
                     $feedback['representation_id'] = $conn->insert_id;
-
                     $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
@@ -307,8 +326,8 @@
                 $cdateend = date("Y-m-d", strtotime($club->dateend));
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
-                $query = "INSERT INTO contract_club (id_contract_club, id_player, id_club, date_start, date_end, value, clause, court, bonus, obs)
-                            VALUES (NULL, '44', '1', '$cdatestart', '$cdateend', '$club->value', '$club->clause', '$club->court', '$club->bonus', '$club->obs');";
+                $query = "INSERT INTO contract_club (id_contract_club, id_player, id_coach, id_club, date_start, date_end, value, clause, court, bonus, obs)
+                            VALUES (NULL, '$club->player', NULL, '$club->club', '$cdatestart', '$cdateend', '$club->value', '$club->clause', '$club->court', '$club->bonus', '$club->obs');";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -332,7 +351,7 @@
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "UPDATE contract_club SET 
-                            id_player = '44',
+                            id_player = '$club->player',
                             id_club = '$club->club',
                             value = '$club->value',
                             date_start = '$clubdatestart',
@@ -398,7 +417,7 @@
                     $total_pages = ceil($total_records / $records);
     
                     //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                    $query = "SELECT p.id_player, p.first_name, p.last_name, p.birth_date, p.nationality, p.position, c.name_club as club_name, p.value 
+                    $query = "SELECT p.id_player, p.first_name, p.last_name, p.birth_date, p.nationality, p.position, c.name_club as club_name, p.value, c.id_club 
                               FROM players p
                               INNER JOIN club c ON p.id_club = c.id_club
                               LIMIT $offset, $records";
@@ -590,6 +609,7 @@
                 break;
 
             case 'coach':
+                $attachments = array();
                 $coachid = intval(urldecode($object->{'coach_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
@@ -608,61 +628,106 @@
                     $coach = new coach($result->fetch_array(MYSQLI_ASSOC));
                 };
 
-                $feedback['temp'] = $query;
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "SELECT *
+                            FROM coach_files
+                            WHERE
+                            id_coach = " . $coachid;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        array_push($attachments, $row);
+                    };
+                };
 
                 $feedback['success'] = true;
                 $feedback['coach'] = $coach;
+                $feedback['attachments'] = $attachments;
                 break;
 
             case 'delete_coach':
-                $text = json_encode($object->{'coaches_ids'});
-                $text = str_replace("[","", $text);
-                $text = str_replace("]", "", $text);
+                $coachid = json_encode($object->{'coaches_ids'});
+                $coachid = str_replace("[","(", $coachid);
+                $coachid = str_replace("]", ")", $coachid);
 
-                // //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
-                // $query = "DELETE ph.*
-                //             FROM publications p
-                //             INNER JOIN publications_users pu ON pu.publication_id = p.id
-                //             INNER JOIN publications_history ph ON ph.publication_id = p.id
-                //             WHERE p.id in (" . $text . ")";
+                $query = "DELETE cr
+                            FROM coach c
+                            INNER JOIN contract_representation cr ON cr.id_coach = c.id_coach
+                            WHERE c.id_coach in " . $coachid;
 
-                // //[ EXECUTE QUERY ]
-                // $result = mysqli_query($conn, $query);
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
 
-                // //[ CHECK RESULTS ]
-                // if ($result) {
-                //     //[ SET QUERY TO DELETE PUBLICATIONS USERS ASSOCIATED TO SELECTED PUBLICATION ]
-                //     $query = "DELETE pu.*
-                //                 FROM publications p
-                //                 INNER JOIN publications_users pu ON pu.publication_id = p.id
-                //                 WHERE p.id = " . $publicationid;
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $query = "DELETE cc
+                                FROM coach c
+                                INNER JOIN contract_club cc ON cc.id_coach = c.id_coach
+                                WHERE c.id_coach in " . $coachid;
                     
-                //     //[ EXECUTE QUERY ]
-                //     $result = mysqli_query($conn, $query);
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
 
-                //     //[ CHECK RESULTS ]
-                //     if ($result) {
-                //         //[ SET QUERY TO DELETE SELECTED PUBLICATION ]
-                //         $query = "DELETE FROM publications WHERE id = " . $publicationid;
+                    //[ CHECK RESULTS ]
+                    if ($result) {
+                        $query = "DELETE m
+                                    FROM coach c
+                                    INNER JOIN mandates m ON m.id_coach = c.id_coach
+                                    WHERE c.id_coach in " . $coachid;
 
-                //         //[ EXECUTE QUERY ]
-                //         $result = mysqli_query($conn, $query);
+                        //[ EXECUTE QUERY ]
+                        $result = mysqli_query($conn, $query);
         
-                //         //[ CHECK RESULTS ]
-                //         if ($result) {
-                //             $feedback['success'] = true;
-                //         } else {
-                //             $feedback['success'] = false;
-                //             $feedback['error'] = "ERROR_REMOVING_COACHES";
-                //         };
-                //     } else {
-                //         $feedback['success'] = false;
-                //         $feedback['error'] = "ERROR_REMOVING_COACHES";
-                //     };
-                // } else {
-                //     $feedback['success'] = false;
-                //     $feedback['error'] = "ERROR_REMOVING_COACHES";
-                // };
+                        $query = "DELETE cc
+                                FROM coach c
+                                INNER JOIN contract_club cc ON cc.id_coach = c.id_coach
+                                WHERE c.id_coach in " . $coachid;
+                    
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+
+                    //[ CHECK RESULTS ]
+                    if ($result) {
+                        $query = "DELETE m
+                                    FROM coach c
+                                    INNER JOIN coach_files m ON m.id_coach = c.id_coach
+                                    WHERE c.id_coach in " . $coachid;
+
+                        //[ EXECUTE QUERY ]
+                        $result = mysqli_query($conn, $query);
+        
+                        if ($result) {
+                            $query = "DELETE c
+                                        FROM coach c
+                                        WHERE c.id_coach in " . $coachid;
+    
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+            
+                            //[ CHECK RESULTS ]
+                            if ($result) {
+                                $feedback['success'] = true;
+                            } else {
+                                $feedback['success'] = false;
+                                $feedback['error'] = "ERROR_REMOVING_COACHES";
+                            };
+                        } 
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = "ERROR_REMOVING_COACHES";
+                    };
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = "ERROR_REMOVING_COACHES";
+                    };
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_REMOVING_COACHES";
+                };
                 break;
 
             
@@ -716,7 +781,7 @@
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT cr.id_contract_rep, p.id_player, cr.date_start, cr.date_end, cr.child,  cr.father_name, cr.mother_name, 
                             cr.commission, p.name, p.first_name, p.last_name, p.birth_date, p.nationality, p.height, p.weight, p.value, p.documents, 
-                            p.documents_val, c.name_club, p.id_club
+                            p.documents_val, c.name_club, p.id_club, p.foot, p.position
                             FROM contract_representation cr
                             INNER JOIN players p ON cr.id_player = p.id_player
                             INNER JOIN club c ON p.id_club = c.id_club
