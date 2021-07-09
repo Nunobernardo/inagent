@@ -181,6 +181,7 @@
 
             case 'insert_representation':
                 $representation = $object->{'representation'};
+                $attachments = $object->{'attachments'};
                 $repdatestart = date("Y-m-d", strtotime($representation->datestart));
                 $repdateend = date("Y-m-d", strtotime($representation->dateend));
 
@@ -193,8 +194,17 @@
 
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO contract_representation_files(id, id_representation, file_name, file) 
+                                    VALUES (NULL, $conn->insert_id, '$value->AttachmentName', '$value->Attachment')";
+            
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
                     $feedback['representation_id'] = $conn->insert_id;
-
                     $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
@@ -205,6 +215,7 @@
 
             case 'update_representation':
                 $representation = $object->{'representation'};
+                $attachments = $object->{'attachments'};
                 $repdatestart = date("Y-m-d", strtotime($representation->datestart));
                 $repdateend = date("Y-m-d", strtotime($representation->dateend));
 
@@ -224,6 +235,15 @@
                 
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            $query = "INSERT INTO contract_representation_files(id, id_representation, file_name, file) 
+                                        VALUES (NULL, $value->RepresentationID, '$value->AttachmentName', '$value->Attachment')";
+            
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
                     $feedback['representation_id'] = $conn->insert_id;
                     $feedback['success'] = true;
                 } else {
@@ -234,6 +254,7 @@
 
             case 'insert_agent':
                 $agent = $object->{'agent'};
+                $attachments = $object->{'attachments'};
                 $birthagent = date("Y-m-d", strtotime($agent->birth));
                 $passportvalsagent = date("Y-m-d", strtotime($agent->passportval));
 
@@ -254,6 +275,16 @@
 
                     //[ CHECK RESULTS ]
                     if ($result) {
+                        if (count($attachments) > 0) {
+                            foreach ($attachments as &$value) {
+                                //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                                $query = "INSERT INTO agent_files(id, id_agent, file_name, file) 
+                                        VALUES (NULL, $conn->insert_id, '$value->AttachmentName', '$value->Attachment')";
+                
+                                //[ EXECUTE QUERY ]
+                                $result = mysqli_query($conn, $query);
+                            }
+                        }
                         $feedback['success'] = true;
                     } else {
                         $feedback['success'] = false;
@@ -268,6 +299,7 @@
             case 'update_agent':
                 $agent = $object->{'agent'};
                 $clubs = $object->{'clubs'};
+                $attachments = $object->{'attachments'};
                 $birthagent = date("Y-m-d", strtotime($agent->birth));
                 $passportvalagent = date("Y-m-d", strtotime($agent->passportval));
 
@@ -309,6 +341,16 @@
 
                     //[ CHECK RESULTS ]
                     if ($result) {
+                        if (count($attachments) > 0) {
+                            foreach ($attachments as &$value) {
+                                //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                                $query = "INSERT INTO agent_files(id, id_agent, file_name, file) 
+                                            VALUES (NULL, $value->AgentID, '$value->AttachmentName', '$value->Attachment')";
+                
+                                //[ EXECUTE QUERY ]
+                                $result = mysqli_query($conn, $query);
+                            }
+                        }
                         $feedback['success'] = true;
                     } else {
                         $feedback['success'] = false;
@@ -322,6 +364,7 @@
 
             case 'insert_club':
                 $club = $object->{'club'};
+                $attachments = $object->{'attachments'};
                 $cdatestart = date("Y-m-d", strtotime($club->datestart));
                 $cdateend = date("Y-m-d", strtotime($club->dateend));
 
@@ -334,6 +377,16 @@
 
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO contract_club_files (id, id_contract_club, file_name, file) 
+                                    VALUES (NULL, $conn->insert_id, '$value->AttachmentName', '$value->Attachment')";
+            
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
                     $feedback['club_id'] = $conn->insert_id;
 
                     $feedback['success'] = true;
@@ -346,6 +399,7 @@
 
             case 'update_club':
                 $club = $object->{'club'};
+                $attachments = $object->{'attachments'};
                 $clubdatestart = date("Y-m-d", strtotime($club->datestart));
                 $clubdateend = date("Y-m-d", strtotime($club->dateend));
 
@@ -367,6 +421,16 @@
 
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO contract_club_files(id, id_contract_club, file_name, file) 
+                                        VALUES (NULL, $value->ClubID, '$value->AttachmentName', '$value->Attachment')";
+            
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
                     $feedback['club_id'] = $conn->insert_id;
                     $feedback['success'] = true;
                 } else {
@@ -377,12 +441,13 @@
                 break;
             case 'insert_mandates':
                 $mandates = $object->{'mandates'};
+                $attachments = $object->{'attachments'};
                 $mandatesdatestart = date("Y-m-d", strtotime($mandates->datestart));
                 $mandatesdateend = date("Y-m-d", strtotime($mandates->dateend));
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "INSERT INTO mandates (id_mandates, id_player, date_start, date_end, obs)
-                            VALUES (NULL, '44', '$mandatesdatestart', '$mandatesdateend', '$mandates->obs');";
+                            VALUES (NULL, '$mandates->player', '$mandatesdatestart', '$mandatesdateend', '$mandates->obs');";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -398,7 +463,42 @@
                     $feedback['XX'] = $query;
                 };
                 break;
+            case 'update_mandates':
+                $mandates = $object->{'mandates'};
+                $attachments = $object->{'attachments'};
+                $mandatesdatestart = date("Y-m-d", strtotime($mandates->datestart));
+                $mandatesdateend = date("Y-m-d", strtotime($mandates->dateend));
+
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "UPDATE mandates SET 
+                            id_player = '$mandates->player',
+                            date_start = '$mandatesdatestart',
+                            date_end = '$mandatesdateend',
+                            obs = '$mandates->obs'
+                            WHERE id_mandates = " . $mandates->id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            $query = "INSERT INTO mandates_files(id, id__mandates, file_name, file) 
+                                        VALUES (NULL, $value->MandateID, '$value->AttachmentName', '$value->Attachment')";
             
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
+                    $feedback['mandates_id'] = $conn->insert_id;
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = 'ERRO_UPDATE_MANDATES';
+                    $feedback['XX'] = $query;
+                };
+                break;
             case 'players':
                     $players = array();
                     $page = (isset($object->{'page'})) ? urldecode($object->{'page'}) : 1;
@@ -770,21 +870,24 @@
                 $feedback['success'] = true;
                 $feedback['representations'] = $representations;
                 $feedback['current_page'] = $page;
-                $feedback['detail_page'] = "representation_new.php";
+                $feedback['detail_page'] = "representation_new_player.php";
                 $feedback['total'] = $total_records;
                 $feedback['total_pages'] = $total_pages;
                 break;
 
             case 'representation':
+                $attachments = array();
                 $representationid = intval(urldecode($object->{'representation_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT cr.id_contract_rep, p.id_player, cr.date_start, cr.date_end, cr.child,  cr.father_name, cr.mother_name, 
+                $query = "SELECT cr.id_contract_rep, p.id_player, co.id_coach, co.name, co.first_name, co.last_name, co.birth_date, co.nationality, co.height, co.weight, co.value, co.documents, co.documents_val, 
+                             cr.date_start, cr.date_end, cr.child,  cr.father_name, cr.mother_name, 
                             cr.commission, p.name, p.first_name, p.last_name, p.birth_date, p.nationality, p.height, p.weight, p.value, p.documents, 
                             p.documents_val, c.name_club, p.id_club, p.foot, p.position
                             FROM contract_representation cr
-                            INNER JOIN players p ON cr.id_player = p.id_player
-                            INNER JOIN club c ON p.id_club = c.id_club
+                            LEFT JOIN players p ON cr.id_player = p.id_player
+                            LEFT JOIN coach co ON cr.id_coach = co.id_coach
+                            LEFT JOIN club c ON p.id_club = c.id_club
                             WHERE
                             cr.id_contract_rep = " . $representationid;
 
@@ -796,30 +899,59 @@
                     $representation = new representation($result->fetch_array(MYSQLI_ASSOC));
                 };
 
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "SELECT *
+                            FROM contract_representation_files
+                            WHERE
+                            id_representation = " . $representationid;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {   
+                    while($row = $result->fetch_assoc()) {
+                        array_push($attachments, $row);
+                    };
+                };
+
                 $feedback['success'] = true;
                 $feedback['representation'] = $representation;
+                $feedback['attachments'] = $attachments;
                 break;
 
             case 'delete_representation':
                 $representationid = json_encode($object->{'representations_ids'});
                 $representationid = str_replace("[","(", $representationid);
                 $representationid = str_replace("]", ")", $representationid);
-
-                $query = "DELETE 
-                            FROM contract_representation 
-                            WHERE contract_representation.id_contract_rep = " . $representationid;
+                
+                $query = "DELETE cf
+                            FROM contract_representation c
+                            INNER JOIN contract_representation_files cf ON cf.id_representation = c.id_contract_rep
+                            WHERE c.id_contract_rep in " . $representationid;
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
 
-                //[ CHECK RESULTS ]
                 if ($result) {
-                    $feedback['success'] = true;
-                } else {
+                    $query = "DELETE 
+                                FROM contract_representation 
+                                WHERE contract_representation.id_contract_rep = " . $representationid;
+    
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+    
+                    //[ CHECK RESULTS ]
+                    if ($result) {
+                        $feedback['success'] = true;
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = "ERROR_REMOVING_REPRESENTATION";
+                    };
+                }else {
                     $feedback['success'] = false;
                     $feedback['error'] = "ERROR_REMOVING_REPRESENTATION";
                 };
-
                 break;
     
             case 'clubs':
@@ -864,12 +996,13 @@
                 $feedback['success'] = true;
                 $feedback['clubs'] = $clubs;
                 $feedback['current_page'] = $page;
-                $feedback['detail_page'] = "clubs_new.php";
+                $feedback['detail_page'] = "clubs_new_player.php";
                 $feedback['total'] = $total_records;
                 $feedback['total_pages'] = $total_pages;
                 break;
         
             case 'club':
+                $attachments = array();
                 $clubid = intval(urldecode($object->{'club_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
@@ -889,31 +1022,58 @@
                     $club = new club($result->fetch_array(MYSQLI_ASSOC));
                 };
 
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "SELECT *
+                            FROM contract_club_files
+                            WHERE
+                            id_contract_club = " . $clubid;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {   
+                    while($row = $result->fetch_assoc()) {
+                        array_push($attachments, $row);
+                    };
+                };
+
                 $feedback['success'] = true;
                 $feedback['club'] = $club;
+                $feedback['attachments'] = $attachments;
                 break;
 
             case 'delete_club':
                 $clubid = json_encode($object->{'clubs_ids'});
                 $clubid = str_replace("[","(", $clubid);
                 $clubid = str_replace("]", ")", $clubid);
-
-                //[ SET QUERY TO DELETE PUBLICATIONS HISTORY ASSOCIATED TO SELECTED PUBLICATION ]
-                $query = "DELETE 
-                            FROM contract_club 
-                            WHERE contract_club.id_contract_club = " . $clubid;
-
+                $query = "DELETE cf
+                            FROM contract_club c
+                            INNER JOIN contract_club_files cc ON cc.id_contract_club  = c.id_contract_club 
+                            WHERE c.id_contract_club in " . $representationid;
+                            
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
-
-                //[ CHECK RESULTS ]
+            
                 if ($result) {
-                    $feedback['success'] = true;
-                } else {
+                    $query = "DELETE 
+                                FROM contract_club 
+                                WHERE contract_club.id_contract_club = " . $clubid;
+            
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+            
+                    //[ CHECK RESULTS ]
+                    if ($result) {
+                        $feedback['success'] = true;
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = "ERROR_REMOVING_CLUB";
+                    };
+                }else {
                     $feedback['success'] = false;
-                    $feedback['error'] = "ERROR_REMOVING_CLUBS";
+                    $feedback['error'] = "ERROR_REMOVING_CLUB";
                 };
-
                 break;
                
             case 'mandates':
@@ -925,11 +1085,11 @@
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
                 $total_pages_query = "SELECT COUNT(*) AS total_records 
                                         FROM mandates m 
-                                        INNER JOIN players p ON p.id_player = m.id_player
-                                        INNER JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                                        INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
-                                        INNER JOIN agent a ON a.id_agent = ac.id_agent
-                                        INNER JOIN club c ON c.id_club = ac.id_club";
+                                        LEFT JOIN players p ON p.id_player = m.id_player
+                                        LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
+                                        LEFT JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
+                                        LEFT JOIN agent a ON a.id_agent = ac.id_agent
+                                        LEFT JOIN club c ON c.id_club = ac.id_club";
 
                 $result = mysqli_query($conn, $total_pages_query);
 
@@ -943,11 +1103,11 @@
                             a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
                             c.name_club as club_name_agent, c.country as country_name_agent
                             FROM mandates m 
-                            INNER JOIN players p ON p.id_player = m.id_player
-                            INNER JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
-                            INNER JOIN agent a ON a.id_agent = ac.id_agent
-                            INNER JOIN club c ON c.id_club = ac.id_club
+                            LEFT JOIN players p ON p.id_player = m.id_player
+                            LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
+                            LEFT JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
+                            LEFT JOIN agent a ON a.id_agent = ac.id_agent
+                            LEFT JOIN club c ON c.id_club = ac.id_club
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -972,6 +1132,7 @@
                 break;
         
             case 'mandate':
+                $attachments = array();
                 $mandateid = intval(urldecode($object->{'mandates_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
@@ -984,25 +1145,42 @@
                             a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs,
                             c.name_club as club_name_agent, c.country as country_name_agent
                             FROM mandates m 
-                            INNER JOIN players p ON p.id_player = m.id_player
-                            INNER JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                            INNER JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
-                            INNER JOIN agent a ON a.id_agent = ac.id_agent
-                            INNER JOIN club c ON c.id_club = ac.id_club
-                            INNER JOIN club cp ON cp.id_club = p.id_club
+                            LEFT JOIN players p ON p.id_player = m.id_player
+                            LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
+                            LEFT JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
+                            LEFT JOIN agent a ON a.id_agent = ac.id_agent
+                            LEFT JOIN club c ON c.id_club = ac.id_club
+                            LEFT JOIN club cp ON cp.id_club = p.id_club
                             WHERE m.id_mandates = " . $mandateid;
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
-                $feedback['XXXXXXXXXXXXX'] = $query;
 
                 //[ CHECK RESULTS ]
                 if ($result->num_rows > 0) {   
                     $mandate = new mandates($result->fetch_array(MYSQLI_ASSOC));
                 };
 
+                
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "SELECT *
+                            FROM mandates_files
+                            WHERE
+                            id_mandates = " . $mandateid;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {   
+                    while($row = $result->fetch_assoc()) {
+                        array_push($attachments, $row);
+                    };
+                };
+
                 $feedback['success'] = true;
                 $feedback['mandate'] = $mandate;
+                $feedback['attachments'] = $attachments;
                 break;
 
             case 'delete_mandate':
@@ -1010,33 +1188,46 @@
                 $mandateid = str_replace("[","(",  $mandateid);
                 $mandateid = str_replace("]", ")", $mandateid);
 
-                $query = "DELETE ma
+                $query = "DELETE mf
                             FROM mandates m
-                            INNER JOIN mandates_agent ma ON ma.id_mandate = m.id_mandates
-                            WHERE m.id_mandates in " . $mandateid;
+                            INNER JOIN mandates_files mf ON mf.id_mandates = m.id_mandates
+                            WHERE m.id_mandates in " . $mandatesid;
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
 
-                //[ CHECK RESULTS ]
                 if ($result) {
-                    $query = "DELETE m
+                    $query = "DELETE ma
                                 FROM mandates m
+                                INNER JOIN mandates_agent ma ON ma.id_mandate = m.id_mandates
                                 WHERE m.id_mandates in " . $mandateid;
- 
+
                     //[ EXECUTE QUERY ]
                     $result = mysqli_query($conn, $query);
 
+                    //[ CHECK RESULTS ]
                     if ($result) {
-                        $feedback['success'] = true;
+                        $query = "DELETE m
+                                    FROM mandates m
+                                    WHERE m.id_mandates in " . $mandateid;
+    
+                        //[ EXECUTE QUERY ]
+                        $result = mysqli_query($conn, $query);
+
+                        if ($result) {
+                            $feedback['success'] = true;
+                        } else {
+                            $feedback['success'] = false;
+                            $feedback['error'] = "ERROR_REMOVING_MANDATES";
+                        };
+
                     } else {
                         $feedback['success'] = false;
                         $feedback['error'] = "ERROR_REMOVING_MANDATES";
                     };
-
                 } else {
                     $feedback['success'] = false;
-                    $feedback['error'] = "ERROR_REMOVING_MANDATES";
+                    $feedback['error'] = "ERROR_REMOVING_PLAYERS";
                 };
                 break;
 
@@ -1112,6 +1303,7 @@
                 break;
         
             case 'agent':
+                $attachments = array();
                 $agentid = intval(urldecode($object->{'agent_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
@@ -1148,8 +1340,24 @@
                     $feedback['agent_clubs'] = $clubs;
                 };
 
+                $query = "SELECT *
+                            FROM agent_files
+                            WHERE
+                            id_agent = " . $agentid;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {   
+                    while($row = $result->fetch_assoc()) {
+                        array_push($attachments, $row);
+                    };
+                };
+
                 $feedback['success'] = true;
                 $feedback['agent'] = $agent;
+                $feedback['attachments'] = $attachments;
                 break;
 
             case 'delete_agent':
@@ -1498,7 +1706,101 @@
                     $feedback['error'] = "ERROR_DELETE_FILES";
                 };
                 break;
-            
+            case 'delete_attachment_coach':
+                $id = intval(urldecode($object->{'id'}));
+
+                //[ SET QUERY TO DELETE attachment ]
+                $query = "DELETE c
+                            FROM coach_files c
+                            WHERE id = " . $id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_DELETE_FILES";
+                };
+                break;
+            case 'delete_attachment_representation':
+                $id = intval(urldecode($object->{'id'}));
+
+                //[ SET QUERY TO DELETE attachment ]
+                $query = "DELETE cf
+                            FROM contract_representation_files cf
+                            WHERE id = " . $id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_DELETE_FILES";
+                };
+                break;
+            case 'delete_attachment_club':
+                $id = intval(urldecode($object->{'id'}));
+
+                //[ SET QUERY TO DELETE attachment ]
+                $query = "DELETE cc
+                            FROM contract_club_files cc
+                            WHERE id = " . $id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_DELETE_FILES";
+                };
+                break;
+            case 'delete_attachment_agent':
+                $id = intval(urldecode($object->{'id'}));
+
+                //[ SET QUERY TO DELETE attachment ]
+                $query = "DELETE a
+                            FROM agent_files a
+                            WHERE id = " . $id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_DELETE_FILES";
+                };
+                break;
+            case 'delete_attachment_mandate':
+                $id = intval(urldecode($object->{'id'}));
+
+                //[ SET QUERY TO DELETE attachment ]
+                $query = "DELETE m
+                            FROM mandates_files m
+                            WHERE id = " . $id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = "ERROR_DELETE_FILES";
+                };
+                break;
             default:
                 $feedback['error'] = Feedback::FUNCTION_NAME_IS_NOT_SET . $_POST['functionname'];
                 break;

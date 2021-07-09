@@ -156,6 +156,7 @@
     class representation {
         public $id = 0;
         public $player;
+        public $coach;
         public $club;
         public $clubname;
         public $name;
@@ -183,6 +184,7 @@
             if (isset($obj)) {
                 $this->id = (isset($obj["id_contract_rep"])) ? intval($obj["id_contract_rep"]) : null;
                 $this->player = (isset($obj["id_player"])) ? $obj["id_player"] : null;
+                $this->coach = (isset($obj["id_coach"])) ? $obj["id_coach"] : null;
                 $this->name = (isset($obj["name"])) ? $obj["name"] : null;
                 $this->club = (isset($obj["id_club"])) ? $obj["id_club"] : null;
                 $this->clubname = (isset($obj["name_club"])) ? $obj["name_club"] : null;
@@ -212,11 +214,12 @@
             return $this;
         }
 
-        public function set($id, $player, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $clubname, $value, $passport, $passportval,
+        public function set($id, $player, $coach, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $clubname, $value, $passport, $passportval,
         $child, $father, $mother, $datestart, $dateend, $commission, $file) {
 
             $this->id = $id;
             $this->player = $player;
+            $this->coach = $coach;
             $this->playername = $playername;
             $this->firstname = $firstname;
             $this->lastname = $lastname;

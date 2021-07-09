@@ -99,8 +99,19 @@
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="representation_new.php">Adicionar contrato</a>
-                <span class="icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="representation_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="representation_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -114,8 +125,19 @@
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="clubs_new.php">Adicionar contrato</a>
-                <span class="bg-secondary icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class=" bg-secondary icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="clubs_new_player.php">Jogadores</a>
+                    <span class="bg-secondary icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="clubs_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -450,14 +472,14 @@
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFiles col-md-12"  style="padding-left: 1px;padding-right: 1px;">
+                      <div class=" ctrFilesNew col-md-12"  style="padding-left: 1px;padding-right: 1px;">
                         <div class="card card-default">
                           <div class="card-header ">
                             <div class="card-title">
                               Documentos
                             </div>
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploader">
+                          <div class="card-body no-scroll no-padding ctrUploaderNew">
                             <div class="dropzone no-margin">
                                 <div class="files"></div>
                             </div>
@@ -477,7 +499,7 @@
                               <a class="remove" href="javascript:;"></a>
                             </div>
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploader">
+                          <div class="card-body no-scroll no-padding ctrUploaderNew">
                             <div id="box" class="dropzone no-margin">
                                 <div class="files dz-default dz-message"></div>
                             </div>
@@ -635,14 +657,14 @@
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFiles col-md-12"  style="padding-left: 1px;padding-right: 1px;">
+                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
                         <div class="card card-default">
                           <div class="card-header ">
                             <div class="card-title">
                               Documentos
                             </div>
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploader">
+                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
                             <div class="dropzone no-margin">
                                 <div class="files"></div>
                             </div>
@@ -662,7 +684,7 @@
                               <a class="remove" href="javascript:;"></a>
                             </div>
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploader">
+                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
                             <div id="box" class="dropzone no-margin">
                                 <div class="files dz-default dz-message"></div>
                             </div>

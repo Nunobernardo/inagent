@@ -99,8 +99,19 @@
                 <span class="bg-secondary icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="representation_new.php">Adicionar contrato</a>
-                <span class=" icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="representation_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="representation_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -114,8 +125,19 @@
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="clubs_new.php">Adicionar contrato</a>
-                <span class="icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="clubs_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="clubs_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -328,9 +350,13 @@
                   </div>
                   <div class="col-lg-6 col-xs-12 my-auto">
                     <div class="float-right">
-                        <button type="button" onclick="location.href='representation_new.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
+                        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  class="btn2 dropdown-toggle btn-primary btn-cons btn-animated from-left pg pg-arrow_minimize">
                           <span>Adicionar</span>
                         </button>
+                        <div class="dropdown-menu" style="width: 97.3438px; position: absolute; transform: translate3d(0px, -169px, 0px); will-change: transform; background-color: rgb(50, 130, 184);" x-placement="top-start">
+                          <a class="dropdown-item" href="representation_new_player.php">Jogador</a>
+                          <a class="dropdown-item" href="representation_new_coach.php">Treinador </a>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -92,30 +92,52 @@
           <li>
             <a href="javascript:;"><span class="title">Representação</span>
             <span class=" arrow"></span></a>
-            <span class="bg-secondary icon-thumbnail"><i class="fa fa-file-text"></i></span>
+            <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
             <ul class="sub-menu">
               <li class="">
                 <a href="representation_list.php">Lista de contratos</a>
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="representation_new.php">Adicionar contrato</a>
-                <span class="bg-secondary icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="representation_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="representation_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
           <li>
             <a href="javascript:;"><span class="title">Clubes</span>
             <span class=" arrow"></span></a>
-            <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+            <span class="bg-secondary icon-thumbnail"><i class="fa fa-file-text"></i></span>
             <ul class="sub-menu">
               <li class="">
                 <a href="clubs_list.php">Lista de contratos</a>
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="clubs_new.php">Adicionar contrato</a>
-                <span class="icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class=" bg-secondary icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="clubs_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="clubs_new_coach.php">Treinadores</a>
+                    <span class="bg-secondary icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -271,7 +293,6 @@
       <div class="page-content-wrapper ">
         <!-- START PAGE CONTENT -->
         <div class="content ">
-
         <!-- Modal Profile -->
         <div class="modal fade slide-right" id="modalSlideLeft_profile" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
@@ -301,10 +322,10 @@
                         <input type="text" class="form-control" required>
                       </div>
                       <br>
-                      <button type="button" onclick="location.href='representation_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
+                      <button type="button" onclick="location.href='clubs_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
                         <span>Guardar</span>
                       </button>
-                      <button type="button" onclick="location.href='representation_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
+                      <button type="button" onclick="location.href='clubs_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
                         <span>Cancelar</span>
                       </button>
                     </div>
@@ -330,20 +351,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameNew" required>
+                        <input type="text" class="form-control txtPlayerNameNewClub" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameNew">
+                        <input type="text" class="form-control txtPlayerFirstNameNewClub">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameNew">
+                        <input type="text" class="form-control txtPlayerLastNameNewClub">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthNew" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtPlayerBirthNewClub" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -351,12 +372,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityNew" required>
+                        <input type="text" class="form-control txtPlayerNationalityNewClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightNew" required>
+                          <input type="text" class="form-control usd txtPlayerHeightNewClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -366,7 +387,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightNew" required>
+                          <input type="text" class="form-control usd txtPlayerWeightNewClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -384,7 +405,7 @@
                         </div>
                       </div>
                       <div class="card-body">
-                        <select class="cs-select cs-skin-slide ddlPlayerFootNew" data-init-plugin="cs-select">
+                        <select class="cs-select cs-skin-slide ddlPlayerFootNewClub" data-init-plugin="cs-select">
                           <option value="selected" disabled="disabled">Escolha o pé dominante</option>
                           <option value="g">Esquerdo</option>
                           <option value="dd">Direito</option>
@@ -403,7 +424,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide ddlPlayerPositionNew" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide ddlPlayerPositionNewClub" data-init-plugin="cs-select">
                             <option value="selected" disabled="disabled">Escolha a posição</option>
                             <option value="g">Guarda-redes</option>
                             <option value="dd">Defesa direito</option>
@@ -424,14 +445,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubNew" data-init-plugin="select2"></select>
+                            <select class="full-width ddlPlayerClubNewClub" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueNew" required>
+                          <input type="text" class="form-control usd txtPlayerValueNewClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -440,25 +461,25 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportNew" required>
+                        <input type="text" class="form-control txtPlayerPassportNewClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValNew" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtPlayerPassportValNewClub" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFiles col-md-12"  style="padding-left: 1px;padding-right: 1px;">
+                      <div class=" ctrFilesNew col-md-12"  style="padding-left: 1px;padding-right: 1px;">
                         <div class="card card-default">
                           <div class="card-header ">
                             <div class="card-title">
                               Documentos
                             </div>
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploader">
+                          <div class="card-body no-scroll no-padding ctrUploaderNew">
                             <div class="dropzone no-margin">
                                 <div class="files"></div>
                             </div>
@@ -478,7 +499,7 @@
                               <a class="remove" href="javascript:;"></a>
                             </div>
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploader">
+                          <div class="card-body no-scroll no-padding ctrUploaderNew">
                             <div id="box" class="dropzone no-margin">
                                 <div class="files dz-default dz-message"></div>
                             </div>
@@ -486,7 +507,7 @@
                         </div>
                       </div>
                       <br>
-                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerNew">
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerNewClub">
                         <span>Guardar</span>
                       </button>
                       <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
@@ -511,24 +532,24 @@
                 <div class="container-xs-height full-height">
                   <div class="row-xs-height">
                     <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">EDITAR JOGADOR </h5>
+                      <h5 style="text-align:center">EDITAR JOGADOR</h5>
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameEdit" required>
+                        <input type="text" class="form-control txtPlayerNameEditClub" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameEdit">
+                        <input type="text" class="form-control txtPlayerFirstNameEditClub">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameEdit">
+                        <input type="text" class="form-control txtPlayerLastNameEditClub">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthEdit" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtPlayerBirthEditClub" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -536,12 +557,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityEdit" required>
+                        <input type="text" class="form-control txtPlayerNationalityEditClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightEdit" required>
+                          <input type="text" class="form-control usd txtPlayerHeightEditClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -551,7 +572,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightEdit" required>
+                          <input type="text" class="form-control usd txtPlayerWeightEditClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -569,7 +590,7 @@
                         </div>
                       </div>
                       <div class="card-body">
-                        <select class="cs-select cs-skin-slide ddlPlayerFootEdit" data-init-plugin="cs-select">
+                        <select class="cs-select cs-skin-slide ddlPlayerFootEditClub" data-init-plugin="cs-select">
                           <option value="selected" disabled="disabled">Escolha o pé dominante</option>
                           <option value="g">Esquerdo</option>
                           <option value="dd">Direito</option>
@@ -588,7 +609,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide ddlPlayerPositionEdit" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide ddlPlayerPositionEditClub" data-init-plugin="cs-select">
                             <option value="selected" disabled="disabled">Escolha a posição</option>
                             <option value="g">Guarda-redes</option>
                             <option value="dd">Defesa direito</option>
@@ -602,21 +623,21 @@
                             <option value="ed">Extremo direito</option>
                             <option value="a">Avançado</option>
                             <option value="pl">Ponta de lança</option>
-                          </select> 
+                          </select>
                         </div>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubEdit" data-init-plugin="select2"></select>
+                            <select class="full-width ddlPlayerClubEditClub" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueEdit" required>
+                          <input type="text" class="form-control usd txtPlayerValueEditClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -625,26 +646,25 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportEdit" required>
+                        <input type="text" class="form-control txtPlayerPassportEditClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValEdit" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtPlayerPassportValEditClub" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-
-                      <div class=" ctrFiles col-md-12"  style="padding-left: 1px;padding-right: 1px;">
+                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
                         <div class="card card-default">
                           <div class="card-header ">
                             <div class="card-title">
                               Documentos
                             </div>
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploader">
+                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
                             <div class="dropzone no-margin">
                                 <div class="files"></div>
                             </div>
@@ -664,16 +684,15 @@
                               <a class="remove" href="javascript:;"></a>
                             </div>
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploader">
+                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
                             <div id="box" class="dropzone no-margin">
                                 <div class="files dz-default dz-message"></div>
                             </div>
                           </div>
                         </div>
                       </div>
-
                       <br>
-                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerEdit">
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerEditClub">
                         <span>Guardar</span>
                       </button>
                       <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
@@ -687,22 +706,22 @@
           </div>
         </div>
         <!-- END Modal -->
-          
+
           <!-- START CONTAINER FLUID -->
           <div class=" container-fluid container-fixed-lg">
             <div class="card-header">
               <div class="row h-100">
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="card-title">
-                  <h5 class="titleRepresentation">ADICIONAR CONTRATO DE REPRESENTAÇÃO</h5>
+                    <h5 class="titleClub">ADICIONAR CONTRATO DE CLUBES</h5>
                   </div>
                 </div>
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="float-right">
-                      <button type="button" onclick="location.href='representation_list.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
+                      <button type="button" onclick="location.href='clubs_list.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
                         <span>Cancelar</span>
                       </button>
-                      <button type="button" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-save btnSaveRepresentation">
+                      <button type="button" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-save btnSaveCclub">
                         <span>Guardar</span>
                       </button>
                   </div>
@@ -716,6 +735,7 @@
                 <div class="card card-transparent">
                   <div class="card-body">
                     <form class="" role="form">
+
                       <div class="card card-default">
                         <div class="card-header ">
                           <div class="card-title">Jogador</div>
@@ -727,50 +747,64 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="full-width ddlRepresentationPlayer" data-init-plugin="select2">
+                          <select class="full-width ddlCclubPlayer" data-init-plugin="select2">
                           </select> 
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group form-group-default input-group">
-                            <div class="form-input-group">
-                              <label class="inline">Menor</label>
-                            </div>
-                            <div class="input-group-append h-c-50">
-                              <span class="input-group-text container">
-                                  <input type="checkbox"  id = "boxchecked" name="CheckboxGroup1" data-size="small" data-color="success" class="ckChild" />
-                                  <span class="ckChildCheckmark checkmark"></span>
-                              </span>
-                            </div>
+                      
+                      <div class="form-group form-group-default required ">
+                        <label>Clube</label>
+                        <form role="form">
+                          <div class="form-group ">
+                            <select class="full-width ddlCclubClub" data-init-plugin="select2"></select>
                           </div>
-                        </div>
-                      </div>
-                      <div class="form-group form-group-default" id="hidden" style="display:none;">
-                        <label>Nome do Pai</label>
-                        <input type="text" class="form-control txtRepresentationFather" >
-                      </div>
-                      <div class="form-group form-group-default" id="hidden2" style="display:none;">
-                        <label>Nome da Mãe</label>
-                        <input type="text" class="form-control txtRepresentationMother">
+                        </form>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Data inicio e fim</label>
                         <div class="input-daterange input-group" id="datepicker-range">
-                          <input type="text" class="input-sm form-control txtRepresentationDateStart" name="start" />
+                          <input type="text" class="input-sm form-control txtCclubDateStart" name="start" />
                           <div class="input-group-addon">até</div>
-                          <input type="text" class="input-sm form-control txtRepresentationDateEnd" name="end" />
+                          <input type="text" class="input-sm form-control txtCclubDateEnd" name="end" />
                         </div>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
-                          <label>Comissão</label>
-                          <input type="text" class="form-control usd txtRepresentationCommission" required>
+                          <label>Valores</label>
+                          <input type="text" class="form-control usd txtCclubValue" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
                                 </span>
                         </div>
+                      </div>
+                      <div class="form-group form-group-default input-group">
+                        <div class="form-input-group">
+                          <label>Cláusala de rescisão</label>
+                          <input type="text" class="form-control usd txtCclubClause" required>
+                        </div>
+                        <div class="input-group-append ">
+                          <span class="input-group-text">EUR
+                                </span>
+                        </div>
+                      </div>
+                      <div class="form-group form-group-default input-group">
+                        <div class="form-input-group">
+                          <label>Bonus de sucesso</label>
+                          <input type="text" class="form-control usd txtCclubBonus" required>
+                        </div>
+                        <div class="input-group-append ">
+                          <span class="input-group-text">EUR
+                                </span>
+                        </div>
+                      </div>
+                      <div class="form-group form-group-default">
+                        <label>Tribunal em caso de litígio</label>
+                        <input type="text" class="form-control txtCclubCourt">
+                      </div>
+                      <div class="form-group form-group-default">
+                        <label>Opções e data</label>
+                        <input type="text" class="form-control txtCclubObs">
                       </div>
                     </form>
                   </div>
@@ -794,9 +828,9 @@
                           <div class="col-lg-6 col-xs-12 my-auto">
                             <div class="float-right">
                               <div class="btn-group">
-                                <button type="button" class="btn3 btn-primary addNewPlayer" data-target="#modalSlideLeftNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
+                                <button type="button" class="btn3 btn-primary addNewPlayerClub" data-target="#modalSlideLeftNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn3 btn-primary editPlayer" data-target="#modalSlideLeftEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
+                                <button type="button" class="btn3 btn-primary editPlayerClub" data-target="#modalSlideLeftEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
                                 </button>
                               </div>
                             </div>
@@ -808,13 +842,13 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Primeiro nome</label>
-                            <input type="text" class="form-control txtPlayerFirstName" disabled>
+                            <input type="text" class="form-control txtPlayerFirstNameClub" disabled>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Último nome</label>
-                            <input type="text" class="form-control txtPlayerLastName" disabled>
+                            <input type="text" class="form-control txtPlayerLastNameClub" disabled>
                           </div>
                         </div>
                       </div>
@@ -823,7 +857,7 @@
                           <div class="form-group form-group-default input-group disabled">
                             <div class="form-input-group disabled">
                               <label>Data de nascimento</label>
-                              <input type="email" class="form-control txtPlayerBirth" placeholder="Selecione a data" id="datepicker-component2" disabled>
+                              <input type="email" class="form-control txtPlayerBirthClub" placeholder="Selecione a data" id="datepicker-component2" disabled>
                             </div>
                             <div class="input-group-append ">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -833,25 +867,25 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Idade</label>
-                            <input type="text" class="form-control txtPlayerAge" disabled>
+                            <input type="text" class="form-control txtPlayerAgeClub" disabled>
                           </div>
                         </div>
                       </div>
                       <div class="form-group form-group-default disabled">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationality" disabled>
+                        <input type="text" class="form-control txtPlayerNationalityClub" disabled>
                       </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Altura</label>
-                            <input type="text" class="form-control txtPlayerHeight" disabled>
+                            <input type="text" class="form-control txtPlayerHeightClub" disabled>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Peso</label>
-                            <input type="text" class="form-control txtPlayerWeight" disabled>
+                            <input type="text" class="form-control txtPlayerWeightClub" disabled>
                           </div>
                         </div>
                       </div>
@@ -859,13 +893,13 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Clube</label>
-                            <input type="text" class="form-control txtPlayerClub" disabled>
+                            <input type="text" class="form-control txtPlayerClubClub" disabled>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Valor de mercardo</label>
-                            <input type="text" class="form-control txtPLayerValue" disabled>
+                            <input type="text" class="form-control txtPlayerValueClub" disabled>
                           </div>
                         </div>
                       </div>
@@ -873,14 +907,14 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled ">
                             <label>CC/Passaporte</label>
-                            <input type="text" class="form-control txtPlayerPassport" disabled>
+                            <input type="text" class="form-control txtPlayerPassportClub" disabled>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group form-group-default input-group disabled">
                             <div class="form-input-group">
                               <label>Validade</label>
-                              <input type="email" class="form-control txtPlayerPassportVal" placeholder="Selecione a data" id="datepicker-component2" disabled>
+                              <input type="email" class="form-control txtPlayerPassportValClub" placeholder="Selecione a data" id="datepicker-component2" disabled>
                             </div>
                             <div class="input-group-append ">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -891,7 +925,6 @@
                     </form>
                   </div>
                 </div>
-                <!-- END card -->
               </div>
               </div>
               <div class="row">
@@ -928,6 +961,7 @@
                       </div>
                     </div>
                 </div>
+              </div>
             </div>
           </div>
           <!-- END CONTAINER FLUID -->
@@ -935,6 +969,7 @@
         <!-- END PAGE CONTENT -->
       </div>
       <!-- END PAGE CONTENT WRAPPER -->
+
     </div>
     <!-- END PAGE CONTAINER -->
     
@@ -1041,6 +1076,7 @@
      <script src="assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
      <script src="js/dropzone/file-dropzone.js"></script>
      <!-- END VENDOR JS -->
+    <!-- END VENDOR JS -->
     <!-- BEGIN CORE TEMPLATE JS -->
     <script src="pages/js/pages.js"></script>
     <!-- END CORE TEMPLATE JS -->
@@ -1059,28 +1095,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        representation({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, representation: <?php echo json_encode(new representation(null)); ?>, player: <?php echo json_encode(new player(null)); ?>});
-      });
-      
-      $(document).ready(function(){
-        $(".ckChildCheckmark").on('click', function ()
-        {
-          $('.ckChild').trigger('click')
-        });
-
-        $(".ckChild").click(function ()
-        {
-          if ($("#boxchecked").is(':checked'))
-          {
-              $("#hidden").show();
-              $("#hidden2").show();
-          }
-          else
-          {
-              $("#hidden").hide();
-              $("#hidden2").hide();
-          }              
-        });
+        club({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, club: <?php echo json_encode(new club(null)); ?>, player: <?php echo json_encode(new player(null)); ?>});
       });
     </script>
   </body>

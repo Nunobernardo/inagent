@@ -99,8 +99,19 @@
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="representation_new.php">Adicionar contrato</a>
-                <span class="icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="representation_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="representation_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -114,8 +125,19 @@
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="clubs_new.php">Adicionar contrato</a>
-                <span class="icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="clubs_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="clubs_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>

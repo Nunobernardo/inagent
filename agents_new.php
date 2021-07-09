@@ -99,8 +99,19 @@
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="representation_new.php">Adicionar contrato</a>
-                <span class="icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="representation_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="representation_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -114,8 +125,19 @@
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
               <li class="">
-                <a href="clubs_new.php">Adicionar contrato</a>
-                <span class="icon-thumbnail"><i class="fa fa-plus"></i></span>
+                <a href="javascript:;"><span class="title">Adiconar contrato</span>
+                <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <ul class="sub-menu">
+                  <li class="">
+                    <a href="clubs_new_player.php">Jogadores</a>
+                    <span class="icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                  <li class="">
+                    <a href="clubs_new_coach.php">Treinadores</a>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -452,29 +474,41 @@
                 <!-- END card -->
               </div>
 
-              <div class="col-lg-12" style="padding-left: 30px;padding-right: 30px;">
-                <!-- START card -->
-                <div class="card card-default">
-                  <div class="card-header ">
-                    <div class="card-title">
-                      upload de documentos
-                    </div>
-                    <div class="tools">
-                      <a class="collapse" href="javascript:;"></a>
-                      <a class="config" data-toggle="modal" href="#grid-config"></a>
-                      <a class="reload" href="javascript:;"></a>
-                      <a class="remove" href="javascript:;"></a>
-                    </div>
-                  </div>
-                  <div class="card-body no-scroll no-padding">
-                    <form action="/file-upload" class="dropzone no-margin">
-                      <div class="fallback">
-                        <input name="file" type="file" multiple/>
+              </div>
+              <div class="row">
+                <div class=" ctrFiles col-md-6"  style="padding-left: 30px;padding-right: 30px;">
+                  <div class="card card-default">
+                    <div class="card-header ">
+                      <div class="card-title">
+                        Documentos
                       </div>
-                    </form>
+                    </div>
+                    <div class="card-body no-scroll no-padding ctrUploader">
+                      <div class="dropzone no-margin">
+                          <div class="files"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <!-- END card -->
+                <div class="col-md-6" style="padding-left: 30px;padding-right: 30px;">
+                  <div class="card card-default">
+                    <div class="card-header ">
+                      <div class="card-title">
+                        upload de documentos
+                      </div>
+                      <div class="tools">
+                        <a class="collapse" href="javascript:;"></a>
+                        <a class="config" data-toggle="modal" href="#grid-config"></a>
+                        <a class="reload" href="javascript:;"></a>
+                        <a class="remove" href="javascript:;"></a>
+                      </div>
+                    </div>
+                    <div class="card-body no-scroll no-padding ctrUploader">
+                      <div id="box" class="dropzone no-margin">
+                          <div class="files dz-default dz-message"></div>
+                      </div>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
@@ -575,7 +609,6 @@
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
       <script src="assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
      <script type="text/javascript" src="assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
-     <script type="text/javascript" src="assets/plugins/dropzone/dropzone.min.js"></script>
      <script type="text/javascript" src="assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
      <script type="text/javascript" src="assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
      <script src="assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
@@ -588,6 +621,7 @@
      <script src="assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
      <script src="assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
      <script src="assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+     <script src="js/dropzone/file-dropzone.js"></script>
      <!-- END VENDOR JS -->
     <!-- END VENDOR JS -->
     <!-- BEGIN CORE TEMPLATE JS -->

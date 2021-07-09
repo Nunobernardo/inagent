@@ -3831,6 +3831,8 @@ Rounded buttons
   float: left;
   list-style: none;
   text-shadow: none;
+  top: 3px;
+  left: 2px;
   -webkit-box-shadow: 0px 0px 5px rgba(98, 98, 98, 0.2);
   box-shadow: 0px 0px 5px rgba(98, 98, 98, 0.2);
   border: none;
@@ -6703,7 +6705,7 @@ span.dynatree-drag-helper-img,
   top: 0 !important;
 }
 .card-header a:not(.btn) {
-  color: #626262 !important;
+  color: #fff !important;
   opacity: .4;
   padding-top: 10px;
   padding-bottom: 10px;
