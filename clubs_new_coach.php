@@ -347,7 +347,7 @@
                 <div class="container-xs-height full-height">
                   <div class="row-xs-height">
                     <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">ADICIONAR JOGADOR</h5>
+                      <h5 style="text-align:center">ADICIONAR TREINADOR</h5>
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
@@ -395,27 +395,8 @@
                         </div>
                       </div>
                       <div class="card card-default">
-                      <div class="card-header ">
-                        <div class="card-title">Pé Dominante</div>
-                        <div class="tools">
-                          <a href="javascript:;" class="collapse"></a>
-                          <a href="#grid-config" data-toggle="modal" class="config"></a>
-                          <a href="javascript:;" class="reload"></a>
-                          <a href="javascript:;" class="remove"></a>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <select class="cs-select cs-skin-slide ddlPlayerFootNewClub" data-init-plugin="cs-select">
-                          <option value="selected" disabled="disabled">Escolha o pé dominante</option>
-                          <option value="g">Esquerdo</option>
-                          <option value="dd">Direito</option>
-                          <option value="dc">Ambos</option>
-                        </select> 
-                      </div>
-                    </div>
-                      <div class="card card-default">
                         <div class="card-header ">
-                          <div class="card-title">Posição</div>
+                          <div class="card-title">Formação preferida</div>
                           <div class="tools">
                             <a href="javascript:;" class="collapse"></a>
                             <a href="#grid-config" data-toggle="modal" class="config"></a>
@@ -424,20 +405,11 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide ddlPlayerPositionNewClub" data-init-plugin="cs-select">
-                            <option value="selected" disabled="disabled">Escolha a posição</option>
-                            <option value="g">Guarda-redes</option>
-                            <option value="dd">Defesa direito</option>
-                            <option value="dc">Defesa central</option>
-                            <option value="de">Defesa esquerdo</option>
-                            <option value="dc">Médio centro</option>
-                            <option value="md">Médio direito</option>
-                            <option value="me">Médio esquerdo</option>
-                            <option value="mo">Médio ofensivo</option>
-                            <option value="ee">Extremo esquerdo</option>
-                            <option value="ed">Extremo direito</option>
-                            <option value="a">Avançado</option>
-                            <option value="pl">Ponta de lança</option>
+                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                            <option value="442">4-4-2</option>
+                            <option value="433">4-3-3</option>
+                            <option value="352">3-5-2</option>
+                            <option value="424">4-2-4</option>
                           </select> 
                         </div>
                       </div>
@@ -532,7 +504,7 @@
                 <div class="container-xs-height full-height">
                   <div class="row-xs-height">
                     <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">EDITAR JOGADOR</h5>
+                      <h5 style="text-align:center">EDITAR TREINADOR</h5>
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
@@ -580,27 +552,8 @@
                         </div>
                       </div>
                       <div class="card card-default">
-                      <div class="card-header ">
-                        <div class="card-title">Pé Dominante</div>
-                        <div class="tools">
-                          <a href="javascript:;" class="collapse"></a>
-                          <a href="#grid-config" data-toggle="modal" class="config"></a>
-                          <a href="javascript:;" class="reload"></a>
-                          <a href="javascript:;" class="remove"></a>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <select class="cs-select cs-skin-slide ddlPlayerFootEditClub" data-init-plugin="cs-select">
-                          <option value="selected" disabled="disabled">Escolha o pé dominante</option>
-                          <option value="g">Esquerdo</option>
-                          <option value="dd">Direito</option>
-                          <option value="dc">Ambos</option>
-                        </select> 
-                      </div>
-                    </div>
-                      <div class="card card-default">
                         <div class="card-header ">
-                          <div class="card-title">Posição</div>
+                          <div class="card-title">Formação preferida</div>
                           <div class="tools">
                             <a href="javascript:;" class="collapse"></a>
                             <a href="#grid-config" data-toggle="modal" class="config"></a>
@@ -609,21 +562,12 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide ddlPlayerPositionEditClub" data-init-plugin="cs-select">
-                            <option value="selected" disabled="disabled">Escolha a posição</option>
-                            <option value="g">Guarda-redes</option>
-                            <option value="dd">Defesa direito</option>
-                            <option value="dc">Defesa central</option>
-                            <option value="de">Defesa esquerdo</option>
-                            <option value="dc">Médio centro</option>
-                            <option value="md">Médio direito</option>
-                            <option value="me">Médio esquerdo</option>
-                            <option value="mo">Médio ofensivo</option>
-                            <option value="ee">Extremo esquerdo</option>
-                            <option value="ed">Extremo direito</option>
-                            <option value="a">Avançado</option>
-                            <option value="pl">Ponta de lança</option>
-                          </select>
+                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                            <option value="442">4-4-2</option>
+                            <option value="433">4-3-3</option>
+                            <option value="352">3-5-2</option>
+                            <option value="424">4-2-4</option>
+                          </select> 
                         </div>
                       </div>
                       <div class="form-group form-group-default required ">
@@ -738,7 +682,7 @@
 
                       <div class="card card-default">
                         <div class="card-header ">
-                          <div class="card-title">Jogador</div>
+                          <div class="card-title">Treinador</div>
                           <div class="tools">
                             <a href="javascript:;" class="collapse"></a>
                             <a href="#grid-config" data-toggle="modal" class="config"></a>
@@ -780,7 +724,7 @@
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
-                          <label>Cláusala de rescisão</label>
+                          <label>Cláusula de rescisão</label>
                           <input type="text" class="form-control usd txtCclubClause" required>
                         </div>
                         <div class="input-group-append ">
@@ -822,7 +766,7 @@
                         <div class="row h-100">
                           <div class="col-lg-6 col-xs-12 my-auto">
                             <div class="card-title">
-                              <h5>Dados do Jogador</h5>
+                              <h5>Dados do Treinador</h5>
                             </div>
                           </div>
                           <div class="col-lg-6 col-xs-12 my-auto">
@@ -837,7 +781,6 @@
                           </div>
                         </div>
                       </div>
-                      
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">

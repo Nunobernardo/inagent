@@ -2848,6 +2848,9 @@ function mandates(args) {
                     }, function (data) {
                         //[ SET list_mandates LIST ]
                         me.datasource.mandates = data.mandate;
+                        me.datasource.agents_clubs = ifUndefinedOrNull(data.agents_clubs, new Array());
+                        me.datasource.all_clubs = ifUndefinedOrNull(data.all_clubs, new Array());
+
 
                         if (!isUndefinedOrNull(after)) { after(); };
                     }, function () {
@@ -3079,7 +3082,64 @@ function mandates(args) {
                             }
                         });
 
+                        ds.mandateagent.on('change', function(){
+                            var agentid = ds.mandateagent.find('option:selected').val(),
+                                agent_club = me.datasource.all_clubs.filter(function(ac){ return (ac.id_agent == parseInt(agentid)); }),
+                                club = '',
+                                country = '';
+
+                            if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
+                                $.each(agent_club, function (index, ac) {
+                                    if (country.indexOf(ac.club_name) == -1) {
+                                        if(index > 0) {
+                                            club += ', ';
+                                        }
+    
+                                        club += ac.club_name;
+                                    };
+    
+                                    if (country.indexOf(ac.country_name) == -1) {
+                                        if(index > 0) {
+                                            country += ', ';
+                                        }
+    
+                                        country += ac.country_name;
+                                    };
+                                });
+                            }
+
+                            ds.mandateagentclub.val(club);
+                            ds.mandateagentcountry.val(country);
+
+                            ds.mandatecountry.val(country);
+                            ds.mandateclub.val(club);
+                        });
+
                         if (mandates.id > 0) {
+                            var agent_club = me.datasource.agents_clubs.filter(function(ac){ return (ac.id_agent == mandates.agentid); }),
+                            club = '',
+                            country = '';
+
+                        if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
+                            $.each(agent_club, function (index, ac) {
+                                if (country.indexOf(ac.club_name) == -1) {
+                                    if(index > 0) {
+                                        club += ', ';
+                                    }
+
+                                    club += ac.club_name;
+                                };
+
+                                if (country.indexOf(ac.country_name) == -1) {
+                                    if(index > 0) {
+                                        country += ', ';
+                                    }
+
+                                    country += ac.country_name;
+                                };
+                            });
+                        }
+
                             ds.mandateplayer.val(mandates.player);
                             ds.mandateplayer.trigger('change');
                             ds.mandateagent.val(mandates.agentid);
@@ -3093,8 +3153,8 @@ function mandates(args) {
 
                             ds.mandateagentfirstname.val(mandates.agentfirstname);
                             ds.mandateagentlastname.val(mandates.agentlastname);
-                            ds.mandateagentclub.val(mandates.agentclubname);
-                            ds.mandateagentcountry.val(mandates.agentcountry);
+                            ds.mandateagentclub.val(club);
+                            ds.mandateagentcountry.val(country);
                             ds.mandateagentpassport.val(mandates.agentpassport);
                             ds.mandateagentpassportval.val(mandates.agentpassportval);
                             
@@ -3102,8 +3162,8 @@ function mandates(args) {
                             ds.mandatedatestart.val(mandates.datestart);
                             ds.mandatedateend.val(mandates.dateend);
                             ds.mandatecompany.val(mandates.agentcompany);
-                            ds.mandatecountry.val(mandates.agentcountry);
-                            ds.mandateclub.val(mandates.agentclubname);
+                            ds.mandatecountry.val(country);
+                            ds.mandateclub.val(club);
                             ds.mandateobs.val(mandates.obs);
 
                             $('.titleMandate').html('EDITAR MANDATO');
@@ -3181,7 +3241,7 @@ function mandates(args) {
                                 }, function (data) {
                                     if (ifUndefinedOrNull(data.success, false)) {
                                         controls.feedback.bind({ type: 'success', message: 'Mandato editado com sucesso' });
-                                        window.open('mandates_list.php', '_self');
+                                        //window.open('mandates_list.php', '_self');
                                     } else {
                                         controls.message.bind({ type: 'error', message: 'Não foi possível editar o mandato.' });
                                     };
@@ -4391,6 +4451,7 @@ function list_mandate() {
                         //[ SET list_mandate LIST ]
                         me.datasource.list_mandate = ifUndefinedOrNull(data.mandates, new Array());
                         me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+                        me.datasource.agents_clubs = ifUndefinedOrNull(data.agents_clubs, new Array());
 
                         if (data.total > 0) {
                             ds.me.slideDown();
@@ -4440,13 +4501,37 @@ function list_mandate() {
                                 //[ SAVE list_mandate ID ]
                                 attr('data', list_mandate.id);
 
+                                var agent_club = me.datasource.agents_clubs.filter(function(ac){ return (ac.id_agent == list_mandate.agentid); }),
+                                    club = '',
+                                    country = '';
+
+                                if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
+                                    $.each(agent_club, function (index, ac) {
+                                        if (country.indexOf(ac.club_name) == -1) {
+                                            if(index > 0) {
+                                                club += ', ';
+                                            }
+
+                                            club += ac.club_name;
+                                        };
+
+                                        if (country.indexOf(ac.country_name) == -1) {
+                                            if(index > 0) {
+                                                country += ', ';
+                                            }
+
+                                            country += ac.country_name;
+                                        };
+                                    });
+                                }
+
                                 //[ OTHER COLUMNS ]
                                 row.append(itemcolumn.format('<div class="checkbox text-center"><input type="checkbox" id="ckmandate{0}" data="{0}"><label for="ckmandate{0}" class="no-padding no-margin"></label></div>'.format(list_mandate.id)));
                                 row.append(itemcolumn.format('{0} {1}'.format(list_mandate.playerfirstname, list_mandate.playerlastname)));
                                 row.append(itemcolumn.format('{0} {1}'.format(list_mandate.agentfirstname, list_mandate.agentlastname)));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentcompany, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentclubname, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.agentcountry, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(club, '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull(country, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.datestart, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_mandate.dateend, '')));
                             };

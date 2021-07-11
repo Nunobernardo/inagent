@@ -780,7 +780,7 @@
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
-                          <label>Cláusala de rescisão</label>
+                          <label>Cláusula de rescisão</label>
                           <input type="text" class="form-control usd txtCclubClause" required>
                         </div>
                         <div class="input-group-append ">

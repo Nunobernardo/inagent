@@ -264,6 +264,7 @@
         public $valueplayer;
         public $passport;
         public $passportval;
+        public $iscoach;
 
         public $datestart;
         public $dateend;
@@ -292,6 +293,7 @@
                 $this->valueplayer = (isset($obj["value_player"])) ? $obj["value_player"] : null;
                 $this->passport = (isset($obj["documents"])) ? $obj["documents"] : null;
                 $this->passportval = (isset($obj["documents_val"])) ? $obj["documents_val"] : null;
+                $this->iscoach = (isset($obj["iscoach"])) ? boolval($obj["iscoach"]) : null;
 
                 $this->datestart = (isset($obj["date_start"])) ? $obj["date_start"] : null;
                 $this->dateend = (isset($obj["date_end"])) ? $obj["date_end"] : null;
@@ -309,7 +311,7 @@
         }
 
         public function set($id, $player, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $clubname, $valueplayer, $passport, $passportval,
-        $datestart, $dateend, $value, $clause, $bonus, $court, $obs, $file) {
+        $datestart, $dateend, $value, $clause, $bonus, $court, $obs, $file, $iscoach) {
 
             $this->id = $id;
             $this->player = $player;
@@ -327,6 +329,7 @@
             $this->valueplayer = $valueplayer;
             $this->passport = $passport;
             $this->passportval = $passportval;
+            $this->iscoach = $iscoach;
             
             $this->datestart = $datestart;
             $this->dateend = $dateend;

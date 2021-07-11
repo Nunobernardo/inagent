@@ -454,6 +454,13 @@
 
                 //[ CHECK RESULTS ]
                 if ($result) {
+                    //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                    $query = "INSERT INTO mandates_agent (id_mandates_agent, id_mandate, id_agent, id_agent_club) 
+                            VALUES (NULL, $conn->insert_id, $mandates->agentid, NULL)";
+
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+
                     $feedback['mandates_id'] = $conn->insert_id;
 
                     $feedback['success'] = true;
@@ -482,21 +489,37 @@
 
                 //[ CHECK RESULTS ]
                 if ($result) {
-                    if (count($attachments) > 0) {
-                        foreach ($attachments as &$value) {
-                            $query = "INSERT INTO mandates_files(id, id__mandates, file_name, file) 
-                                        VALUES (NULL, $value->MandateID, '$value->AttachmentName', '$value->Attachment')";
-            
-                            //[ EXECUTE QUERY ]
-                            $result = mysqli_query($conn, $query);
+                    //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                    $query = "UPDATE mandates_agent 
+                              SET id_agent = $mandates->agentid
+                              WHERE id_mandate = " . $mandates->id;
+
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+                    
+                    if ($result) {
+                        if (count($attachments) > 0) {
+                            foreach ($attachments as &$value) {
+                                $query = "INSERT INTO mandates_files(id, id__mandates, file_name, file) 
+                                            VALUES (NULL, $value->MandateID, '$value->AttachmentName', '$value->Attachment')";
+                
+                                //[ EXECUTE QUERY ]
+                                $result = mysqli_query($conn, $query);
+                            }
                         }
-                    }
+
+                        $feedback['mandates_id'] = $conn->insert_id;
+                        $feedback['success'] = true;
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = 'ERRO_UPDATE_MANDATES';
+                    };
                     $feedback['mandates_id'] = $conn->insert_id;
                     $feedback['success'] = true;
+                    $feedback['XX'] = $query;
                 } else {
                     $feedback['success'] = false;
                     $feedback['error'] = 'ERRO_UPDATE_MANDATES';
-                    $feedback['XX'] = $query;
                 };
                 break;
             case 'players':
@@ -963,8 +986,9 @@
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
                 $total_pages_query = "SELECT COUNT(*) AS total_records 
                                         FROM contract_club cc 
-                                        INNER JOIN club c ON cc.id_club = c.id_club 
-                                        INNER JOIN players p ON cc.id_player = p.id_player";
+                                        LEFT JOIN club c ON cc.id_club = c.id_club 
+                                        LEFT JOIN players p ON cc.id_player = p.id_player
+                                        LEFT JOIN coach co ON co.id_coach = cc.id_coach";
 
                 $result = mysqli_query($conn, $total_pages_query);
 
@@ -973,12 +997,12 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT cc.id_contract_club, cc.date_start, cc.date_end, c.name_club as club_name,
-                             cc.value, cc.clause, p.first_name, p.last_name
-                            FROM contract_club cc 
-                            INNER JOIN club c ON cc.id_club = c.id_club 
-                            INNER JOIN players p ON cc.id_player = p.id_player
-                            LIMIT $offset, $records";
+                $query = "SELECT cc.id_contract_club, cc.date_start, cc.date_end, c.name_club as club_name, cc.value, cc.clause, IF(p.first_name is null, co.first_name, p.first_name) as first_name, IF(p.last_name is null, co.last_name, p.last_name) as last_name, IF(p.last_name is null, 1, 0) as iscoach
+                          FROM contract_club cc 
+                          LEFT JOIN club c ON cc.id_club = c.id_club 
+                          LEFT JOIN players p ON cc.id_player = p.id_player
+                          LEFT JOIN coach co ON co.id_coach = cc.id_coach
+                          LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -1084,12 +1108,10 @@
                 
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
                 $total_pages_query = "SELECT COUNT(*) AS total_records 
-                                        FROM mandates m 
-                                        LEFT JOIN players p ON p.id_player = m.id_player
-                                        LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                                        LEFT JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
-                                        LEFT JOIN agent a ON a.id_agent = ac.id_agent
-                                        LEFT JOIN club c ON c.id_club = ac.id_club";
+                            FROM mandates m 
+                            LEFT JOIN players p ON p.id_player = m.id_player
+                            LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate
+                            LEFT JOIN agent a ON a.id_agent = ma.id_agent";
 
                 $result = mysqli_query($conn, $total_pages_query);
 
@@ -1100,14 +1122,11 @@
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT m.id_mandates, m.date_start AS m_date_start, m.date_end AS m_date_end,
                             p.first_name AS p_first_name, p.last_name AS p_last_name, 
-                            a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
-                            c.name_club as club_name_agent, c.country as country_name_agent
+                            a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, ma.id_agent as id_agent
                             FROM mandates m 
                             LEFT JOIN players p ON p.id_player = m.id_player
-                            LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                            LEFT JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
-                            LEFT JOIN agent a ON a.id_agent = ac.id_agent
-                            LEFT JOIN club c ON c.id_club = ac.id_club
+                            LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate
+                            LEFT JOIN agent a ON a.id_agent = ma.id_agent
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -1115,12 +1134,41 @@
 
                 //[ CHECK RESULTS ]
                 if ($result->num_rows > 0) {   
+                    $ids = array();
+
                     while($row = $result->fetch_assoc()) {
                         array_push($mandates, new mandates($row));
+
+                        if(!in_array(intval($row["id_agent"]), $ids, true)){
+                            array_push($ids, intval($row["id_agent"]));
+                        }
                     };
                     
+                    //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
+                    $ids2 = json_encode($ids);
+                    $ids2 = str_replace("[","(",  $ids2);
+                    $ids2 = str_replace("]", ")", $ids2);
+
+                    $query = "SELECT ac.id_agent, c.name_club as club_name, c.country as country_name
+                                FROM  agent_club ac
+                                LEFT JOIN club c ON c.id_club = ac.id_club
+                                WHERE
+                                ac.id_agent in " .$ids2;
+
+                    $result = mysqli_query($conn, $query);
+
+                    if ($result->num_rows > 0) {
+                        $clubs = array();
+
+                        while($row = $result->fetch_assoc()) {
+                            array_push($clubs, $row);
+                        };
+                    };
+
                     //[ SET TOTAL ]
                     $total = $result->num_rows;
+
+                    $feedback['agents_clubs'] = $clubs;
                 };
 
                 $feedback['success'] = true;
@@ -1139,17 +1187,15 @@
                 $query = "SELECT m.id_mandates, m.date_start AS m_date_start, m.date_end AS m_date_end, m.obs AS m_obs,
                             p.id_player, p.name AS p_name, p.first_name AS p_first_name, p.last_name AS p_last_name, p.nationality AS p_nationality,
                             p.birth_date AS p_birth_date, p.height AS p_height, p.weight AS p_weight, p.position AS p_position, 
-                            p.foot AS p_foot, p.value AS p_value, p.documents AS p_documents, p.documents_val AS p_documentsval, p.id_club, cp.name_club as club_name_player,
+                            p.foot AS p_foot, p.value AS p_value, p.documents AS p_documents, p.documents_val AS p_documentsval, p.id_club,
                             ac.id_agent, a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
                             a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, 
-                            a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs,
-                            c.name_club as club_name_agent, c.country as country_name_agent
+                            a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs,  ma.id_agent as id_agent, p.id_club, cp.name_club as club_name_player
                             FROM mandates m 
                             LEFT JOIN players p ON p.id_player = m.id_player
                             LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
                             LEFT JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
-                            LEFT JOIN agent a ON a.id_agent = ac.id_agent
-                            LEFT JOIN club c ON c.id_club = ac.id_club
+                            LEFT JOIN agent a ON a.id_agent = ma.id_agent
                             LEFT JOIN club cp ON cp.id_club = p.id_club
                             WHERE m.id_mandates = " . $mandateid;
 
@@ -1159,9 +1205,44 @@
                 //[ CHECK RESULTS ]
                 if ($result->num_rows > 0) {   
                     $mandate = new mandates($result->fetch_array(MYSQLI_ASSOC));
+
+                    $query = "SELECT ac.id_agent, c.name_club as club_name, c.country as country_name
+                                FROM  agent_club ac
+                                LEFT JOIN club c ON c.id_club = ac.id_club
+                                WHERE
+                                ac.id_agent = " . $mandate->agentid;
+
+                    $result = mysqli_query($conn, $query);
+
+                    if ($result->num_rows > 0) {
+                        $clubs = array();
+
+                        while($row = $result->fetch_assoc()) {
+                            array_push($clubs, $row);
+                        };
+                    };
+
+                    $query = "SELECT ac.id_agent, c.name_club as club_name, c.country as country_name
+                                FROM  agent_club ac
+                                LEFT JOIN club c ON c.id_club = ac.id_club";
+
+                    $result = mysqli_query($conn, $query);
+
+                    if ($result->num_rows > 0) {
+                        $allclubs = array();
+
+                        while($row = $result->fetch_assoc()) {
+                            array_push($allclubs, $row);
+                        };
+                    };  
+
+                    //[ SET TOTAL ]
+                    $total = $result->num_rows;
+
+                    $feedback['agents_clubs'] = $clubs;
+                    $feedback['all_clubs'] = $allclubs;
                 };
 
-                
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "SELECT *
                             FROM mandates_files
@@ -1191,7 +1272,7 @@
                 $query = "DELETE mf
                             FROM mandates m
                             INNER JOIN mandates_files mf ON mf.id_mandates = m.id_mandates
-                            WHERE m.id_mandates in " . $mandatesid;
+                            WHERE m.id_mandates in " . $mandateid;
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -1219,15 +1300,18 @@
                         } else {
                             $feedback['success'] = false;
                             $feedback['error'] = "ERROR_REMOVING_MANDATES";
+                            $feedback['query3'] = $query;
                         };
 
                     } else {
                         $feedback['success'] = false;
                         $feedback['error'] = "ERROR_REMOVING_MANDATES";
+                        $feedback['query2'] = $query;
                     };
                 } else {
                     $feedback['success'] = false;
                     $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                    $feedback['query1'] = $query;
                 };
                 break;
 
