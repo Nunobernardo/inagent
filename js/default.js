@@ -130,8 +130,7 @@ function player(args) {
             me.methods.getclubs(function(){
                 me.methods.getplayer(function(){
                     var player = me.datasource.player,
-                        clubs = me.datasource.clubs,
-                        selectedfoot;
+                        clubs = me.datasource.clubs;
                     
                     $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
                         var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
@@ -1012,11 +1011,12 @@ function agent(args) {
                     var agent = me.datasource.agent,
                         clubs = me.datasource.clubs;
 
+                    ds.agentclub.append('<option value="0">Selecionar</option>');
                     $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
                         var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
                             countryclubs = clubs.filter(function(c){ return (c.country == country); });
 
-                        ds.agentclub.append('<option value="0">Selecionar</option>');
+                        
 
                         $.each(countryclubs, function (index, club) {
                             group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
@@ -1030,7 +1030,7 @@ function agent(args) {
                     };
 
                     ds.btnaddclub.on('click', function(){
-                        var element = $('<div class="form-group "><select class="full-width ddlAgentClub" data-init-plugin="select2"></select></div>');
+                        var element = $('<div class="form-group "><select class="full-width ddlAgentClub" style="z-index: auto;" style="z-index: auto;" data-init-plugin="select2"></select></div>');
 
                         element.find('select').append('<option value="0">Selecionar</option>');
 
@@ -1193,7 +1193,7 @@ function agent(args) {
                         if (ifUndefinedOrNull(me.datasource.agent_clubs, new Array()).length > 0) {
                             $.each(me.datasource.agent_clubs, function (index, club) {
                                 if (index > 0) {
-                                    var element = $('<div class="form-group "><select class="full-width ddlAgentClub" data-init-plugin="select2"></select></div>');
+                                    var element = $('<div class="form-group "><select class="full-width ddlAgentClub" style="z-index: auto;" data-init-plugin="select2"></select></div>');
     
                                     element.find('select').append('<option value="0">Selecionar</option>');
     
@@ -1382,6 +1382,7 @@ function representation(args) {
         design: {
             //DADOS DO JOGADOR
             representationplayer: $('select.ddlRepresentationPlayer'),
+            representationcoach: $('select.ddlRepresentationCoach'),
             representationplayername: $('.txtPlayerName'),
             representationplayerfirstname: $('.txtPlayerFirstName'),
             representationplayerlastname: $('.txtPlayerLastName'),
@@ -1441,6 +1442,7 @@ function representation(args) {
 
             //BOTÕES
             saverepresentation: $('.btnSaveRepresentation'),
+            saverepresentationcoach: $('.btnSaveRepresentationCoach'),
             saveeditplayer: $('.btnSavePlayerEdit'),
             savenewplayer: $('.btnSavePlayerNew'),
             addnewplayer: $('.addNewPlayer'),
@@ -1520,6 +1522,24 @@ function representation(args) {
                     controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                 });
             },
+            getcoach: function (after) {
+                var me = this.base;
+
+                controls.ajax({
+                    functionname: 'coaches',
+                }, function (data) {
+                    //[ SET list_player LIST ]
+                    me.datasource.coaches = data.coaches;
+
+                    if (!isUndefinedOrNull(after)) { after(); };
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                });
+            },
             downloadattachment: function (attachment) {
                 if (!isStringVoid(attachment.file)) {
                     const downloadLink = document.createElement("a");
@@ -1566,6 +1586,98 @@ function representation(args) {
                     });
                 };
             },
+            downloadattachmentplayer: function (attachment) {
+                if (!isStringVoid(attachment.file)) {
+                    const downloadLink = document.createElement("a");
+
+                    with (downloadLink) {
+                        href = attachment.file;
+                        download = attachment.file_name;
+                        click();
+                    };
+                };
+            },
+            deleteattachmentplayer: function (id, after) {
+                var me = this.base;
+
+                //[ DELETE ATTACHMENT ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.message.bind({
+                        type: 'question',
+                        message: 'Pretende remover o documento selecionado?',
+                        afteryes: function () {
+                            controls.ajax({
+                                functionname: 'delete_attachment',
+                                data: {
+                                    id: id
+                                }
+                            }, function (data) {
+                                if (ifUndefinedOrNull(data.success, false)) {
+                                    controls.message.bind({
+                                        type: 'success',
+                                        message: 'O documento foi removido com sucesso.',
+                                        afterok: function () {
+                                            if (!isUndefinedOrNull(after)) { after(data); };
+                                        }
+                                    });
+                                } else {
+                                    controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                                };
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                            });
+                        }
+                    });
+                };
+            },
+            downloadattachmentplayeredit: function (attachment) {
+                if (!isStringVoid(attachment.file)) {
+                    const downloadLink = document.createElement("a");
+
+                    with (downloadLink) {
+                        href = attachment.file;
+                        download = attachment.file_name;
+                        click();
+                    };
+                };
+            },
+            deleteattachmentplayeredit: function (id, after) {
+                var me = this.base;
+
+                //[ DELETE ATTACHMENT ]
+                if (ifUndefinedOrNull(me.datasource.id, 0) > 0) {
+                    controls.message.bind({
+                        type: 'question',
+                        message: 'Pretende remover o documento selecionado?',
+                        afteryes: function () {
+                            controls.ajax({
+                                functionname: 'delete_attachment',
+                                data: {
+                                    id: id
+                                }
+                            }, function (data) {
+                                if (ifUndefinedOrNull(data.success, false)) {
+                                    controls.message.bind({
+                                        type: 'success',
+                                        message: 'O documento foi removido com sucesso.',
+                                        afterok: function () {
+                                            if (!isUndefinedOrNull(after)) { after(data); };
+                                        }
+                                    });
+                                } else {
+                                    controls.message.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                                };
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                            }, function () {
+                                controls.feedback.bind({ type: 'error', message: 'Ocorreu um erro ao remover o anexo, por favor tente novamente.' });
+                            });
+                        }
+                    });
+                };
+            },
         },
         load: function() {
             var me = this,
@@ -1573,351 +1685,810 @@ function representation(args) {
 
             me.methods.getclubs(function(){
                 me.methods.getplayers(function(){
-                    me.methods.getrepresentation(function(){
-                        var representation = me.datasource.representation,
-                            clubs = me.datasource.clubs;
+                    me.methods.getcoach(function(){
+                        me.methods.getrepresentation(function(){
+                            var representation = me.datasource.representation,
+                                clubs = me.datasource.clubs;
 
-                        ds.representationplayer.append('<option value="0">Selecionar</option>');
-                        $.each(me.datasource.players, function (index, player) {
-                            ds.representationplayer.append('<option value="{0}">{1} {2}</option>'.format(player.id, player.firstname, player.lastname));
-                            
-                        });
-
-                        $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
-                            var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
-                                countryclubs = clubs.filter(function(c){ return (c.country == country); });
-
-                            $.each(countryclubs, function (index, club) {
-                                group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                            ds.representationplayer.append('<option value="0">Selecionar</option>');
+                            $.each(me.datasource.players, function (index, player) {
+                                ds.representationplayer.append('<option value="{0}">{1} {2}</option>'.format(player.id, player.firstname, player.lastname));
                             });
 
-                            ds.representationplayerclubedit.append(group);
-                        });
 
-                        ds.uploader = new FileDropzone({
-                            target: ds.ctruploader.find('#box'),
-                            clickable: true,
-                            multiple: true,
-                            forceReplace: false,
-                            paramName: 'my-file',
-                            accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
-                            onChange: function () {
-                                var files = new Array(),
-                                    elem = this.element.find('.files');
-    
-                                elem.empty();
-    
-                                $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
-                                    var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
-                                        idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
-    
-                                    if (isnewfile && idvalidsize) {
-                                        files.push(file);
-                                    };
-                                });
-    
-                                ds.uploader.clickable = false;
-    
-                                $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
-                                    var reader = new FileReader(),
-                                        element = $('<div class="file-name"><div class="row"><div class="remove" style="padding-right: 10px;" data="{1}"><i class="grid-action fa fa-trash" style="color:#3282b8"></i></div>{0}</div></div>'.format(item.name, index));
-    
-                                    reader.addEventListener('load', function (e) {
-                                        var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
-    
-                                        if (isnewfile) {
-                                            var messageattachment = {
-                                                    Attachment: null,
-                                                    AttachmentName: null,
-                                                    ID: 0,
-                                                    RepresentationID: 0
-                                                },
-                                                url;
-    
-                                            messageattachment.index = index;
-    
-                                            if (item.type.split('/')[0] === 'image') {
-                                                var image = new Image();
-    
-                                                //[ RESIZE IMAGE ]
-                                                image.onload = function () {
-                                                    var canvas = document.createElement("canvas"),
-                                                        context = canvas.getContext("2d");
-    
-                                                    canvas.width = image.width / 4;
-                                                    canvas.height = image.height / 4;
-                                                    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
-    
-                                                    with (messageattachment) {
-                                                        Attachment = canvas.toDataURL();
-                                                        AttachmentName = item.name;
-                                                    };
-    
-                                                    me.datasource.selectedattachments.push(messageattachment);
-                                                };
-    
-                                                image.src = e.target.result;
-                                            } else {
-                                                with (messageattachment) {
-                                                    Attachment = reader.result;
-                                                    AttachmentName = item.name;
-                                                };
-    
-                                                me.datasource.selectedattachments.push(messageattachment);
-                                            };
-                                        };
-                                    }, false);
-    
-                                    if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
-    
-                                    //[ REMOVE ]
-                                    element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
-                                        var id = $(this).attr('data');
-    
-                                        me.datasource.selectedattachments.removeField('index', id);
-                                        $(this).parent().remove();
-    
-                                        if (me.datasource.selectedattachments.length == 0) {
-                                            ds.uploader.clearAll();
-    
-                                            elem.html(controls.resources.attachment_upload_info);
-    
-                                            setTimeout(function () {
-                                                ds.uploader.clickable = true;
-                                            }, 1000);
-                                        };
-    
-                                        e.preventDefault();
-                                    });
-    
-                                    elem.append(element);
-                                });
-    
-                                if (ifUndefinedOrNull(files, new Array()).length == 0) {
-                                    with (ds.uploader.element.find('.files')) {
-                                        empty();
-                                        addClass('dz-default dz-message');
-                                    };
-                                } else {
-                                    with (ds.uploader.element.find('.files')) {
-                                        removeClass('dz-default dz-message');
-                                    };
-                                };
-                            }
-                        });
-
-                        //DADOS DO CONTRATO E JOGADOR
-                        if (representation.id > 0) {
-                            ds.representationplayer.val(representation.player);
-                            ds.representationplayer.trigger('change');
-                            ds.representationplayername.val(representation.name);
-                            ds.representationplayerfirstname.val(representation.firstname);
-                            ds.representationplayerlastname.val(representation.lastname);
-                            ds.representationplayerbirth.val(representation.birth);
-                            ds.representationplayernationality.val(representation.nationality);
-                            ds.representationplayerheight.val(representation.height);
-                            ds.representationplayerweight.val(representation.weight);
-                            ds.representationplayerclub.val(representation.clubname);
-                            ds.representationplayervalue.val(representation.value);
-                            ds.representationplayerpassport.val(representation.passport);
-                            ds.representationplayerpassportval.val(representation.passportval);
-                            
-                            ds.representationfather.val(representation.father);
-                            ds.representationmother.val(representation.mother);
-                            ds.representationdatestart.val(representation.datestart);
-                            ds.representationdateend.val(representation.dateend);
-                            ds.representationcommission.val(representation.commission);
-                            $('.titleRepresentation').html('EDITAR CONTRATO DE REPRESENTAÇÃO');
-
-                            //anexos
-                            if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
-                                $.each(me.datasource.attachments, function (index, attachment) {
-                                    var filename = attachment.file_name,
-                                        lastindex = filename.lastIndexOf('.'),
-                                        html = $('<div class="file-name" data="{0}"><div class="row"><div class="actions" style="padding-right: 10px;"><div class="row"><div class="delete" style="padding-right: 10px;" data="{0}"><i class="grid-action fa fa-trash" style="color:#3282b8"> </i></div><div class="download" data="{0}"><i class="grid-action fa fa-download" style="color:#3282b8"></i></div></div></div>{1}</div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
-                                            
-                                            
-                                    with (html) {
-                                        //[ DELETE FILE ]
-                                        find('.delete').on('click', function (e) {
-                                            var element = $(this),
-                                                id = parseInt($(this).attr('data')),
-                                                parent = $(this).parents('.file-name');
-
-                                            me.methods.deleteattachment(id, function () {
-                                                //[ REMOVE ATTACHMENT FROM ARRAY ]
-                                                me.datasource.attachments.removeField('id', id);
-
-                                                //[ REMOVE ATTACHMENT HTML ]
-                                                parent.remove();
-
-                                                if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
-                                                    ds.ctrfiles.remove();
-                                                }
-                                            });
-                                            e.preventDefault();
-                                        });
-
-                                        //[ DOWNLOAD FILE ]
-                                        find('.download').on('click', function (e) {
-                                            var id = parseInt($(this).attr('data')),
-                                                selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
-
-                                            me.methods.downloadattachment(selectedfile);
-                                            e.preventDefault();
-                                        });
-                                    };
-
-                                    ds.ctrfiles.find('.files').append(html);
-                                });
-                            } else {
-                                ds.ctrfiles.remove();
-                            };
-
-                            if (representation.child == 1){
-                                ds.child.trigger('click')    
-                            }
-
-                            //EDITAR CONTRATO
-                            ds.saverepresentation.on('click', function(){
-                                var representation = me.datasource.representation;
-
-                                with(representation) {
-                                    id = representation.id;
-                                    player = ds.representationplayer.find('option:selected').val();
-                                    father = ds.representationfather.val();
-                                    mother = ds.representationmother.val();
-                                    datestart = ds.representationdatestart.val();
-                                    dateend = ds.representationdateend.val();
-                                    commission = ds.representationcommission.val();
-                                    child = ds.child.is(':checked') ? 1 : 0;
-                                };
-
-                                //anexos
-                                if (ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).length > 0) {
-                                    $.each(me.datasource.selectedattachments, function (index, attachment) {
-                                        attachment.RepresentationID = representation.id;
-                                    });
-                                };
-
-                                controls.ajax({
-                                    functionname: 'update_representation',
-                                    data: {
-                                        representation: representation,
-                                        attachments: me.datasource.selectedattachments//anexos
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-                                        controls.feedback.bind({ type: 'success', message: 'Contrato editado com sucesso' });
-                                        window.open('representation_list.php', '_self');
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'Não foi possível editar o contrato.' });
-                                    };
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
+                            ds.representationcoach.append('<option value="0">Selecionar</option>');
+                            $.each(me.datasource.coaches, function (index, coach) {
+                                ds.representationcoach.append('<option value="{0}">{1} {2}</option>'.format(coach.id, coach.firstname, coach.lastname));
                             });
-
-                            ds.addnewplayer.remove();
-                        } else {
-                            ds.ctrfiles.remove(); //anexos
-
-                            //INSERIR NOVO CONTRATO
-                            ds.saverepresentation.on('click', function(){
-                                var representation = me.datasource.representation;   
-
-                                with(representation) {
-                                    player = ds.representationplayer.find('option:selected').val();
-                                    father = ds.representationfather.val();
-                                    mother = ds.representationmother.val();
-                                    child = ds.child.is(':checked') ? 1 : 0;
-                                    datestart = ds.representationdatestart.val();
-                                    dateend = ds.representationdateend.val();
-                                    dateend = ds.representationdateend.val();
-                                    commission = ds.representationcommission.val();
-                                };
-
-                                controls.ajax({
-                                    functionname: 'insert_representation',
-                                    data: {
-                                        representation: representation,
-                                        attachments: me.datasource.selectedattachments//anexos
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-                                        controls.feedback.bind({ type: 'success', message: 'Contrato adicionado com sucesso.' });
-                                        window.open('representation_list.php', '_self');
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'Nao foi possível adicionar o contrato.' });
-                                    };
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            });
-
-                            ds.representationplayerclubnew.append('<option value="0">Selecionar</option>');
 
                             $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
                                 var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
                                     countryclubs = clubs.filter(function(c){ return (c.country == country); });
-        
+
                                 $.each(countryclubs, function (index, club) {
                                     group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
                                 });
+
+                                ds.representationplayerclubedit.append(group);
+                            });
+
+                            //anexos
+                            ds.uploader = new FileDropzone({
+                                target: ds.ctruploader.find('#box'),
+                                clickable: true,
+                                multiple: true,
+                                forceReplace: false,
+                                paramName: 'my-file',
+                                accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
+                                onChange: function () {
+                                    var files = new Array(),
+                                        elem = this.element.find('.files');
         
-                                ds.representationplayerclubnew.append(group);
+                                    elem.empty();
+        
+                                    $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
+                                        var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
+                                            idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
+        
+                                        if (isnewfile && idvalidsize) {
+                                            files.push(file);
+                                        };
+                                    });
+        
+                                    ds.uploader.clickable = false;
+        
+                                    $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
+                                        var reader = new FileReader(),
+                                            element = $('<div class="file-name"><div class="row"><div class="remove" style="padding-right: 10px;" data="{1}"><i class="grid-action fa fa-trash" style="color:#3282b8"></i></div>{0}</div></div>'.format(item.name, index));
+        
+                                        reader.addEventListener('load', function (e) {
+                                            var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
+        
+                                            if (isnewfile) {
+                                                var messageattachment = {
+                                                        Attachment: null,
+                                                        AttachmentName: null,
+                                                        ID: 0,
+                                                        RepresentationID: 0
+                                                    },
+                                                    url;
+        
+                                                messageattachment.index = index;
+        
+                                                if (item.type.split('/')[0] === 'image') {
+                                                    var image = new Image();
+        
+                                                    //[ RESIZE IMAGE ]
+                                                    image.onload = function () {
+                                                        var canvas = document.createElement("canvas"),
+                                                            context = canvas.getContext("2d");
+        
+                                                        canvas.width = image.width / 4;
+                                                        canvas.height = image.height / 4;
+                                                        context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+        
+                                                        with (messageattachment) {
+                                                            Attachment = canvas.toDataURL();
+                                                            AttachmentName = item.name;
+                                                        };
+        
+                                                        me.datasource.selectedattachments.push(messageattachment);
+                                                    };
+        
+                                                    image.src = e.target.result;
+                                                } else {
+                                                    with (messageattachment) {
+                                                        Attachment = reader.result;
+                                                        AttachmentName = item.name;
+                                                    };
+        
+                                                    me.datasource.selectedattachments.push(messageattachment);
+                                                };
+                                            };
+                                        }, false);
+        
+                                        if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
+        
+                                        //[ REMOVE ]
+                                        element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
+                                            var id = $(this).attr('data');
+        
+                                            me.datasource.selectedattachments.removeField('index', id);
+                                            $(this).parent().remove();
+        
+                                            if (me.datasource.selectedattachments.length == 0) {
+                                                ds.uploader.clearAll();
+        
+                                                elem.html(controls.resources.attachment_upload_info);
+        
+                                                setTimeout(function () {
+                                                    ds.uploader.clickable = true;
+                                                }, 1000);
+                                            };
+        
+                                            e.preventDefault();
+                                        });
+        
+                                        elem.append(element);
+                                    });
+        
+                                    if (ifUndefinedOrNull(files, new Array()).length == 0) {
+                                        with (ds.uploader.element.find('.files')) {
+                                            empty();
+                                            addClass('dz-default dz-message');
+                                        };
+                                    } else {
+                                        with (ds.uploader.element.find('.files')) {
+                                            removeClass('dz-default dz-message');
+                                        };
+                                    };
+                                }
                             });
 
-                            //ADICIONAR JOGADOR
-                            ds.addnewplayer.on('click', function(){
-                                ds.representationplayerclubnew.find('option:selected').val();
-                                ds.representationplayerfirstnamenew.val('');
-                                ds.representationplayerlastnamenew.val('');
-                                ds.representationplayerbirthnew.val('');
-                                ds.representationplayernationalitynew.val('');
-                                ds.representationplayerheightnew.val('');
-                                ds.representationplayerweightnew.val('');
-                                ds.representationplayerfootnew.find('span.cs-placeholder').html();
-                                ds.representationplayerpositionnew.find('span.cs-placeholder').html();
-                                ds.representationplayervaluenew.val('');
-                                ds.representationplayerpassportnew.val('');
-                                ds.representationplayerpassportvalnew.val('');
+                            //DADOS DO CONTRATO E JOGADOR
+                            if (representation.id > 0) {
+                                ds.representationplayer.val(representation.player);
+                                ds.representationplayer.trigger('change');
+                                ds.representationplayername.val(representation.name);
+                                ds.representationplayerfirstname.val(representation.firstname);
+                                ds.representationplayerlastname.val(representation.lastname);
+                                ds.representationplayerbirth.val(representation.birth);
+                                ds.representationplayernationality.val(representation.nationality);
+                                ds.representationplayerheight.val(representation.height);
+                                ds.representationplayerweight.val(representation.weight);
+                                ds.representationplayerclub.val(representation.clubname);
+                                ds.representationplayervalue.val(representation.value);
+                                ds.representationplayerpassport.val(representation.passport);
+                                ds.representationplayerpassportval.val(representation.passportval);
+                                
+                                ds.representationfather.val(representation.father);
+                                ds.representationmother.val(representation.mother);
+                                ds.representationdatestart.val(representation.datestart);
+                                ds.representationdateend.val(representation.dateend);
+                                ds.representationcommission.val(representation.commission);
+                                $('.titleRepresentation').html('EDITAR CONTRATO DE REPRESENTAÇÃO');
+
+                                //anexos
+                                if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
+                                    $.each(me.datasource.attachments, function (index, attachment) {
+                                        var filename = attachment.file_name,
+                                            lastindex = filename.lastIndexOf('.'),
+                                            html = $('<div class="file-name" data="{0}"><div class="row"><div class="actions" style="padding-right: 10px;"><div class="row"><div class="delete" style="padding-right: 10px;" data="{0}"><i class="grid-action fa fa-trash" style="color:#3282b8"> </i></div><div class="download" data="{0}"><i class="grid-action fa fa-download" style="color:#3282b8"></i></div></div></div>{1}</div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
+                                                
+                                                
+                                        with (html) {
+                                            //[ DELETE FILE ]
+                                            find('.delete').on('click', function (e) {
+                                                var element = $(this),
+                                                    id = parseInt($(this).attr('data')),
+                                                    parent = $(this).parents('.file-name');
+
+                                                me.methods.deleteattachment(id, function () {
+                                                    //[ REMOVE ATTACHMENT FROM ARRAY ]
+                                                    me.datasource.attachments.removeField('id', id);
+
+                                                    //[ REMOVE ATTACHMENT HTML ]
+                                                    parent.remove();
+
+                                                    if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
+                                                        ds.ctrfiles.remove();
+                                                    }
+                                                });
+                                                e.preventDefault();
+                                            });
+
+                                            //[ DOWNLOAD FILE ]
+                                            find('.download').on('click', function (e) {
+                                                var id = parseInt($(this).attr('data')),
+                                                    selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
+
+                                                me.methods.downloadattachment(selectedfile);
+                                                e.preventDefault();
+                                            });
+                                        };
+
+                                        ds.ctrfiles.find('.files').append(html);
+                                    });
+                                } else {
+                                    ds.ctrfiles.remove();
+                                };
+
+                                if (representation.child == 1){
+                                    ds.child.trigger('click')    
+                                }
+
+                                //EDITAR CONTRATO
+                                ds.saverepresentation.on('click', function(){
+                                    var representation = me.datasource.representation;
+
+                                    with(representation) {
+                                        id = representation.id;
+                                        player = ds.representationplayer.find('option:selected').val();
+                                        father = ds.representationfather.val();
+                                        mother = ds.representationmother.val();
+                                        datestart = ds.representationdatestart.val();
+                                        dateend = ds.representationdateend.val();
+                                        commission = ds.representationcommission.val();
+                                        child = ds.child.is(':checked') ? 1 : 0;
+                                    };
+
+                                    //anexos
+                                    if (ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).length > 0) {
+                                        $.each(me.datasource.selectedattachments, function (index, attachment) {
+                                            attachment.RepresentationID = representation.id;
+                                        });
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'update_representation',
+                                        data: {
+                                            representation: representation,
+                                            attachments: me.datasource.selectedattachments//anexos
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+                                            controls.feedback.bind({ type: 'success', message: 'Contrato editado com sucesso' });
+                                            window.open('representation_list.php', '_self');
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'Não foi possível editar o contrato.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });
+
+                                ds.addnewplayer.remove();
+                            } else {
+                                ds.ctrfiles.remove(); //anexos
+
+                                //INSERIR NOVO CONTRATO JOGADOR
+                                ds.saverepresentation.on('click', function(){
+                                    var representation = me.datasource.representation;   
+
+                                    with(representation) {
+                                        player = ds.representationplayer.find('option:selected').val();
+                                        coach = ds.representationcoach.find('option:selected').val();
+                                        father = ds.representationfather.val();
+                                        mother = ds.representationmother.val();
+                                        child = ds.child.is(':checked') ? 1 : 0;
+                                        datestart = ds.representationdatestart.val();
+                                        dateend = ds.representationdateend.val();
+                                        dateend = ds.representationdateend.val();
+                                        commission = ds.representationcommission.val();
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'insert_representation',
+                                        data: {
+                                            representation: representation,
+                                            attachments: me.datasource.selectedattachments//anexos
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+                                            controls.feedback.bind({ type: 'success', message: 'Contrato adicionado com sucesso.' });
+                                            window.open('representation_list.php', '_self');
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'Nao foi possível adicionar o contrato.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });
+
+                                //INSERIR NOVO CONTRATO TREINADOR
+                                ds.saverepresentationcoach.on('click', function(){
+                                    var representation = me.datasource.representation;   
+
+                                    with(representation) {
+                                        coach = ds.representationcoach.find('option:selected').val();
+                                        datestart = ds.representationdatestart.val();
+                                        dateend = ds.representationdateend.val();
+                                        dateend = ds.representationdateend.val();
+                                        commission = ds.representationcommission.val();
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'insert_representation_coach',
+                                        data: {
+                                            representation: representation,
+                                            attachments: me.datasource.selectedattachments//anexos
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+                                            controls.feedback.bind({ type: 'success', message: 'Contrato adicionado com sucesso.' });
+                                            window.open('representation_list.php', '_self');
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'Nao foi possível adicionar o contrato.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });
+
+                                ds.representationplayerclubnew.append('<option value="0">Selecionar</option>');
+
+                                $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
+                                    var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
+                                        countryclubs = clubs.filter(function(c){ return (c.country == country); });
+            
+                                    $.each(countryclubs, function (index, club) {
+                                        group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                                    });
+            
+                                    ds.representationplayerclubnew.append(group);
+                                });
+
+                                //ANEXOS NOVO JOGADOR
+                                ds.uploaderplayer = new FileDropzone({
+                                    target: ds.ctruploadernew.find('#box'),
+                                    clickable: true,
+                                    multiple: true,
+                                    forceReplace: false,
+                                    paramName: 'my-file',
+                                    accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
+                                    onChange: function () {
+                                        var files = new Array(),
+                                            elem = this.element.find('.files');
+            
+                                        elem.empty();
+            
+                                        $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
+                                            var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
+                                                idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
+            
+                                            if (isnewfile && idvalidsize) {
+                                                files.push(file);
+                                            };
+                                        });
+            
+                                        ds.uploaderplayer.clickable = false;
+            
+                                        $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
+                                            var reader = new FileReader(),
+                                                element = $('<div class="file-name"><div class="row"><div class="remove" style="padding-right: 10px;" data="{1}"><i class="grid-action fa fa-trash" style="color:#3282b8"></i></div>{0}</div></div>'.format(item.name, index));
+            
+                                            reader.addEventListener('load', function (e) {
+                                                var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
+            
+                                                if (isnewfile) {
+                                                    var messageattachment = {
+                                                            Attachment: null,
+                                                            AttachmentName: null,
+                                                            ID: 0,
+                                                            RepresentationID: 0
+                                                        },
+                                                        url;
+            
+                                                    messageattachment.index = index;
+            
+                                                    if (item.type.split('/')[0] === 'image') {
+                                                        var image = new Image();
+            
+                                                        //[ RESIZE IMAGE ]
+                                                        image.onload = function () {
+                                                            var canvas = document.createElement("canvas"),
+                                                                context = canvas.getContext("2d");
+            
+                                                            canvas.width = image.width / 4;
+                                                            canvas.height = image.height / 4;
+                                                            context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+            
+                                                            with (messageattachment) {
+                                                                Attachment = canvas.toDataURL();
+                                                                AttachmentName = item.name;
+                                                            };
+            
+                                                            me.datasource.selectedattachments.push(messageattachment);
+                                                        };
+            
+                                                        image.src = e.target.result;
+                                                    } else {
+                                                        with (messageattachment) {
+                                                            Attachment = reader.result;
+                                                            AttachmentName = item.name;
+                                                        };
+            
+                                                        me.datasource.selectedattachments.push(messageattachment);
+                                                    };
+                                                };
+                                            }, false);
+            
+                                            if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
+            
+                                            //[ REMOVE ]
+                                            element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
+                                                var id = $(this).attr('data');
+            
+                                                me.datasource.selectedattachments.removeField('index', id);
+                                                $(this).parent().remove();
+            
+                                                if (me.datasource.selectedattachments.length == 0) {
+                                                    ds.uploaderplayer.clearAll();
+            
+                                                    elem.html(controls.resources.attachment_upload_info);
+            
+                                                    setTimeout(function () {
+                                                        ds.uploaderplayer.clickable = true;
+                                                    }, 1000);
+                                                };
+            
+                                                e.preventDefault();
+                                            });
+            
+                                            elem.append(element);
+                                        });
+            
+                                        if (ifUndefinedOrNull(files, new Array()).length == 0) {
+                                            with (ds.uploaderplayer.element.find('.files')) {
+                                                empty();
+                                                addClass('dz-default dz-message');
+                                            };
+                                        } else {
+                                            with (ds.uploaderplayer.element.find('.files')) {
+                                                removeClass('dz-default dz-message');
+                                            };
+                                        };
+                                    }
+                                });
+
+                                //ADICIONAR JOGADOR
+                                ds.addnewplayer.on('click', function(){
+                                    ds.representationplayerclubnew.find('option:selected').val();
+                                    ds.representationplayerfirstnamenew.val('');
+                                    ds.representationplayerlastnamenew.val('');
+                                    ds.representationplayerbirthnew.val('');
+                                    ds.representationplayernationalitynew.val('');
+                                    ds.representationplayerheightnew.val('');
+                                    ds.representationplayerweightnew.val('');
+                                    ds.representationplayerfootnew.find('span.cs-placeholder').html();
+                                    ds.representationplayerpositionnew.find('span.cs-placeholder').html();
+                                    ds.representationplayervaluenew.val('');
+                                    ds.representationplayerpassportnew.val('');
+                                    ds.representationplayerpassportvalnew.val('');
+
+                                    //ANEXOS NOVO JOGADOR
+                                    if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
+                                        $.each(me.datasource.attachments, function (index, attachment) {
+                                            var filename = attachment.file_name,
+                                                lastindex = filename.lastIndexOf('.'),
+                                                html = $('<div class="file-name" data="{0}"><div class="row"><div class="actions" style="padding-right: 10px;"><div class="row"><div class="delete" style="padding-right: 10px;" data="{0}"><i class="grid-action fa fa-trash" style="color:#3282b8"> </i></div><div class="download" data="{0}"><i class="grid-action fa fa-download" style="color:#3282b8"></i></div></div></div>{1}</div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
+                                                    
+                                                    
+                                            with (html) {
+                                                //[ DELETE FILE ]
+                                                find('.delete').on('click', function (e) {
+                                                    var element = $(this),
+                                                        id = parseInt($(this).attr('data')),
+                                                        parent = $(this).parents('.file-name');
+    
+                                                    me.methods.deleteattachmentplayer(id, function () {
+                                                        //[ REMOVE ATTACHMENT FROM ARRAY ]
+                                                        me.datasource.attachments.removeField('id', id);
+    
+                                                        //[ REMOVE ATTACHMENT HTML ]
+                                                        parent.remove();
+    
+                                                        if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
+                                                            ds.ctrfilesnew.remove();
+                                                        }
+                                                    });
+                                                    e.preventDefault();
+                                                });
+    
+                                                //[ DOWNLOAD FILE ]
+                                                find('.download').on('click', function (e) {
+                                                    var id = parseInt($(this).attr('data')),
+                                                        selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
+    
+                                                    me.methods.downloadattachmentplayer(selectedfile);
+                                                    e.preventDefault();
+                                                });
+                                            };
+    
+                                            ds.ctrfilesnew.find('.files').append(html);
+                                        });
+                                    } else {
+                                        ds.ctrfilesnew.remove();
+                                    };
+    
+                                    if (representation.child == 1){
+                                        ds.child.trigger('click')    
+                                    }
+                                });
+
+                                //BOTAO DE SALVAR ADICIONAR JOGADOR
+                                ds.savenewplayer.on('click', function(){
+                                    var player = args.player;       
+                                    
+                                    with(player) {
+                                        club = ds.representationplayerclubnew.find('option:selected').val();
+                                        name = ds.representationplayernamenew.val();
+                                        firstname = ds.representationplayerfirstnamenew.val();
+                                        lastname = ds.representationplayerlastnamenew.val();
+                                        birth = ds.representationplayerbirthnew.val();
+                                        nationality = ds.representationplayernationalitynew.val();
+                                        height = ds.representationplayerheightnew.val();
+                                        weight = ds.representationplayerweightnew.val();
+                                        foot = ds.representationplayerfootnew.prev().find('.cs-selected span').html();
+                                        position = ds.representationplayerpositionnew.prev().find('.cs-selected span').html();
+                                        value = ds.representationplayervaluenew.val();
+                                        passport = ds.representationplayerpassportnew.val();
+                                        passportval = ds.representationplayerpassportvalnew.val();
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'insert_player',
+                                        data: {
+                                            player: player,
+                                            attachments: me.datasource.selectedattachments//anexos
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+
+                                            //MOSTRAR DADOS ALTERADOS
+                                            ds.representationplayerclub.val(player.clubname);
+                                            ds.representationplayername.val(player.name);
+                                            ds.representationplayerfirstname.val(player.firstname);
+                                            ds.representationplayerlastname.val(player.lastname);
+                                            ds.representationplayerbirth.val(player.birth);
+                                            ds.representationplayernationality.val(player.nationality);
+                                            ds.representationplayerheight.val(player.height);
+                                            ds.representationplayerweight.val(player.weight);
+                                            ds.representationplayervalue.val(player.value);
+                                            ds.representationplayerpassport.val(player.passport);
+                                            ds.representationplayerpassportval.val(player.passportval);
+                                            
+                                            controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                                            //$('body').trigger('click');
+                                            
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });
+
+                                ds.editplayer.remove();
+                            };   
+                            
+                            //ANEXOS EDIT PLAYER
+                            ds.uploaderplayeredit = new FileDropzone({
+                                target: ds.ctruploaderedit.find('#box'),
+                                clickable: true,
+                                multiple: true,
+                                forceReplace: false,
+                                paramName: 'my-file',
+                                accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
+                                onChange: function () {
+                                    var files = new Array(),
+                                        elem = this.element.find('.files');
+        
+                                    elem.empty();
+        
+                                    $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
+                                        var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
+                                            idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
+        
+                                        if (isnewfile && idvalidsize) {
+                                            files.push(file);
+                                        };
+                                    });
+        
+                                    ds.uploaderplayeredit.clickable = false;
+        
+                                    $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
+                                        var reader = new FileReader(),
+                                            element = $('<div class="file-name"><div class="row"><div class="remove" style="padding-right: 10px;" data="{1}"><i class="grid-action fa fa-trash" style="color:#3282b8"></i></div>{0}</div></div>'.format(item.name, index));
+        
+                                        reader.addEventListener('load', function (e) {
+                                            var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
+        
+                                            if (isnewfile) {
+                                                var messageattachment = {
+                                                        Attachment: null,
+                                                        AttachmentName: null,
+                                                        ID: 0,
+                                                        PlayerID: 0
+                                                    },
+                                                    url;
+        
+                                                messageattachment.index = index;
+        
+                                                if (item.type.split('/')[0] === 'image') {
+                                                    var image = new Image();
+        
+                                                    //[ RESIZE IMAGE ]
+                                                    image.onload = function () {
+                                                        var canvas = document.createElement("canvas"),
+                                                            context = canvas.getContext("2d");
+        
+                                                        canvas.width = image.width / 4;
+                                                        canvas.height = image.height / 4;
+                                                        context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+        
+                                                        with (messageattachment) {
+                                                            Attachment = canvas.toDataURL();
+                                                            AttachmentName = item.name;
+                                                        };
+        
+                                                        me.datasource.selectedattachments.push(messageattachment);
+                                                    };
+        
+                                                    image.src = e.target.result;
+                                                } else {
+                                                    with (messageattachment) {
+                                                        Attachment = reader.result;
+                                                        AttachmentName = item.name;
+                                                    };
+        
+                                                    me.datasource.selectedattachments.push(messageattachment);
+                                                };
+                                            };
+                                        }, false);
+        
+                                        if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
+        
+                                        //[ REMOVE ]
+                                        element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
+                                            var id = $(this).attr('data');
+        
+                                            me.datasource.selectedattachments.removeField('index', id);
+                                            $(this).parent().remove();
+        
+                                            if (me.datasource.selectedattachments.length == 0) {
+                                                ds.uploaderplayeredit.clearAll();
+        
+                                                elem.html(controls.resources.attachment_upload_info);
+        
+                                                setTimeout(function () {
+                                                    ds.uploaderplayeredit.clickable = true;
+                                                }, 1000);
+                                            };
+        
+                                            e.preventDefault();
+                                        });
+        
+                                        elem.append(element);
+                                    });
+        
+                                    if (ifUndefinedOrNull(files, new Array()).length == 0) {
+                                        with (ds.uploaderplayeredit.element.find('.files')) {
+                                            empty();
+                                            addClass('dz-default dz-message');
+                                        };
+                                    } else {
+                                        with (ds.uploaderplayeredit.element.find('.files')) {
+                                            removeClass('dz-default dz-message');
+                                        };
+                                    };
+                                }
                             });
 
-                            //BOTAO DE SALVAR ADICIONAR JOGADOR
-                            ds.savenewplayer.on('click', function(){
+                            //EDITAR DADOS DO JOGADOR
+                            ds.editplayer.on('click', function(){
+                                ds.representationplayerclubedit.val(representation.club);
+                                ds.representationplayerclubedit.trigger('change');
+                                ds.representationplayernameedit.val(representation.name);
+                                ds.representationplayerfirstnameedit.val(representation.firstname);
+                                ds.representationplayerlastnameedit.val(representation.lastname);
+                                ds.representationplayerbirthedit.val(representation.birth);
+                                ds.representationplayernationalityedit.val(representation.nationality);
+                                ds.representationplayerheightedit.val(representation.height);
+                                ds.representationplayerweightedit.val(representation.weight);
+                                ds.representationplayervalueedit.val(representation.value);
+                                ds.representationplayerpassportedit.val(representation.passport);
+                                ds.representationplayerpassportvaledit.val(representation.passportval);
+
+                                //ANEXOS EDIT PLAYER
+                                if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
+                                    $.each(me.datasource.attachments, function (index, attachment) {
+                                        var filename = attachment.file_name,
+                                            lastindex = filename.lastIndexOf('.'),
+                                            html = $('<div class="file-name" data="{0}"><div class="row"><div class="actions" style="padding-right: 10px;"><div class="row"><div class="delete" style="padding-right: 10px;" data="{0}"><i class="grid-action fa fa-trash" style="color:#3282b8"> </i></div><div class="download" data="{0}"><i class="grid-action fa fa-download" style="color:#3282b8"></i></div></div></div>{1}</div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
+                                                
+                                                
+                                        with (html) {
+                                            //[ DELETE FILE ]
+                                            find('.delete').on('click', function (e) {
+                                                var element = $(this),
+                                                    id = parseInt($(this).attr('data')),
+                                                    parent = $(this).parents('.file-name');
+
+                                                me.methods.deleteattachmentplayeredit(id, function () {
+                                                    //[ REMOVE ATTACHMENT FROM ARRAY ]
+                                                    me.datasource.attachments.removeField('id', id);
+
+                                                    //[ REMOVE ATTACHMENT HTML ]
+                                                    parent.remove();
+
+                                                    if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
+                                                        ds.ctrfilesedit.remove();
+                                                    }
+                                                });
+                                                e.preventDefault();
+                                            });
+
+                                            //[ DOWNLOAD FILE ]
+                                            find('.download').on('click', function (e) {
+                                                var id = parseInt($(this).attr('data')),
+                                                    selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
+
+                                                me.methods.downloadattachmentplayeredit(selectedfile);
+                                                e.preventDefault();
+                                            });
+                                        };
+
+                                        ds.ctrfilesedit.find('.files').append(html);
+                                    });
+                                } else {
+                                    ds.ctrfilesedit.remove();
+                                };
+        
+                                ds.representationplayerfootedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerfootedit.val())).trigger('click');
+                                ds.representationplayerfootedit.prev().prev().trigger('click');
+        
+                                $.each(ds.representationplayerpositionedit.find('option'), function (index, element) {
+                                    if ($(element).html() == representation.position) {
+                                        $(element).attr('selected', 'selected');
+        
+                                        ds.representationplayerpositionedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerpositionedit.val())).addClass('cs-selected');
+        
+                                        return false;
+                                    }
+                                });
+        
+                                ds.representationplayerpositionedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerpositionedit.val())).trigger('click');
+                                ds.representationplayerpositionedit.prev().prev().trigger('click');
+                            });
+
+                            //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
+                            ds.saveeditplayer.on('click', function(){
                                 var player = args.player;       
                                 
                                 with(player) {
-                                    club = ds.representationplayerclubnew.find('option:selected').val();
-                                    name = ds.representationplayernamenew.val();
-                                    firstname = ds.representationplayerfirstnamenew.val();
-                                    lastname = ds.representationplayerlastnamenew.val();
-                                    birth = ds.representationplayerbirthnew.val();
-                                    nationality = ds.representationplayernationalitynew.val();
-                                    height = ds.representationplayerheightnew.val();
-                                    weight = ds.representationplayerweightnew.val();
-                                    foot = ds.representationplayerfootnew.prev().find('.cs-selected span').html();
-                                    position = ds.representationplayerpositionnew.prev().find('.cs-selected span').html();
-                                    value = ds.representationplayervaluenew.val();
-                                    passport = ds.representationplayerpassportnew.val();
-                                    passportval = ds.representationplayerpassportvalnew.val();
+                                    id = representation.player;
+                                    club = ds.representationplayerclubedit.find('option:selected').val();
+                                    name = ds.representationplayernameedit.val();
+                                    firstname = ds.representationplayerfirstnameedit.val();
+                                    lastname = ds.representationplayerlastnameedit.val();
+                                    birth = ds.representationplayerbirthedit.val();
+                                    nationality = ds.representationplayernationalityedit.val();
+                                    height = ds.representationplayerheightedit.val();
+                                    weight = ds.representationplayerweightedit.val();
+                                    foot = ds.representationplayerfootedit.find('span.cs-placeholder').html();
+                                    position = ds.representationplayerpositionedit.find('span.cs-placeholder').html();
+                                    value = ds.representationplayervalueedit.val();
+                                    passport = ds.representationplayerpassportedit.val();
+                                    passportval = ds.representationplayerpassportvaledit.val();
+                                };
+
+                                //ANEXOS EDIT PLAYER
+                                if (ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).length > 0) {
+                                    $.each(me.datasource.selectedattachments, function (index, attachment) {
+                                        attachment.PlayerID = player.id;
+                                    });
                                 };
 
                                 controls.ajax({
-                                    functionname: 'insert_player',
+                                    functionname: 'update_player',
                                     data: {
-                                        player: player
+                                        player: player,
+                                        attachments: me.datasource.selectedattachments//anexos
                                     }
                                 }, function (data) {
                                     if (ifUndefinedOrNull(data.success, false)) {
-
+                                        
                                         //MOSTRAR DADOS ALTERADOS
-                                        ds.representationplayerclub.val(player.clubname);
                                         ds.representationplayername.val(player.name);
                                         ds.representationplayerfirstname.val(player.firstname);
                                         ds.representationplayerlastname.val(player.lastname);
@@ -1925,125 +2496,25 @@ function representation(args) {
                                         ds.representationplayernationality.val(player.nationality);
                                         ds.representationplayerheight.val(player.height);
                                         ds.representationplayerweight.val(player.weight);
+                                        ds.representationplayerclub.val(player.clubname);
                                         ds.representationplayervalue.val(player.value);
                                         ds.representationplayerpassport.val(player.passport);
                                         ds.representationplayerpassportval.val(player.passportval);
                                         
-                                        controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                        controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
                                         $("[data-dismiss=modal]").trigger({ type: "click" });
                                         //$('body').trigger('click');
-                                        
+
                                     } else {
-                                        controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                                        controls.message.bind({ type: 'error', message: 'O jogador não existe.' });
                                     };
                                 }, function () {
                                     controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                                 }, function () {
                                     controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                                 });
-                            });
-
-                            ds.editplayer.remove();
-                        };               
-
-                        //EDITAR DADOS DO JOGADOR
-                        ds.editplayer.on('click', function(){
-                            ds.representationplayerclubedit.val(representation.club);
-                            ds.representationplayerclubedit.trigger('change');
-                            ds.representationplayernameedit.val(representation.name);
-                            ds.representationplayerfirstnameedit.val(representation.firstname);
-                            ds.representationplayerlastnameedit.val(representation.lastname);
-                            ds.representationplayerbirthedit.val(representation.birth);
-                            ds.representationplayernationalityedit.val(representation.nationality);
-                            ds.representationplayerheightedit.val(representation.height);
-                            ds.representationplayerweightedit.val(representation.weight);
-                            ds.representationplayervalueedit.val(representation.value);
-                            ds.representationplayerpassportedit.val(representation.passport);
-                            ds.representationplayerpassportvaledit.val(representation.passportval);
-
-
-                            $.each(ds.representationplayerfootedit.find('option'), function (index, element) {
-                                if ($(element).html() == representation.foot) {
-                                    $(element).attr('selected', 'selected');
-    
-                                    ds.representationplayerfootedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerfootedit.val())).addClass('cs-selected');
-    
-                                    return false;
-                                }
-                            });
-    
-                            ds.representationplayerfootedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerfootedit.val())).trigger('click');
-                            ds.representationplayerfootedit.prev().prev().trigger('click');
-    
-                            $.each(ds.representationplayerpositionedit.find('option'), function (index, element) {
-                                if ($(element).html() == representation.position) {
-                                    $(element).attr('selected', 'selected');
-    
-                                    ds.representationplayerpositionedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerpositionedit.val())).addClass('cs-selected');
-    
-                                    return false;
-                                }
-                            });
-    
-                            ds.representationplayerpositionedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerpositionedit.val())).trigger('click');
-                            ds.representationplayerpositionedit.prev().prev().trigger('click');
+                            });  
                         });
-
-                        //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
-                        ds.saveeditplayer.on('click', function(){
-                            var player = args.player;       
-                            
-                            with(player) {
-                                id = representation.player;
-                                club = ds.representationplayerclubedit.find('option:selected').val();
-                                name = ds.representationplayernameedit.val();
-                                firstname = ds.representationplayerfirstnameedit.val();
-                                lastname = ds.representationplayerlastnameedit.val();
-                                birth = ds.representationplayerbirthedit.val();
-                                nationality = ds.representationplayernationalityedit.val();
-                                height = ds.representationplayerheightedit.val();
-                                weight = ds.representationplayerweightedit.val();
-                                foot = ds.representationplayerfootedit.find('span.cs-placeholder').html();
-                                position = ds.representationplayerpositionedit.find('span.cs-placeholder').html();
-                                value = ds.representationplayervalueedit.val();
-                                passport = ds.representationplayerpassportedit.val();
-                                passportval = ds.representationplayerpassportvaledit.val();
-                            };
-
-                            controls.ajax({
-                                functionname: 'update_player',
-                                data: {
-                                    player: player
-                                }
-                            }, function (data) {
-                                if (ifUndefinedOrNull(data.success, false)) {
-                                    
-                                    //MOSTRAR DADOS ALTERADOS
-                                    ds.representationplayername.val(player.name);
-                                    ds.representationplayerfirstname.val(player.firstname);
-                                    ds.representationplayerlastname.val(player.lastname);
-                                    ds.representationplayerbirth.val(player.birth);
-                                    ds.representationplayernationality.val(player.nationality);
-                                    ds.representationplayerheight.val(player.height);
-                                    ds.representationplayerweight.val(player.weight);
-                                    ds.representationplayerclub.val(player.clubname);
-                                    ds.representationplayervalue.val(player.value);
-                                    ds.representationplayerpassport.val(player.passport);
-                                    ds.representationplayerpassportval.val(player.passportval);
-                                    
-                                    controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
-                                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                                    //$('body').trigger('click');
-
-                                } else {
-                                    controls.message.bind({ type: 'error', message: 'O jogador não existe.' });
-                                };
-                            }, function () {
-                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                            }, function () {
-                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                            });
-                        });  
                     });
                 });
             });
@@ -2108,6 +2579,7 @@ function club(args) {
 
             //INSERIR CONTRATO
             clubplayer: $('select.ddlCclubPlayer'),
+            clubcoach: $('select.ddlCclubCoach'),
             clubclub: $('.ddlCclubClub'),
             clubdatestart: $('.txtCclubDateStart'),
             clubdateend: $('.txtCclubDateEnd'),
@@ -2119,6 +2591,7 @@ function club(args) {
 
             //BOTÕES
             saveclub: $('.btnSaveCclub'),
+            saveclubcoach: $('.btnSaveCclubCoach'),
             saveeditplayerclub: $('.btnSavePlayerEditClub'),
             savenewplayerclub: $('.btnSavePlayerNewClub'),
             addnewplayerclub: $('.addNewPlayerClub'),
@@ -2198,6 +2671,24 @@ function club(args) {
                     controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                 });
             },
+            getcoach: function (after) {
+                var me = this.base;
+
+                controls.ajax({
+                    functionname: 'coaches',
+                }, function (data) {
+                    //[ SET list_player LIST ]
+                    me.datasource.coaches = data.coaches;
+
+                    if (!isUndefinedOrNull(after)) { after(); };
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                });
+            },
             downloadattachment: function (attachment) {
                 if (!isStringVoid(attachment.file)) {
                     const downloadLink = document.createElement("a");
@@ -2251,355 +2742,484 @@ function club(args) {
                 
             me.methods.getclubs(function(){
                 me.methods.getplayers(function(){
-                    me.methods.getclub(function(){
-                        var clubs = me.datasource.club,
-                        list_clubs = me.datasource.clubs;
+                    me.methods.getcoach(function(){
+                        me.methods.getclub(function(){
+                            var clubs = me.datasource.club,
+                            list_clubs = me.datasource.clubs;
 
-                        ds.clubplayer.append('<option value="0">Selecionar</option>');
-                        $.each(me.datasource.players, function (index, player) {
-                            ds.clubplayer.append('<option value="{0}">{1} {2}</option>'.format(player.id, player.firstname, player.lastname));
-                            
-                        });
-                        
-                        ds.clubclub.append('<option value="0">Selecionar</option>');
-                        $.each(list_clubs.SingleFieldDistinct('country'), function (index, country) {
-                            var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
-                                countryclubs = list_clubs.filter(function(c){ return (c.country == country); });
-
-                            $.each(countryclubs, function (index, club) {
-                                group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                            ds.clubplayer.append('<option value="0">Selecionar</option>');
+                            $.each(me.datasource.players, function (index, player) {
+                                ds.clubplayer.append('<option value="{0}">{1} {2}</option>'.format(player.id, player.firstname, player.lastname));
+                                
                             });
 
-                            ds.clubclub.append(group);
-                        });
+                            ds.clubcoach.append('<option value="0">Selecionar</option>');
+                            $.each(me.datasource.coaches, function (index, coach) {
+                                ds.clubcoach.append('<option value="{0}">{1} {2}</option>'.format(coach.id, coach.firstname, coach.lastname));
+                            });
+                            
+                            ds.clubclub.append('<option value="0">Selecionar</option>');
+                            $.each(list_clubs.SingleFieldDistinct('country'), function (index, country) {
+                                var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
+                                    countryclubs = list_clubs.filter(function(c){ return (c.country == country); });
 
-                        //anexos
-                        ds.uploader = new FileDropzone({
-                            target: ds.ctruploader.find('#box'),
-                            clickable: true,
-                            multiple: true,
-                            forceReplace: false,
-                            paramName: 'my-file',
-                            accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
-                            onChange: function () {
-                                var files = new Array(),
-                                    elem = this.element.find('.files');
-
-                                elem.empty();
-
-                                $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
-                                    var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
-                                        idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
-
-                                    if (isnewfile && idvalidsize) {
-                                        files.push(file);
-                                    };
+                                $.each(countryclubs, function (index, club) {
+                                    group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
                                 });
 
-                                ds.uploader.clickable = false;
+                                ds.clubclub.append(group);
+                            });
 
-                                $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
-                                    var reader = new FileReader(),
-                                        element = $('<div class="file-name"><div class="row"><div class="remove" style="padding-right: 10px;" data="{1}"><i class="grid-action fa fa-trash" style="color:#3282b8"></i></div>{0}</div></div>'.format(item.name, index));
+                            //anexos
+                            ds.uploader = new FileDropzone({
+                                target: ds.ctruploader.find('#box'),
+                                clickable: true,
+                                multiple: true,
+                                forceReplace: false,
+                                paramName: 'my-file',
+                                accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
+                                onChange: function () {
+                                    var files = new Array(),
+                                        elem = this.element.find('.files');
 
-                                    reader.addEventListener('load', function (e) {
-                                        var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
+                                    elem.empty();
 
-                                        if (isnewfile) {
-                                            var messageattachment = {
-                                                    Attachment: null,
-                                                    AttachmentName: null,
-                                                    ID: 0,
-                                                    ClubID: 0
-                                                },
-                                                url;
+                                    $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
+                                        var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
+                                            idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
 
-                                            messageattachment.index = index;
+                                        if (isnewfile && idvalidsize) {
+                                            files.push(file);
+                                        };
+                                    });
 
-                                            if (item.type.split('/')[0] === 'image') {
-                                                var image = new Image();
+                                    ds.uploader.clickable = false;
 
-                                                //[ RESIZE IMAGE ]
-                                                image.onload = function () {
-                                                    var canvas = document.createElement("canvas"),
-                                                        context = canvas.getContext("2d");
+                                    $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
+                                        var reader = new FileReader(),
+                                            element = $('<div class="file-name"><div class="row"><div class="remove" style="padding-right: 10px;" data="{1}"><i class="grid-action fa fa-trash" style="color:#3282b8"></i></div>{0}</div></div>'.format(item.name, index));
 
-                                                    canvas.width = image.width / 4;
-                                                    canvas.height = image.height / 4;
-                                                    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+                                        reader.addEventListener('load', function (e) {
+                                            var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
 
+                                            if (isnewfile) {
+                                                var messageattachment = {
+                                                        Attachment: null,
+                                                        AttachmentName: null,
+                                                        ID: 0,
+                                                        ClubID: 0
+                                                    },
+                                                    url;
+
+                                                messageattachment.index = index;
+
+                                                if (item.type.split('/')[0] === 'image') {
+                                                    var image = new Image();
+
+                                                    //[ RESIZE IMAGE ]
+                                                    image.onload = function () {
+                                                        var canvas = document.createElement("canvas"),
+                                                            context = canvas.getContext("2d");
+
+                                                        canvas.width = image.width / 4;
+                                                        canvas.height = image.height / 4;
+                                                        context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+
+                                                        with (messageattachment) {
+                                                            Attachment = canvas.toDataURL();
+                                                            AttachmentName = item.name;
+                                                        };
+
+                                                        me.datasource.selectedattachments.push(messageattachment);
+                                                    };
+
+                                                    image.src = e.target.result;
+                                                } else {
                                                     with (messageattachment) {
-                                                        Attachment = canvas.toDataURL();
+                                                        Attachment = reader.result;
                                                         AttachmentName = item.name;
                                                     };
 
                                                     me.datasource.selectedattachments.push(messageattachment);
                                                 };
-
-                                                image.src = e.target.result;
-                                            } else {
-                                                with (messageattachment) {
-                                                    Attachment = reader.result;
-                                                    AttachmentName = item.name;
-                                                };
-
-                                                me.datasource.selectedattachments.push(messageattachment);
                                             };
-                                        };
-                                    }, false);
+                                        }, false);
 
-                                    if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
+                                        if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
 
-                                    //[ REMOVE ]
-                                    element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
-                                        var id = $(this).attr('data');
+                                        //[ REMOVE ]
+                                        element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
+                                            var id = $(this).attr('data');
 
-                                        me.datasource.selectedattachments.removeField('index', id);
-                                        $(this).parent().remove();
+                                            me.datasource.selectedattachments.removeField('index', id);
+                                            $(this).parent().remove();
 
-                                        if (me.datasource.selectedattachments.length == 0) {
-                                            ds.uploader.clearAll();
+                                            if (me.datasource.selectedattachments.length == 0) {
+                                                ds.uploader.clearAll();
 
-                                            elem.html(controls.resources.attachment_upload_info);
+                                                elem.html(controls.resources.attachment_upload_info);
 
-                                            setTimeout(function () {
-                                                ds.uploader.clickable = true;
-                                            }, 1000);
-                                        };
+                                                setTimeout(function () {
+                                                    ds.uploader.clickable = true;
+                                                }, 1000);
+                                            };
 
-                                        e.preventDefault();
+                                            e.preventDefault();
+                                        });
+
+                                        elem.append(element);
                                     });
 
-                                    elem.append(element);
-                                });
-
-                                if (ifUndefinedOrNull(files, new Array()).length == 0) {
-                                    with (ds.uploader.element.find('.files')) {
-                                        empty();
-                                        addClass('dz-default dz-message');
+                                    if (ifUndefinedOrNull(files, new Array()).length == 0) {
+                                        with (ds.uploader.element.find('.files')) {
+                                            empty();
+                                            addClass('dz-default dz-message');
+                                        };
+                                    } else {
+                                        with (ds.uploader.element.find('.files')) {
+                                            removeClass('dz-default dz-message');
+                                        };
                                     };
-                                } else {
-                                    with (ds.uploader.element.find('.files')) {
-                                        removeClass('dz-default dz-message');
-                                    };
-                                };
-                            }
-                        });
+                                }
+                            });
 
-                        if (clubs.id > 0) {
-                            ds.clubplayername.val(clubs.name);
-                            ds.clubplayerfirstname.val(clubs.firstname);
-                            ds.clubplayerlastname.val(clubs.lastname);
-                            ds.clubplayerbirth.val(clubs.birth);
-                            ds.clubplayernationality.val(clubs.nationality);
-                            ds.clubplayerheight.val(clubs.height);
-                            ds.clubplayerweight.val(clubs.weight);
-                            ds.clubplayerclub.val(clubs.clubname);
-                            ds.clubplayervalue.val(clubs.valueplayer);
-                            ds.clubplayerpassport.val(clubs.passport);
-                            ds.clubplayerpassportval.val(clubs.passportval);
+                            if (clubs.id > 0) {
+                                ds.clubplayername.val(clubs.name);
+                                ds.clubplayerfirstname.val(clubs.firstname);
+                                ds.clubplayerlastname.val(clubs.lastname);
+                                ds.clubplayerbirth.val(clubs.birth);
+                                ds.clubplayernationality.val(clubs.nationality);
+                                ds.clubplayerheight.val(clubs.height);
+                                ds.clubplayerweight.val(clubs.weight);
+                                ds.clubplayerclub.val(clubs.clubname);
+                                ds.clubplayervalue.val(clubs.valueplayer);
+                                ds.clubplayerpassport.val(clubs.passport);
+                                ds.clubplayerpassportval.val(clubs.passportval);
 
-                            ds.clubplayer.val(clubs.player);
-                            ds.clubplayer.trigger('change');
-                            ds.clubclub.val(clubs.club);
-                            ds.clubclub.trigger('change');
-                            ds.clubdatestart.val(clubs.datestart);
-                            ds.clubdateend.val(clubs.dateend);
-                            ds.clubvalue.val(clubs.value);
-                            ds.clubclause.val(clubs.clause);
-                            ds.clubbonus.val(clubs.bonus);
-                            ds.clubcourt.val(clubs.court);
-                            ds.clubobs.val(clubs.obs);
-                            $('.titleClub').html('EDITAR CONTRATO DE CLUBES');
-
-                            //anexos
-                            if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
-                                $.each(me.datasource.attachments, function (index, attachment) {
-                                    var filename = attachment.file_name,
-                                        lastindex = filename.lastIndexOf('.'),
-                                        html = $('<div class="file-name" data="{0}"><div class="row"><div class="actions" style="padding-right: 10px;"><div class="row"><div class="delete" style="padding-right: 10px;" data="{0}"><i class="grid-action fa fa-trash" style="color:#3282b8"> </i></div><div class="download" data="{0}"><i class="grid-action fa fa-download" style="color:#3282b8"></i></div></div></div>{1}</div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
-                                            
-                                            
-                                    with (html) {
-                                        //[ DELETE FILE ]
-                                        find('.delete').on('click', function (e) {
-                                            var element = $(this),
-                                                id = parseInt($(this).attr('data')),
-                                                parent = $(this).parents('.file-name');
-
-                                            me.methods.deleteattachment(id, function () {
-                                                //[ REMOVE ATTACHMENT FROM ARRAY ]
-                                                me.datasource.attachments.removeField('id', id);
-
-                                                //[ REMOVE ATTACHMENT HTML ]
-                                                parent.remove();
-
-                                                if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
-                                                    ds.ctrfiles.remove();
-                                                }
-                                            });
-                                            e.preventDefault();
-                                        });
-
-                                        //[ DOWNLOAD FILE ]
-                                        find('.download').on('click', function (e) {
-                                            var id = parseInt($(this).attr('data')),
-                                                selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
-
-                                            me.methods.downloadattachment(selectedfile);
-                                            e.preventDefault();
-                                        });
-                                    };
-
-                                    ds.ctrfiles.find('.files').append(html);
-                                });
-                            } else {
-                                ds.ctrfiles.remove();
-                            };
-
-                            //EDITAR CONTRATO CLUBES
-                            ds.saveclub.on('click', function(){
-                                var club = me.datasource.club;
-
-                                with(club) {
-                                    player = ds.clubplayer.find('option:selected').val();
-                                    club = ds.clubclub.find('option:selected').val();
-                                    datestart = ds.clubdatestart.val();
-                                    dateend = ds.clubdateend.val();
-                                    value = ds.clubvalue.val();
-                                    clause = ds.clubclause.val();
-                                    bonus = ds.clubbonus.val();
-                                    court = ds.clubcourt.val();
-                                    obs = ds.clubobs.val();
-                                };
+                                ds.clubplayer.val(clubs.player);
+                                ds.clubplayer.trigger('change');
+                                ds.clubclub.val(clubs.club);
+                                ds.clubclub.trigger('change');
+                                ds.clubdatestart.val(clubs.datestart);
+                                ds.clubdateend.val(clubs.dateend);
+                                ds.clubvalue.val(clubs.value);
+                                ds.clubclause.val(clubs.clause);
+                                ds.clubbonus.val(clubs.bonus);
+                                ds.clubcourt.val(clubs.court);
+                                ds.clubobs.val(clubs.obs);
+                                $('.titleClub').html('EDITAR CONTRATO DE CLUBES');
 
                                 //anexos
-                                if (ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).length > 0) {
-                                    $.each(me.datasource.selectedattachments, function (index, attachment) {
-                                        attachment.ClubID = club.id;
+                                if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
+                                    $.each(me.datasource.attachments, function (index, attachment) {
+                                        var filename = attachment.file_name,
+                                            lastindex = filename.lastIndexOf('.'),
+                                            html = $('<div class="file-name" data="{0}"><div class="row"><div class="actions" style="padding-right: 10px;"><div class="row"><div class="delete" style="padding-right: 10px;" data="{0}"><i class="grid-action fa fa-trash" style="color:#3282b8"> </i></div><div class="download" data="{0}"><i class="grid-action fa fa-download" style="color:#3282b8"></i></div></div></div>{1}</div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
+                                                
+                                                
+                                        with (html) {
+                                            //[ DELETE FILE ]
+                                            find('.delete').on('click', function (e) {
+                                                var element = $(this),
+                                                    id = parseInt($(this).attr('data')),
+                                                    parent = $(this).parents('.file-name');
+
+                                                me.methods.deleteattachment(id, function () {
+                                                    //[ REMOVE ATTACHMENT FROM ARRAY ]
+                                                    me.datasource.attachments.removeField('id', id);
+
+                                                    //[ REMOVE ATTACHMENT HTML ]
+                                                    parent.remove();
+
+                                                    if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
+                                                        ds.ctrfiles.remove();
+                                                    }
+                                                });
+                                                e.preventDefault();
+                                            });
+
+                                            //[ DOWNLOAD FILE ]
+                                            find('.download').on('click', function (e) {
+                                                var id = parseInt($(this).attr('data')),
+                                                    selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
+
+                                                me.methods.downloadattachment(selectedfile);
+                                                e.preventDefault();
+                                            });
+                                        };
+
+                                        ds.ctrfiles.find('.files').append(html);
                                     });
+                                } else {
+                                    ds.ctrfiles.remove();
                                 };
 
-                                controls.ajax({
-                                    functionname: 'update_club',
-                                    data: {
-                                        club: club,
-                                        attachments: me.datasource.selectedattachments//anexos
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-                                        controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
-                                        window.open('clubs_list.php', '_self');
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                                //EDITAR CONTRATO CLUBES
+                                ds.saveclub.on('click', function(){
+                                    var club = me.datasource.club;
+
+                                    with(club) {
+                                        player = ds.clubplayer.find('option:selected').val();
+                                        club = ds.clubclub.find('option:selected').val();
+                                        datestart = ds.clubdatestart.val();
+                                        dateend = ds.clubdateend.val();
+                                        value = ds.clubvalue.val();
+                                        clause = ds.clubclause.val();
+                                        bonus = ds.clubbonus.val();
+                                        court = ds.clubcourt.val();
+                                        obs = ds.clubobs.val();
                                     };
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            });
 
-                            ds.addnewplayerclub.remove();
-
-                        } else {
-                            ds.ctrfiles.remove(); //anexos
-
-                            //INSERIR CONTRATO CLUBES
-                            ds.saveclub.on('click', function(){
-                                var club = me.datasource.club;
-
-                                with(club) {
-                                    player = ds.clubplayer.find('option:selected').val();
-                                    club = ds.clubclub.find('option:selected').val();
-                                    datestart = ds.clubdatestart.val();
-                                    dateend = ds.clubdateend.val();
-                                    value = ds.clubvalue.val();
-                                    clause = ds.clubclause.val();
-                                    bonus = ds.clubbonus.val();
-                                    court = ds.clubcourt.val();
-                                    obs = ds.clubobs.val();
-                                };
-
-                                controls.ajax({
-                                    functionname: 'insert_club',
-                                    data: {
-                                        club: club,
-                                        attachments: me.datasource.selectedattachments//anexos
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-                                        controls.feedback.bind({ type: 'success', message: 'Dados do contrato atualizados com sucesso.' });
-                                        window.open('clubs_list.php', '_self');
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'O contrato não foi criado com sucesso.' });
+                                    //anexos
+                                    if (ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).length > 0) {
+                                        $.each(me.datasource.selectedattachments, function (index, attachment) {
+                                            attachment.ClubID = club.id;
+                                        });
                                     };
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            });
 
+                                    controls.ajax({
+                                        functionname: 'update_club',
+                                        data: {
+                                            club: club,
+                                            attachments: me.datasource.selectedattachments//anexos
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+                                            controls.feedback.bind({ type: 'success', message: 'login com sucesso' });
+                                            window.open('clubs_list.php', '_self');
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'O utilizador não existe.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });
+
+                                ds.addnewplayerclub.remove();
+
+                            } else {
+                                ds.ctrfiles.remove(); //anexos
+
+                                //INSERIR CONTRATO CLUBES JOGADORES
+                                ds.saveclub.on('click', function(){
+                                    var club = me.datasource.club;
+
+                                    with(club) {
+                                        player = ds.clubplayer.find('option:selected').val();
+                                        club = ds.clubclub.find('option:selected').val();
+                                        datestart = ds.clubdatestart.val();
+                                        dateend = ds.clubdateend.val();
+                                        value = ds.clubvalue.val();
+                                        clause = ds.clubclause.val();
+                                        bonus = ds.clubbonus.val();
+                                        court = ds.clubcourt.val();
+                                        obs = ds.clubobs.val();
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'insert_club',
+                                        data: {
+                                            club: club,
+                                            attachments: me.datasource.selectedattachments//anexos
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+                                            controls.feedback.bind({ type: 'success', message: 'Dados do contrato atualizados com sucesso.' });
+                                            window.open('clubs_list.php', '_self');
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'O contrato não foi criado com sucesso.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });
+
+                                //INSERIR NOVO CONTRATO CLUBES TREINADOR
+                                ds.saveclubcoach.on('click', function(){
+                                    var club = me.datasource.club;   
+
+                                    with(club) {
+                                        coach = ds.clubcoach.find('option:selected').val();
+                                        club = ds.clubclub.find('option:selected').val();
+                                        datestart = ds.clubdatestart.val();
+                                        dateend = ds.clubdateend.val();
+                                        value = ds.clubvalue.val();
+                                        clause = ds.clubclause.val();
+                                        bonus = ds.clubbonus.val();
+                                        court = ds.clubcourt.val();
+                                        obs = ds.clubobs.val();
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'insert_club_coach',
+                                        data: {
+                                            club: club,
+                                            attachments: me.datasource.selectedattachments//anexos
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+                                            controls.feedback.bind({ type: 'success', message: 'Contrato adicionado com sucesso.' });
+                                            window.open('representation_list.php', '_self');
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'Nao foi possível adicionar o contrato.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });
+
+                                $.each(list_clubs.SingleFieldDistinct('country'), function (index, country) {
+                                    var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
+                                        countryclubs = list_clubs.filter(function(c){ return (c.country == country); });
+            
+                                    $.each(countryclubs, function (index, club) {
+                                        group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                                    });
+            
+                                    ds.clubplayerclubnew.append(group);
+                                });
+
+                                //ADICIONAR JOGADOR
+                                ds.addnewplayerclub.on('click', function(){
+                                    ds.clubplayerclubnew.val();
+                                    ds.clubplayerclubnew.trigger('change');
+                                    ds.clubplayernamenew.val('');
+                                    ds.clubplayerfirstnamenew.val('');
+                                    ds.clubplayerlastnamenew.val('');
+                                    ds.clubplayerbirthnew.val('');
+                                    ds.clubplayernationalitynew.val('');
+                                    ds.clubplayerheightnew.val('');
+                                    ds.clubplayerweightnew.val('');
+                                    ds.clubplayerfootnew.find('span.cs-placeholder').html();
+                                    ds.clubplayerpositionnew.find('span.cs-placeholder').html();
+                                    ds.clubplayervaluenew.val('');
+                                    ds.clubplayerpassportnew.val('');
+                                    ds.clubplayerpassportvalnew.val('');
+                                });
+
+                                //BOTAO DE SALVAR ADICIONAR JOGADOR
+                                ds.savenewplayerclub.on('click', function(){
+                                    var player = args.player;       
+                                    
+                                    with(player) {
+                                        name = ds.clubplayernamenew.val();
+                                        club = ds.clubplayerclubnew.find('option:selected').val();
+                                        firstname = ds.clubplayerfirstnamenew.val();
+                                        lastname = ds.clubplayerlastnamenew.val();
+                                        birth = ds.clubplayerbirthnew.val();
+                                        nationality = ds.clubplayernationalitynew.val();
+                                        height = ds.clubplayerheightnew.val();
+                                        weight = ds.clubplayerweightnew.val();
+                                        foot = ds.clubplayerfootnew.find('span.cs-placeholder').html();
+                                        position = ds.clubplayerpositionnew.find('span.cs-placeholder').html();
+                                        value = ds.clubplayervaluenew.val();
+                                        passport = ds.clubplayerpassportnew.val();
+                                        passportval = ds.clubplayerpassportvalnew.val();
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'insert_player',
+                                        data: {
+                                            player: player
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+
+                                            //MOSTRAR DADOS ALTERADOS
+                                            ds.clubplayerclub.val(player.clubname);
+                                            ds.clubplayername.val(player.name);
+                                            ds.clubplayerfirstname.val(player.firstname);
+                                            ds.clubplayerlastname.val(player.lastname);
+                                            ds.clubplayerbirth.val(player.birth);
+                                            ds.clubplayernationality.val(player.nationality);
+                                            ds.clubplayerheight.val(player.height);
+                                            ds.clubplayerweight.val(player.weight);
+                                            ds.clubplayervalue.val(player.value);
+                                            ds.clubplayerpassport.val(player.passport);
+                                            ds.clubplayerpassportval.val(player.passportval);
+                                            
+                                            controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                                            //$('body').trigger('click');
+                                            
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });
+                                
+                                ds.editplayerclub.remove();
+                            };             
+
+                            //EDITAR DADOS DO JOGADOR
                             $.each(list_clubs.SingleFieldDistinct('country'), function (index, country) {
                                 var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
                                     countryclubs = list_clubs.filter(function(c){ return (c.country == country); });
-        
+
                                 $.each(countryclubs, function (index, club) {
                                     group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
                                 });
-        
-                                ds.clubplayerclubnew.append(group);
+
+                                ds.clubplayerclubedit.append(group);
                             });
 
-                            //ADICIONAR JOGADOR
-                            ds.addnewplayerclub.on('click', function(){
-                                ds.clubplayerclubnew.val();
-                                ds.clubplayerclubnew.trigger('change');
-                                ds.clubplayernamenew.val('');
-                                ds.clubplayerfirstnamenew.val('');
-                                ds.clubplayerlastnamenew.val('');
-                                ds.clubplayerbirthnew.val('');
-                                ds.clubplayernationalitynew.val('');
-                                ds.clubplayerheightnew.val('');
-                                ds.clubplayerweightnew.val('');
-                                ds.clubplayerfootnew.find('span.cs-placeholder').html();
-                                ds.clubplayerpositionnew.find('span.cs-placeholder').html();
-                                ds.clubplayervaluenew.val('');
-                                ds.clubplayerpassportnew.val('');
-                                ds.clubplayerpassportvalnew.val('');
+                            ds.editplayerclub.on('click', function(){
+                                ds.clubplayerclubedit.val(clubs.club);
+                                ds.clubplayerclubedit.trigger('change');
+                                ds.clubplayernameedit.val(clubs.name);
+                                ds.clubplayerfirstnameedit.val(clubs.firstname);
+                                ds.clubplayerlastnameedit.val(clubs.lastname);
+                                ds.clubplayerbirthedit.val(clubs.birth);
+                                ds.clubplayernationalityedit.val(clubs.nationality);
+                                ds.clubplayerheightedit.val(clubs.height);
+                                ds.clubplayerweightedit.val(clubs.weight);
+                                ds.clubplayerfootedit.find('span.cs-placeholder').html();
+                                ds.clubplayerpositionedit.find('span.cs-placeholder').html();
+                                ds.clubplayervalueedit.val(clubs.value);
+                                ds.clubplayerpassportedit.val(clubs.passport);
+                                ds.clubplayerpassportvaledit.val(clubs.passportval);
                             });
 
-                            //BOTAO DE SALVAR ADICIONAR JOGADOR
-                            ds.savenewplayerclub.on('click', function(){
+                            //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
+                            ds.saveeditplayerclub.on('click', function(){
                                 var player = args.player;       
                                 
                                 with(player) {
-                                    name = ds.clubplayernamenew.val();
-                                    club = ds.clubplayerclubnew.find('option:selected').val();
-                                    firstname = ds.clubplayerfirstnamenew.val();
-                                    lastname = ds.clubplayerlastnamenew.val();
-                                    birth = ds.clubplayerbirthnew.val();
-                                    nationality = ds.clubplayernationalitynew.val();
-                                    height = ds.clubplayerheightnew.val();
-                                    weight = ds.clubplayerweightnew.val();
-                                    foot = ds.clubplayerfootnew.find('span.cs-placeholder').html();
-                                    position = ds.clubplayerpositionnew.find('span.cs-placeholder').html();
-                                    value = ds.clubplayervaluenew.val();
-                                    passport = ds.clubplayerpassportnew.val();
-                                    passportval = ds.clubplayerpassportvalnew.val();
+                                    id = clubs.player;
+                                    club = ds.clubplayerclubedit.find('option:selected').val();
+                                    name = ds.clubplayernameedit.val();
+                                    firstname = ds.clubplayerfirstnameedit.val();
+                                    lastname = ds.clubplayerlastnameedit.val();
+                                    birth = ds.clubplayerbirthedit.val();
+                                    nationality = ds.clubplayernationalityedit.val();
+                                    height = ds.clubplayerheightedit.val();
+                                    weight = ds.clubplayerweightedit.val();
+                                    foot = ds.clubplayerfootedit.find('span.cs-placeholder').html();
+                                    position = ds.clubplayerpositionedit.find('span.cs-placeholder').html();
+                                    value = ds.clubplayervalueedit.val();
+                                    passport = ds.clubplayerpassportedit.val();
+                                    passportval = ds.clubplayerpassportvaledit.val();
                                 };
 
                                 controls.ajax({
-                                    functionname: 'insert_player',
+                                    functionname: 'update_player',
                                     data: {
                                         player: player
                                     }
                                 }, function (data) {
                                     if (ifUndefinedOrNull(data.success, false)) {
-
+                                        
                                         //MOSTRAR DADOS ALTERADOS
-                                        ds.clubplayerclub.val(player.clubname);
                                         ds.clubplayername.val(player.name);
                                         ds.clubplayerfirstname.val(player.firstname);
                                         ds.clubplayerlastname.val(player.lastname);
@@ -2607,111 +3227,25 @@ function club(args) {
                                         ds.clubplayernationality.val(player.nationality);
                                         ds.clubplayerheight.val(player.height);
                                         ds.clubplayerweight.val(player.weight);
+                                        ds.clubplayerclub.val(player.clubname);
                                         ds.clubplayervalue.val(player.value);
                                         ds.clubplayerpassport.val(player.passport);
                                         ds.clubplayerpassportval.val(player.passportval);
                                         
-                                        controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                        controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
                                         $("[data-dismiss=modal]").trigger({ type: "click" });
                                         //$('body').trigger('click');
-                                        
+
                                     } else {
-                                        controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                                        controls.message.bind({ type: 'error', message: 'O jogador não existe.' });
                                     };
                                 }, function () {
                                     controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                                 }, function () {
                                     controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
                                 });
-                            });
-                            
-                            ds.editplayerclub.remove();
-                        };             
-
-                        //EDITAR DADOS DO JOGADOR
-                        $.each(list_clubs.SingleFieldDistinct('country'), function (index, country) {
-                            var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
-                                countryclubs = list_clubs.filter(function(c){ return (c.country == country); });
-
-                            $.each(countryclubs, function (index, club) {
-                                group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
-                            });
-
-                            ds.clubplayerclubedit.append(group);
+                            });  
                         });
-
-                        ds.editplayerclub.on('click', function(){
-                            ds.clubplayerclubedit.val(clubs.club);
-                            ds.clubplayerclubedit.trigger('change');
-                            ds.clubplayernameedit.val(clubs.name);
-                            ds.clubplayerfirstnameedit.val(clubs.firstname);
-                            ds.clubplayerlastnameedit.val(clubs.lastname);
-                            ds.clubplayerbirthedit.val(clubs.birth);
-                            ds.clubplayernationalityedit.val(clubs.nationality);
-                            ds.clubplayerheightedit.val(clubs.height);
-                            ds.clubplayerweightedit.val(clubs.weight);
-                            ds.clubplayerfootedit.find('span.cs-placeholder').html();
-                            ds.clubplayerpositionedit.find('span.cs-placeholder').html();
-                            ds.clubplayervalueedit.val(clubs.value);
-                            ds.clubplayerpassportedit.val(clubs.passport);
-                            ds.clubplayerpassportvaledit.val(clubs.passportval);
-                        });
-
-                        //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
-                        ds.saveeditplayerclub.on('click', function(){
-                            var player = args.player;       
-                            
-                            with(player) {
-                                id = clubs.player;
-                                club = ds.clubplayerclubedit.find('option:selected').val();
-                                name = ds.clubplayernameedit.val();
-                                firstname = ds.clubplayerfirstnameedit.val();
-                                lastname = ds.clubplayerlastnameedit.val();
-                                birth = ds.clubplayerbirthedit.val();
-                                nationality = ds.clubplayernationalityedit.val();
-                                height = ds.clubplayerheightedit.val();
-                                weight = ds.clubplayerweightedit.val();
-                                foot = ds.clubplayerfootedit.find('span.cs-placeholder').html();
-                                position = ds.clubplayerpositionedit.find('span.cs-placeholder').html();
-                                value = ds.clubplayervalueedit.val();
-                                passport = ds.clubplayerpassportedit.val();
-                                passportval = ds.clubplayerpassportvaledit.val();
-                            };
-
-                            controls.ajax({
-                                functionname: 'update_player',
-                                data: {
-                                    player: player
-                                }
-                            }, function (data) {
-                                if (ifUndefinedOrNull(data.success, false)) {
-                                    
-                                    //MOSTRAR DADOS ALTERADOS
-                                    ds.clubplayername.val(player.name);
-                                    ds.clubplayerfirstname.val(player.firstname);
-                                    ds.clubplayerlastname.val(player.lastname);
-                                    ds.clubplayerbirth.val(player.birth);
-                                    ds.clubplayernationality.val(player.nationality);
-                                    ds.clubplayerheight.val(player.height);
-                                    ds.clubplayerweight.val(player.weight);
-                                    ds.clubplayerclub.val(player.clubname);
-                                    ds.clubplayervalue.val(player.value);
-                                    ds.clubplayerpassport.val(player.passport);
-                                    ds.clubplayerpassportval.val(player.passportval);
-                                    
-                                    controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
-                                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                                    //$('body').trigger('click');
-
-                                } else {
-                                    controls.message.bind({ type: 'error', message: 'O jogador não existe.' });
-                                };
-                            }, function () {
-                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                            }, function () {
-                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                            });
-                        });  
                     });
                 });
             });
@@ -2803,6 +3337,7 @@ function mandates(args) {
             
             //INSERIR MANDATO
             mandateplayer: $('select.ddlMandatePlayer'),
+            mandatecoach: $('select.ddlMandateCoach'),
             mandateagent: $('select.ddlMandateAgent'),
             mandatedatestart: $('.txtMandatesDateStart'),
             mandatedateend: $('.txtMandatesDateEnd'),
@@ -2830,6 +3365,7 @@ function mandates(args) {
             base: undefined,
             id: ifUndefinedOrNull(args.data.mandates_id, 0),
             mandates: undefined,
+            clubs: new Array(),
             attachments: new Array(), //anexos
             selectedattachments: new Array() //anexos
         },
@@ -2865,6 +3401,24 @@ function mandates(args) {
                     if (!isUndefinedOrNull(after)) { after(); };
                 };
             },
+            getclubs: function (after) {
+                var me = this.base;
+
+                controls.ajax({
+                    functionname: 'clubs_list',
+                }, function (data) {
+                    //[ SET list_player LIST ]
+                    me.datasource.clubs = data.clubs;
+
+                    if (!isUndefinedOrNull(after)) { after(); };
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                });
+            },
             getplayers: function (after) {
                 var me = this.base;
 
@@ -2873,6 +3427,24 @@ function mandates(args) {
                 }, function (data) {
                     //[ SET list_player LIST ]
                     me.datasource.players = data.players;
+
+                    if (!isUndefinedOrNull(after)) { after(); };
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                });
+            },
+            getcoach: function (after) {
+                var me = this.base;
+
+                controls.ajax({
+                    functionname: 'coaches',
+                }, function (data) {
+                    //[ SET list_player LIST ]
+                    me.datasource.coaches = data.coaches;
 
                     if (!isUndefinedOrNull(after)) { after(); };
                 }, function () {
@@ -2953,609 +3525,654 @@ function mandates(args) {
                 ds = me.design;  
                 
             me.methods.getmandates(function(){
-                me.methods.getplayers(function(){
-                    me.methods.getagent(function(){
-                        var mandates = me.datasource.mandates;
+                me.methods.getclubs(function(){
+                    me.methods.getplayers(function(){
+                        me.methods.getcoach(function(){
+                            me.methods.getagent(function(){
+                                var mandates = me.datasource.mandates,
+                                    clubs = me.datasource.clubs;
 
-                        ds.mandateplayer.append('<option value="0">Selecionar</option>');
-                        $.each(me.datasource.players, function (index, player) {
-                            ds.mandateplayer.append('<option value="{0}">{1} {2}</option>'.format(player.id, player.firstname, player.lastname));
-                            
-                        });
-
-                        ds.mandateagent.append('<option value="0">Selecionar</option>');
-                        $.each(me.datasource.agents, function (index, agents) {
-                            ds.mandateagent.append('<option value="{0}">{1} {2}</option>'.format(agents.id, agents.firstname, agents.lastname));
-                            
-                        });
-
-                        //anexos
-                        ds.uploader = new FileDropzone({
-                            target: ds.ctruploader.find('#box'),
-                            clickable: true,
-                            multiple: true,
-                            forceReplace: false,
-                            paramName: 'my-file',
-                            accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
-                            onChange: function () {
-                                var files = new Array(),
-                                    elem = this.element.find('.files');
-
-                                elem.empty();
-
-                                $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
-                                    var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
-                                        idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
-
-                                    if (isnewfile && idvalidsize) {
-                                        files.push(file);
-                                    };
+                                ds.mandateplayer.append('<option value="0">Selecionar</option>');
+                                $.each(me.datasource.players, function (index, player) {
+                                    ds.mandateplayer.append('<option value="{0}">{1} {2}</option>'.format(player.id, player.firstname, player.lastname));
+                                    
                                 });
 
-                                ds.uploader.clickable = false;
-
-                                $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
-                                    var reader = new FileReader(),
-                                        element = $('<div class="file-name"><div class="row"><div class="remove" style="padding-right: 10px;" data="{1}"><i class="grid-action fa fa-trash" style="color:#3282b8"></i></div>{0}</div></div>'.format(item.name, index));
-
-                                    reader.addEventListener('load', function (e) {
-                                        var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
-
-                                        if (isnewfile) {
-                                            var messageattachment = {
-                                                    Attachment: null,
-                                                    AttachmentName: null,
-                                                    ID: 0,
-                                                    MandateID: 0
-                                                },
-                                                url;
-
-                                            messageattachment.index = index;
-
-                                            if (item.type.split('/')[0] === 'image') {
-                                                var image = new Image();
-
-                                                //[ RESIZE IMAGE ]
-                                                image.onload = function () {
-                                                    var canvas = document.createElement("canvas"),
-                                                        context = canvas.getContext("2d");
-
-                                                    canvas.width = image.width / 4;
-                                                    canvas.height = image.height / 4;
-                                                    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
-
-                                                    with (messageattachment) {
-                                                        Attachment = canvas.toDataURL();
-                                                        AttachmentName = item.name;
-                                                    };
-
-                                                    me.datasource.selectedattachments.push(messageattachment);
-                                                };
-
-                                                image.src = e.target.result;
-                                            } else {
-                                                with (messageattachment) {
-                                                    Attachment = reader.result;
-                                                    AttachmentName = item.name;
-                                                };
-
-                                                me.datasource.selectedattachments.push(messageattachment);
-                                            };
-                                        };
-                                    }, false);
-
-                                    if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
-
-                                    //[ REMOVE ]
-                                    element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
-                                        var id = $(this).attr('data');
-
-                                        me.datasource.selectedattachments.removeField('index', id);
-                                        $(this).parent().remove();
-
-                                        if (me.datasource.selectedattachments.length == 0) {
-                                            ds.uploader.clearAll();
-
-                                            elem.html(controls.resources.attachment_upload_info);
-
-                                            setTimeout(function () {
-                                                ds.uploader.clickable = true;
-                                            }, 1000);
-                                        };
-
-                                        e.preventDefault();
-                                    });
-
-                                    elem.append(element);
+                                ds.mandatecoach.append('<option value="0">Selecionar</option>');
+                                $.each(me.datasource.coaches, function (index, coach) {
+                                    ds.mandatecoach.append('<option value="{0}">{1} {2}</option>'.format(coach.id, coach.firstname, coach.lastname));
+                                    
                                 });
 
-                                if (ifUndefinedOrNull(files, new Array()).length == 0) {
-                                    with (ds.uploader.element.find('.files')) {
-                                        empty();
-                                        addClass('dz-default dz-message');
-                                    };
-                                } else {
-                                    with (ds.uploader.element.find('.files')) {
-                                        removeClass('dz-default dz-message');
-                                    };
-                                };
-                            }
-                        });
-
-                        ds.mandateagent.on('change', function(){
-                            var agentid = ds.mandateagent.find('option:selected').val(),
-                                agent_club = me.datasource.all_clubs.filter(function(ac){ return (ac.id_agent == parseInt(agentid)); }),
-                                club = '',
-                                country = '';
-
-                            if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
-                                $.each(agent_club, function (index, ac) {
-                                    if (country.indexOf(ac.club_name) == -1) {
-                                        if(index > 0) {
-                                            club += ', ';
-                                        }
-    
-                                        club += ac.club_name;
-                                    };
-    
-                                    if (country.indexOf(ac.country_name) == -1) {
-                                        if(index > 0) {
-                                            country += ', ';
-                                        }
-    
-                                        country += ac.country_name;
-                                    };
+                                ds.mandateagent.append('<option value="0">Selecionar</option>');
+                                $.each(me.datasource.agents, function (index, agents) {
+                                    ds.mandateagent.append('<option value="{0}">{1} {2}</option>'.format(agents.id, agents.firstname, agents.lastname));
+                                    
                                 });
-                            }
-
-                            ds.mandateagentclub.val(club);
-                            ds.mandateagentcountry.val(country);
-
-                            ds.mandatecountry.val(country);
-                            ds.mandateclub.val(club);
-                        });
-
-                        if (mandates.id > 0) {
-                            var agent_club = me.datasource.agents_clubs.filter(function(ac){ return (ac.id_agent == mandates.agentid); }),
-                            club = '',
-                            country = '';
-
-                        if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
-                            $.each(agent_club, function (index, ac) {
-                                if (country.indexOf(ac.club_name) == -1) {
-                                    if(index > 0) {
-                                        club += ', ';
-                                    }
-
-                                    club += ac.club_name;
-                                };
-
-                                if (country.indexOf(ac.country_name) == -1) {
-                                    if(index > 0) {
-                                        country += ', ';
-                                    }
-
-                                    country += ac.country_name;
-                                };
-                            });
-                        }
-
-                            ds.mandateplayer.val(mandates.player);
-                            ds.mandateplayer.trigger('change');
-                            ds.mandateagent.val(mandates.agentid);
-                            ds.mandateagent.trigger('change');
-                            ds.mandateplayerfirstname.val(mandates.playerfirstname);
-                            ds.mandateplayerlastname.val(mandates.playerlastname);
-                            ds.mandateplayerclub.val(mandates.playerclubname);
-                            ds.mandateplayervalue.val(mandates.playervalue);
-                            ds.mandateplayerpassport.val(mandates.playerpassport);
-                            ds.mandateplayerpassportval.val(mandates.playerpassportval);
-
-                            ds.mandateagentfirstname.val(mandates.agentfirstname);
-                            ds.mandateagentlastname.val(mandates.agentlastname);
-                            ds.mandateagentclub.val(club);
-                            ds.mandateagentcountry.val(country);
-                            ds.mandateagentpassport.val(mandates.agentpassport);
-                            ds.mandateagentpassportval.val(mandates.agentpassportval);
-                            
-
-                            ds.mandatedatestart.val(mandates.datestart);
-                            ds.mandatedateend.val(mandates.dateend);
-                            ds.mandatecompany.val(mandates.agentcompany);
-                            ds.mandatecountry.val(country);
-                            ds.mandateclub.val(club);
-                            ds.mandateobs.val(mandates.obs);
-
-                            $('.titleMandate').html('EDITAR MANDATO');
-
-                            //anexos
-                            if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
-                                $.each(me.datasource.attachments, function (index, attachment) {
-                                    var filename = attachment.file_name,
-                                        lastindex = filename.lastIndexOf('.'),
-                                        html = $('<div class="file-name" data="{0}"><div class="row"><div class="actions" style="padding-right: 10px;"><div class="row"><div class="delete" style="padding-right: 10px;" data="{0}"><i class="grid-action fa fa-trash" style="color:#3282b8"> </i></div><div class="download" data="{0}"><i class="grid-action fa fa-download" style="color:#3282b8"></i></div></div></div>{1}</div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
-                                            
-                                            
-                                    with (html) {
-                                        //[ DELETE FILE ]
-                                        find('.delete').on('click', function (e) {
-                                            var element = $(this),
-                                                id = parseInt($(this).attr('data')),
-                                                parent = $(this).parents('.file-name');
-
-                                            me.methods.deleteattachment(id, function () {
-                                                //[ REMOVE ATTACHMENT FROM ARRAY ]
-                                                me.datasource.attachments.removeField('id', id);
-
-                                                //[ REMOVE ATTACHMENT HTML ]
-                                                parent.remove();
-
-                                                if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
-                                                    ds.ctrfiles.remove();
-                                                }
-                                            });
-                                            e.preventDefault();
-                                        });
-
-                                        //[ DOWNLOAD FILE ]
-                                        find('.download').on('click', function (e) {
-                                            var id = parseInt($(this).attr('data')),
-                                                selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
-
-                                            me.methods.downloadattachment(selectedfile);
-                                            e.preventDefault();
-                                        });
-                                    };
-
-                                    ds.ctrfiles.find('.files').append(html);
-                                });
-                            } else {
-                                ds.ctrfiles.remove();
-                            };
-
-                            //EDITAR MANDATO
-                            ds.savemandates.on('click', function(){
-                                var mandates = me.datasource.mandates;
-            
-                                with(mandates) {
-                                    player = ds.mandateplayer.find('option:selected').val();
-                                    agentid = ds.mandateagent.find('option:selected').val();
-                                    datestart = ds.mandatedatestart.val();
-                                    dateend = ds.mandatedateend.val();
-                                    obs = ds.mandateobs.val();
-                                };
 
                                 //anexos
-                                if (ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).length > 0) {
-                                    $.each(me.datasource.selectedattachments, function (index, attachment) {
-                                        attachment.MandateID = mandates.id;
+                                ds.uploader = new FileDropzone({
+                                    target: ds.ctruploader.find('#box'),
+                                    clickable: true,
+                                    multiple: true,
+                                    forceReplace: false,
+                                    paramName: 'my-file',
+                                    accept: '.jpeg, .jpg, .gif, .bmp, .tiff, .png, .pdf, .docx, .doc, .xlsx, .xls, .csv',
+                                    onChange: function () {
+                                        var files = new Array(),
+                                            elem = this.element.find('.files');
+
+                                        elem.empty();
+
+                                        $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
+                                            var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
+                                                idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
+
+                                            if (isnewfile && idvalidsize) {
+                                                files.push(file);
+                                            };
+                                        });
+
+                                        ds.uploader.clickable = false;
+
+                                        $.each(ifUndefinedOrNull(files, new Array()), function (index, item) {
+                                            var reader = new FileReader(),
+                                                element = $('<div class="file-name"><div class="row"><div class="remove" style="padding-right: 10px;" data="{1}"><i class="grid-action fa fa-trash" style="color:#3282b8"></i></div>{0}</div></div>'.format(item.name, index));
+
+                                            reader.addEventListener('load', function (e) {
+                                                var isnewfile = ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).filter(function (a) { return (a.AttachmentName.toLowerCase() == item.name.toLowerCase()); }).length == 0;
+
+                                                if (isnewfile) {
+                                                    var messageattachment = {
+                                                            Attachment: null,
+                                                            AttachmentName: null,
+                                                            ID: 0,
+                                                            MandateID: 0
+                                                        },
+                                                        url;
+
+                                                    messageattachment.index = index;
+
+                                                    if (item.type.split('/')[0] === 'image') {
+                                                        var image = new Image();
+
+                                                        //[ RESIZE IMAGE ]
+                                                        image.onload = function () {
+                                                            var canvas = document.createElement("canvas"),
+                                                                context = canvas.getContext("2d");
+
+                                                            canvas.width = image.width / 4;
+                                                            canvas.height = image.height / 4;
+                                                            context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+
+                                                            with (messageattachment) {
+                                                                Attachment = canvas.toDataURL();
+                                                                AttachmentName = item.name;
+                                                            };
+
+                                                            me.datasource.selectedattachments.push(messageattachment);
+                                                        };
+
+                                                        image.src = e.target.result;
+                                                    } else {
+                                                        with (messageattachment) {
+                                                            Attachment = reader.result;
+                                                            AttachmentName = item.name;
+                                                        };
+
+                                                        me.datasource.selectedattachments.push(messageattachment);
+                                                    };
+                                                };
+                                            }, false);
+
+                                            if (!isUndefinedOrNull(item)) { reader.readAsDataURL(item); };
+
+                                            //[ REMOVE ]
+                                            element.find('.remove[data={0}]'.format(index)).on('click', function (e) {
+                                                var id = $(this).attr('data');
+
+                                                me.datasource.selectedattachments.removeField('index', id);
+                                                $(this).parent().remove();
+
+                                                if (me.datasource.selectedattachments.length == 0) {
+                                                    ds.uploader.clearAll();
+
+                                                    elem.html(controls.resources.attachment_upload_info);
+
+                                                    setTimeout(function () {
+                                                        ds.uploader.clickable = true;
+                                                    }, 1000);
+                                                };
+
+                                                e.preventDefault();
+                                            });
+
+                                            elem.append(element);
+                                        });
+
+                                        if (ifUndefinedOrNull(files, new Array()).length == 0) {
+                                            with (ds.uploader.element.find('.files')) {
+                                                empty();
+                                                addClass('dz-default dz-message');
+                                            };
+                                        } else {
+                                            with (ds.uploader.element.find('.files')) {
+                                                removeClass('dz-default dz-message');
+                                            };
+                                        };
+                                    }
+                                });
+
+                                ds.mandateagent.on('change', function(){
+                                    var agentid = ds.mandateagent.find('option:selected').val(),
+                                        agent_club = me.datasource.all_clubs.filter(function(ac){ return (ac.id_agent == parseInt(agentid)); }),
+                                        club = '',
+                                        country = '';
+
+                                    if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
+                                        $.each(agent_club, function (index, ac) {
+                                            if (country.indexOf(ac.club_name) == -1) {
+                                                if(index > 0) {
+                                                    club += ', ';
+                                                }
+            
+                                                club += ac.club_name;
+                                            };
+            
+                                            if (country.indexOf(ac.country_name) == -1) {
+                                                if(index > 0) {
+                                                    country += ', ';
+                                                }
+            
+                                                country += ac.country_name;
+                                            };
+                                        });
+                                    }
+
+                                    ds.mandateagentclub.val(club);
+                                    ds.mandateagentcountry.val(country);
+
+                                    ds.mandatecountry.val(country);
+                                    ds.mandateclub.val(club);
+                                });
+
+                                //EDITAR MANDATO
+                                if (mandates.id > 0) {
+                                    var agent_club = me.datasource.agents_clubs.filter(function(ac){ return (ac.id_agent == mandates.agentid); }),
+                                    club = '',
+                                    country = '';
+
+                                    if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
+                                        $.each(agent_club, function (index, ac) {
+                                            if (country.indexOf(ac.club_name) == -1) {
+                                                if(index > 0) {
+                                                    club += ', ';
+                                                }
+
+                                                club += ac.club_name;
+                                            };
+
+                                            if (country.indexOf(ac.country_name) == -1) {
+                                                if(index > 0) {
+                                                    country += ', ';
+                                                }
+
+                                                country += ac.country_name;
+                                            };
+                                        });
+                                    }
+
+                                    ds.mandateplayer.val(mandates.player);
+                                    ds.mandateplayer.trigger('change');  
+                                    ds.mandateagent.val(mandates.agentid);
+                                    ds.mandateagent.trigger('change');
+                                    ds.mandateplayerfirstname.val(mandates.playerfirstname);
+                                    ds.mandateplayerlastname.val(mandates.playerlastname);
+                                    ds.mandateplayerclub.val(mandates.playerclubname);
+                                    ds.mandateplayervalue.val(mandates.playervalue);
+                                    ds.mandateplayerpassport.val(mandates.playerpassport);
+                                    ds.mandateplayerpassportval.val(mandates.playerpassportval);
+
+                                    ds.mandateagentfirstname.val(mandates.agentfirstname);
+                                    ds.mandateagentlastname.val(mandates.agentlastname);
+                                    ds.mandatecompany.val(mandates.agentcompany)
+                                    ds.mandateagentclub.val(club);
+                                    ds.mandateagentcountry.val(country);
+                                    ds.mandateagentpassport.val(mandates.agentpassport);
+                                    ds.mandateagentpassportval.val(mandates.agentpassportval);
+                                    
+
+                                    ds.mandatedatestart.val(mandates.datestart);
+                                    ds.mandatedateend.val(mandates.dateend);
+                                    ds.mandatecompany.val(mandates.agentcompany);
+                                    ds.mandatecountry.val(country);
+                                    ds.mandateclub.val(club);
+                                    ds.mandateobs.val(mandates.obs);
+
+                                    $('.titleMandate').html('EDITAR MANDATO');
+
+                                    //anexos
+                                    if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
+                                        $.each(me.datasource.attachments, function (index, attachment) {
+                                            var filename = attachment.file_name,
+                                                lastindex = filename.lastIndexOf('.'),
+                                                html = $('<div class="file-name" data="{0}"><div class="row"><div class="actions" style="padding-right: 10px;"><div class="row"><div class="delete" style="padding-right: 10px;" data="{0}"><i class="grid-action fa fa-trash" style="color:#3282b8"> </i></div><div class="download" data="{0}"><i class="grid-action fa fa-download" style="color:#3282b8"></i></div></div></div>{1}</div></div>'.format(attachment.id, attachment.file_name, filename.substring(lastindex, filename.length)));
+                                                    
+                                                    
+                                            with (html) {
+                                                //[ DELETE FILE ]
+                                                find('.delete').on('click', function (e) {
+                                                    var element = $(this),
+                                                        id = parseInt($(this).attr('data')),
+                                                        parent = $(this).parents('.file-name');
+
+                                                    me.methods.deleteattachment(id, function () {
+                                                        //[ REMOVE ATTACHMENT FROM ARRAY ]
+                                                        me.datasource.attachments.removeField('id', id);
+
+                                                        //[ REMOVE ATTACHMENT HTML ]
+                                                        parent.remove();
+
+                                                        if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length == 0){
+                                                            ds.ctrfiles.remove();
+                                                        }
+                                                    });
+                                                    e.preventDefault();
+                                                });
+
+                                                //[ DOWNLOAD FILE ]
+                                                find('.download').on('click', function (e) {
+                                                    var id = parseInt($(this).attr('data')),
+                                                        selectedfile = me.datasource.attachments.filter(function (a) { return (a.id == id); })[0];
+
+                                                    me.methods.downloadattachment(selectedfile);
+                                                    e.preventDefault();
+                                                });
+                                            };
+
+                                            ds.ctrfiles.find('.files').append(html);
+                                        });
+                                    } else {
+                                        ds.ctrfiles.remove();
+                                    };
+
+                                    //DADOS MANDATO
+                                    ds.savemandates.on('click', function(){
+                                        var mandates = me.datasource.mandates;
+                    
+                                        with(mandates) {
+                                            id = mandates.id;
+                                            player = ds.mandateplayer.find('option:selected').val();
+                                            agentid = ds.mandateagent.find('option:selected').val();
+                                            datestart = ds.mandatedatestart.val();
+                                            dateend = ds.mandatedateend.val();
+                                            obs = ds.mandateobs.val();
+                                        };
+
+                                        //anexos
+                                        if (ifUndefinedOrNull(me.datasource.selectedattachments, new Array()).length > 0) {
+                                            $.each(me.datasource.selectedattachments, function (index, attachment) {
+                                                attachment.MandateID = mandates.id;
+                                            });
+                                        };
+                    
+                                        controls.ajax({
+                                            functionname: 'update_mandates',
+                                            data: {
+                                                mandates: mandates,
+                                                attachments: me.datasource.selectedattachments//anexos
+                                            }
+                                        }, function (data) {
+                                            if (ifUndefinedOrNull(data.success, false)) {
+                                                controls.feedback.bind({ type: 'success', message: 'Mandato editado com sucesso' });
+                                                window.open('mandates_list.php', '_self');
+                                            } else {
+                                                controls.message.bind({ type: 'error', message: 'Não foi possível editar o mandato.' });
+                                            };
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        });
                                     });
-                                };
-            
-                                controls.ajax({
-                                    functionname: 'update_mandates',
-                                    data: {
-                                        mandates: mandates,
-                                        attachments: me.datasource.selectedattachments//anexos
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-                                        controls.feedback.bind({ type: 'success', message: 'Mandato editado com sucesso' });
-                                        //window.open('mandates_list.php', '_self');
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'Não foi possível editar o mandato.' });
-                                    };
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            });
 
-                            ds.addnewplayermandate.remove();
-                            ds.addnewagentmandate.remove();
-                        } else {
-                            ds.ctrfiles.remove(); //anexos
-
-                            //INSERIR NOVO MANDATO
-                            ds.savemandates.on('click', function(){
-                                var mandates = me.datasource.mandates;
-            
-                                with(mandates) {
-                                    player = ds.mandateplayer.find('option:selected').val();
-                                    agentid = ds.mandateagent.find('option:selected').val();
-                                    //company = ds.mandatecompany.val();
-                                    datestart = ds.mandatedatestart.val();
-                                    dateend = ds.mandatedateend.val();
-                                    obs = ds.mandateobs.val();
-                                };
-            
-                                controls.ajax({
-                                    functionname: 'insert_mandates',
-                                    data: {
-                                        mandates: mandates,
-                                        attachments: me.datasource.selectedattachments//anexos
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-                                        controls.feedback.bind({ type: 'success', message: 'Mandato adicionado com sucesso.' });
-                                        window.open('mandates_list.php', '_self');
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'Nao foi possível adicionar o mandato.' });
-                                    };
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            });
-
-                            //ADICIONAR JOGADOR
-                            ds.addnewplayermandate.on('click', function(){
-                                ds.mandateplayerclubnew.val('');
-                                ds.mandateplayernamenew.val('');
-                                ds.mandateplayerfirstnamenew.val('');
-                                ds.mandateplayerlastnamenew.val('');
-                                ds.mandateplayerbirthnew.val('');
-                                ds.mandateplayernationalitynew.val('');
-                                ds.mandateplayerheightnew.val('');
-                                ds.mandateplayerweightnew.val('');
-                                ds.mandateplayerfootnew.find('span.cs-placeholder').html();
-                                ds.mandateplayerpositionnew.find('span.cs-placeholder').html();
-                                ds.mandateplayervaluenew.val('');
-                                ds.mandateplayerpassportnew.val('');
-                                ds.mandateplayerpassportvalnew.val('');
-                            });
-
-                            //BOTAO DE SALVAR ADICIONAR JOGADOR
-                            ds.savenewplayermandate.on('click', function(){
-                                var player = args.player;       
-                                
-                                with(player) {
-                                    name = ds.mandateplayernamenew.val();
-                                    firstname = ds.mandateplayerfirstnamenew.val();
-                                    lastname = ds.mandateplayerlastnamenew.val();
-                                    birth = ds.mandateplayerbirthnew.val();
-                                    nationality = ds.mandateplayernationalitynew.val();
-                                    height = ds.mandateplayerheightnew.val();
-                                    weight = ds.mandateplayerweightnew.val();
-                                    foot = ds.mandateplayerfootnew.find('span.cs-placeholder').html();
-                                    position = ds.mandateplayerpositionnew.find('span.cs-placeholder').html();
-                                    value = ds.mandateplayervaluenew.val();
-                                    passport = ds.mandateplayerpassportnew.val();
-                                    passportval = ds.mandateplayerpassportvalnew.val();
-                                };
-
-                                controls.ajax({
-                                    functionname: 'insert_player',
-                                    data: {
-                                        player: player
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-
-                                        //MOSTRAR DADOS ALTERADOS
-                                        ds.mandateplayerclub.val(player.clubname);
-                                        ds.mandateplayerfirstname.val(player.firstname);
-                                        ds.mandateplayerlastname.val(player.lastname);
-                                        ds.mandateplayervalue.val(player.value);
-                                        ds.mandateplayerpassport.val(player.passport);
-                                        ds.mandateplayerpassportval.val(player.passportval);
-                                        
-                                        controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
-                                        $("[data-dismiss=modal]").trigger({ type: "click" });
-                                        //$('body').trigger('click');
-                                        
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
-                                    };
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            });
-
-                            //ADICIONAR AGENTE
-                            ds.addnewagentmandate.on('click', function(){
-                                ds.mandateagentclubnew.val('');
-                                ds.mandateagentnamenew.val('');
-                                ds.mandateagentfirstnamenew.val('');
-                                ds.mandateagentlastnamenew.val('');
-                                ds.mandateagentbirthnew.val('');
-                                ds.mandateagentnationalitynew.val('');
-                                ds.mandateagentpassportnew.val('');
-                                ds.mandateagentpassportvalnew.val('');
-                                ds.mandateagentcompanynew.val('');
-                                ds.mandateagentcountrynew.val('');
-                                ds.mandateagentcontactnew.val('');
-                                ds.mandateagentobsnew.val('');
-                            });
-                            
-                            //BOTAO DE SALVAR ADICIONAR JOGADOR
-                            ds.savenewagentmandate.on('click', function(){
-                                var agent = args.agent;       
-                                
-                                with(agent) {
-                                    name = ds.mandateagentnamenew.val();
-                                    firstname = ds.mandateagentfirstnamenew.val();
-                                    lastname = ds.mandateagentlastnamenew.val();
-                                    birth = ds.mandateagentbirthnew.val();
-                                    nationality = ds.mandateagentnationalitynew.val();
-                                    passport = ds.mandateagentpassportnew.val();
-                                    passportval = ds.mandateagentpassportvalnew.val();
-                                    agentcompany = ds.mandateagentcompanynew.val();
-                                    country = ds.mandateagentcountrynew.val();
-                                    contacts = ds.mandateagentcontactnew.val();
-                                    obs = ds.mandateagentobsnew.val();
-                                };
-
-                                controls.ajax({
-                                    functionname: 'insert_agent',
-                                    data: {
-                                        agent: agent
-                                    }
-                                }, function (data) {
-                                    if (ifUndefinedOrNull(data.success, false)) {
-
-                                        //MOSTRAR DADOS ALTERADOS
-                                        ds.mandateagentclub.val(agent.clubname);
-                                        ds.mandateagentfirstname.val(agent.firstname);
-                                        ds.mandateagentlastname.val(agent.lastname);
-                                        ds.mandateagentcountry.val(agent.country);
-                                        ds.mandateagentpassport.val(agent.passport);
-                                        ds.mandateagentpassportval.val(agent.passportval);
-                                        ds.mandatecompany.val(agent.agentcompany);
-                                        
-                                        controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
-                                        $("[data-dismiss=modal]").trigger({ type: "click" });
-                                        //$('body').trigger('click');
-                                        
-                                    } else {
-                                        controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
-                                    };
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                }, function () {
-                                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                });
-                            });
-
-                            ds.editplayermandate.remove();
-                            ds.editagentmandate.remove();
-                        };
-
-                        //EDITAR DADOS DO JOGADOR
-                        ds.editplayermandate.on('click', function(){
-                            ds.mandateplayerclubedit.val(mandates.playerclubname);
-                            ds.mandateplayernameedit.val(mandates.playername);
-                            ds.mandateplayerfirstnameedit.val(mandates.playerfirstname);
-                            ds.mandateplayerlastnameedit.val(mandates.playerlastname);
-                            ds.mandateplayerbirthedit.val(mandates.playerbirth);
-                            ds.mandateplayernationalityedit.val(mandates.playernationality);
-                            ds.mandateplayerheightedit.val(mandates.playerheight);
-                            ds.mandateplayerweightedit.val(mandates.playerweight);
-                            ds.mandateplayerfootedit.find('span.cs-placeholder').html();
-                            ds.mandateplayerpositionedit.find('span.cs-placeholder').html();
-                            ds.mandateplayervalueedit.val(mandates.playervalue);
-                            ds.mandateplayerpassportedit.val(mandates.playerpassport);
-                            ds.mandateplayerpassportvaledit.val(mandates.playerpassportval);
-                        });
-
-                        //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
-                        ds.saveeditplayermandate.on('click', function(){
-                            var player = args.player;       
-                            
-                            with(player) {
-                                id = mandates.player;
-                                name = ds.mandateplayernameedit.val();
-                                firstname = ds.mandateplayerfirstnameedit.val();
-                                lastname = ds.mandateplayerlastnameedit.val();
-                                birth = ds.mandateplayerbirthedit.val();
-                                nationality = ds.mandateplayernationalityedit.val();
-                                height = ds.mandateplayerheightedit.val();
-                                weight = ds.mandateplayerweightedit.val();
-                                foot = ds.mandateplayerfootedit.find('span.cs-placeholder').html();
-                                position = ds.mandateplayerpositionedit.find('span.cs-placeholder').html();
-                                value = ds.mandateplayervalueedit.val();
-                                passport = ds.mandateplayerpassportedit.val();
-                                passportval = ds.mandateplayerpassportvaledit.val();
-                            };
-
-                            controls.ajax({
-                                functionname: 'update_player',
-                                data: {
-                                    player: player
-                                }
-                            }, function (data) {
-                                if (ifUndefinedOrNull(data.success, false)) {
-                                    
-                                    //MOSTRAR DADOS ALTERADOS
-                                    ds.mandateplayerfirstname.val(player.firstname);
-                                    ds.mandateplayerlastname.val(player.lastname);
-                                    ds.mandateplayerclub.val(player.clubname);
-                                    ds.mandateplayervalue.val(player.value);
-                                    ds.mandateplayerpassport.val(player.passport);
-                                    ds.mandateplayerpassportval.val(player.passportval);
-                                    
-                                    controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
-                                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                                    //$('body').trigger('click');
-
+                                    ds.addnewplayermandate.remove();
+                                    ds.addnewagentmandate.remove();
                                 } else {
-                                    controls.message.bind({ type: 'error', message: 'Não foi possivel editar os dados do jogador.' });
-                                };
-                            }, function () {
-                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                            }, function () {
-                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                            });
-                        });  
+                                    ds.ctrfiles.remove(); //anexos
 
-                        //EDITAR DADOS DO AGENTE
-                        ds.editagentmandate.on('click', function(){
-                            ds.mandateagentclubedit.val(mandates.agentclubname);
-                            ds.mandateagentnameedit.val(mandates.agentname);
-                            ds.mandateagentfirstnameedit.val(mandates.agentfirstname);
-                            ds.mandateagentlastnameedit.val(mandates.agentlastname);
-                            ds.mandateagentbirthedit.val(mandates.agentbirth);
-                            ds.mandateagentnationalityedit.val(mandates.agentnationality);
-                            ds.mandateagentpassportedit.val(mandates.agentpassport);
-                            ds.mandateagentpassportvaledit.val(mandates.agentpassportval);
-                            ds.mandateagentcompanyedit.val(mandates.agentcompany);
-                            ds.mandateagentcountryedit.val(mandates.agentcountry);
-                            ds.mandateagentcontactedit.val(mandates.agentcontacts);
-                            ds.mandateagentobsedit.val(mandates.agentobs);
+                                    //INSERIR NOVO MANDATO JOGADOR
+                                    ds.savemandates.on('click', function(){
+                                        var mandates = me.datasource.mandates;
+                    
+                                        with(mandates) {
+                                            player = ds.mandateplayer.find('option:selected').val();
+                                            agentid = ds.mandateagent.find('option:selected').val();
+                                            datestart = ds.mandatedatestart.val();
+                                            dateend = ds.mandatedateend.val();
+                                            obs = ds.mandateobs.val();
+                                        };
+                    
+                                        controls.ajax({
+                                            functionname: 'insert_mandates',
+                                            data: {
+                                                mandates: mandates,
+                                                attachments: me.datasource.selectedattachments//anexos
+                                            }
+                                        }, function (data) {
+                                            if (ifUndefinedOrNull(data.success, false)) {
+                                                controls.feedback.bind({ type: 'success', message: 'Mandato adicionado com sucesso.' });
+                                                window.open('mandates_list.php', '_self');
+                                            } else {
+                                                controls.message.bind({ type: 'error', message: 'Nao foi possível adicionar o mandato.' });
+                                            };
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        });
+                                    });
+
+                                    //INSERIR NOVO MANDATO TREINADOR
+                                    ds.savemandates.on('click', function(){
+                                        var mandates = me.datasource.mandates;
+                    
+                                        with(mandates) {
+                                            coach = ds.mandatecoach.find('option:selected').val();
+                                            agentid = ds.mandateagent.find('option:selected').val();
+                                            datestart = ds.mandatedatestart.val();
+                                            dateend = ds.mandatedateend.val();
+                                            obs = ds.mandateobs.val();
+                                        };
+                    
+                                        controls.ajax({
+                                            functionname: 'insert_mandates_coach',
+                                            data: {
+                                                mandates: mandates,
+                                                attachments: me.datasource.selectedattachments//anexos
+                                            }
+                                        }, function (data) {
+                                            if (ifUndefinedOrNull(data.success, false)) {
+                                                controls.feedback.bind({ type: 'success', message: 'Mandato adicionado com sucesso.' });
+                                                window.open('mandates_list.php', '_self');
+                                            } else {
+                                                controls.message.bind({ type: 'error', message: 'Nao foi possível adicionar o mandato.' });
+                                            };
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        });
+                                    });
+
+                                    //ADICIONAR JOGADOR
+                                    ds.addnewplayermandate.on('click', function(){
+                                        ds.mandateplayerclubnew.val('');
+                                        ds.mandateplayernamenew.val('');
+                                        ds.mandateplayerfirstnamenew.val('');
+                                        ds.mandateplayerlastnamenew.val('');
+                                        ds.mandateplayerbirthnew.val('');
+                                        ds.mandateplayernationalitynew.val('');
+                                        ds.mandateplayerheightnew.val('');
+                                        ds.mandateplayerweightnew.val('');
+                                        ds.mandateplayerfootnew.find('span.cs-placeholder').html();
+                                        ds.mandateplayerpositionnew.find('span.cs-placeholder').html();
+                                        ds.mandateplayervaluenew.val('');
+                                        ds.mandateplayerpassportnew.val('');
+                                        ds.mandateplayerpassportvalnew.val('');
+                                    });
+
+                                    //BOTAO DE SALVAR ADICIONAR JOGADOR
+                                    ds.savenewplayermandate.on('click', function(){
+                                        var player = args.player;       
+                                        
+                                        with(player) {
+                                            name = ds.mandateplayernamenew.val();
+                                            firstname = ds.mandateplayerfirstnamenew.val();
+                                            lastname = ds.mandateplayerlastnamenew.val();
+                                            birth = ds.mandateplayerbirthnew.val();
+                                            nationality = ds.mandateplayernationalitynew.val();
+                                            height = ds.mandateplayerheightnew.val();
+                                            weight = ds.mandateplayerweightnew.val();
+                                            foot = ds.mandateplayerfootnew.find('span.cs-placeholder').html();
+                                            position = ds.mandateplayerpositionnew.find('span.cs-placeholder').html();
+                                            value = ds.mandateplayervaluenew.val();
+                                            passport = ds.mandateplayerpassportnew.val();
+                                            passportval = ds.mandateplayerpassportvalnew.val();
+                                        };
+
+                                        controls.ajax({
+                                            functionname: 'insert_player',
+                                            data: {
+                                                player: player
+                                            }
+                                        }, function (data) {
+                                            if (ifUndefinedOrNull(data.success, false)) {
+
+                                                //MOSTRAR DADOS ALTERADOS
+                                                ds.mandateplayerclub.val(player.clubname);
+                                                ds.mandateplayerfirstname.val(player.firstname);
+                                                ds.mandateplayerlastname.val(player.lastname);
+                                                ds.mandateplayervalue.val(player.value);
+                                                ds.mandateplayerpassport.val(player.passport);
+                                                ds.mandateplayerpassportval.val(player.passportval);
+                                                
+                                                controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                                $("[data-dismiss=modal]").trigger({ type: "click" });
+                                                //$('body').trigger('click');
+                                                
+                                            } else {
+                                                controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                                            };
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        });
+                                    });
+
+                                    //ADICIONAR AGENTE
+                                    ds.addnewagentmandate.on('click', function(){
+                                        ds.mandateagentclubnew.val('');
+                                        ds.mandateagentnamenew.val('');
+                                        ds.mandateagentfirstnamenew.val('');
+                                        ds.mandateagentlastnamenew.val('');
+                                        ds.mandateagentbirthnew.val('');
+                                        ds.mandateagentnationalitynew.val('');
+                                        ds.mandateagentpassportnew.val('');
+                                        ds.mandateagentpassportvalnew.val('');
+                                        ds.mandateagentcompanynew.val('');
+                                        ds.mandateagentcountrynew.val('');
+                                        ds.mandateagentcontactnew.val('');
+                                        ds.mandateagentobsnew.val('');
+                                    });
+                                    
+                                    //BOTAO DE SALVAR ADICIONAR JOGADOR
+                                    ds.savenewagentmandate.on('click', function(){
+                                        var agent = args.agent;       
+                                        
+                                        with(agent) {
+                                            name = ds.mandateagentnamenew.val();
+                                            firstname = ds.mandateagentfirstnamenew.val();
+                                            lastname = ds.mandateagentlastnamenew.val();
+                                            birth = ds.mandateagentbirthnew.val();
+                                            nationality = ds.mandateagentnationalitynew.val();
+                                            passport = ds.mandateagentpassportnew.val();
+                                            passportval = ds.mandateagentpassportvalnew.val();
+                                            agentcompany = ds.mandateagentcompanynew.val();
+                                            country = ds.mandateagentcountrynew.val();
+                                            contacts = ds.mandateagentcontactnew.val();
+                                            obs = ds.mandateagentobsnew.val();
+                                        };
+
+                                        controls.ajax({
+                                            functionname: 'insert_agent',
+                                            data: {
+                                                agent: agent
+                                            }
+                                        }, function (data) {
+                                            if (ifUndefinedOrNull(data.success, false)) {
+
+                                                //MOSTRAR DADOS ALTERADOS
+                                                ds.mandateagentclub.val(agent.clubname);
+                                                ds.mandateagentfirstname.val(agent.firstname);
+                                                ds.mandateagentlastname.val(agent.lastname);
+                                                ds.mandateagentcountry.val(agent.country);
+                                                ds.mandateagentpassport.val(agent.passport);
+                                                ds.mandateagentpassportval.val(agent.passportval);
+                                                ds.mandatecompany.val(agent.agentcompany);
+                                                
+                                                controls.feedback.bind({ type: 'success', message: 'Jogador adicionado com sucesso' });
+                                                $("[data-dismiss=modal]").trigger({ type: "click" });
+                                                //$('body').trigger('click');
+                                                
+                                            } else {
+                                                controls.message.bind({ type: 'error', message: 'Jogador não adicionado com sucesso.' });
+                                            };
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        }, function () {
+                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                        });
+                                    });
+
+                                    ds.editplayermandate.remove();
+                                    ds.editagentmandate.remove();
+                                };
+
+                                //EDITAR DADOS DO JOGADOR
+                                ds.editplayermandate.on('click', function(){
+                                    ds.mandateplayerclubedit.val(mandates.playerclubname);
+                                    ds.mandateplayernameedit.val(mandates.playername);
+                                    ds.mandateplayerfirstnameedit.val(mandates.playerfirstname);
+                                    ds.mandateplayerlastnameedit.val(mandates.playerlastname);
+                                    ds.mandateplayerbirthedit.val(mandates.playerbirth);
+                                    ds.mandateplayernationalityedit.val(mandates.playernationality);
+                                    ds.mandateplayerheightedit.val(mandates.playerheight);
+                                    ds.mandateplayerweightedit.val(mandates.playerweight);
+                                    ds.mandateplayerfootedit.find('span.cs-placeholder').html();
+                                    ds.mandateplayerpositionedit.find('span.cs-placeholder').html();
+                                    ds.mandateplayervalueedit.val(mandates.playervalue);
+                                    ds.mandateplayerpassportedit.val(mandates.playerpassport);
+                                    ds.mandateplayerpassportvaledit.val(mandates.playerpassportval);
+                                });
+
+                                //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
+                                ds.saveeditplayermandate.on('click', function(){
+                                    var player = args.player;       
+                                    
+                                    with(player) {
+                                        id = mandates.player;
+                                        name = ds.mandateplayernameedit.val();
+                                        firstname = ds.mandateplayerfirstnameedit.val();
+                                        lastname = ds.mandateplayerlastnameedit.val();
+                                        birth = ds.mandateplayerbirthedit.val();
+                                        nationality = ds.mandateplayernationalityedit.val();
+                                        height = ds.mandateplayerheightedit.val();
+                                        weight = ds.mandateplayerweightedit.val();
+                                        foot = ds.mandateplayerfootedit.find('span.cs-placeholder').html();
+                                        position = ds.mandateplayerpositionedit.find('span.cs-placeholder').html();
+                                        value = ds.mandateplayervalueedit.val();
+                                        passport = ds.mandateplayerpassportedit.val();
+                                        passportval = ds.mandateplayerpassportvaledit.val();
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'update_player',
+                                        data: {
+                                            player: player
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+                                            
+                                            //MOSTRAR DADOS ALTERADOS
+                                            ds.mandateplayerfirstname.val(player.firstname);
+                                            ds.mandateplayerlastname.val(player.lastname);
+                                            ds.mandateplayerclub.val(player.clubname);
+                                            ds.mandateplayervalue.val(player.value);
+                                            ds.mandateplayerpassport.val(player.passport);
+                                            ds.mandateplayerpassportval.val(player.passportval);
+                                            
+                                            controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
+                                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                                            //$('body').trigger('click');
+
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'Não foi possivel editar os dados do jogador.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                });  
+
+                                //EDITAR DADOS DO AGENTE
+                                ds.editagentmandate.on('click', function(){
+                                    ds.mandateagentclubedit.val(mandates.agentclubname);
+                                    ds.mandateagentnameedit.val(mandates.agentname);
+                                    ds.mandateagentfirstnameedit.val(mandates.agentfirstname);
+                                    ds.mandateagentlastnameedit.val(mandates.agentlastname);
+                                    ds.mandateagentbirthedit.val(mandates.agentbirth);
+                                    ds.mandateagentnationalityedit.val(mandates.agentnationality);
+                                    ds.mandateagentpassportedit.val(mandates.agentpassport);
+                                    ds.mandateagentpassportvaledit.val(mandates.agentpassportval);
+                                    ds.mandateagentcompanyedit.val(mandates.agentcompany);
+                                    ds.mandateagentcountryedit.val(mandates.agentcountry);
+                                    ds.mandateagentcontactedit.val(mandates.agentcontacts);
+                                    ds.mandateagentobsedit.val(mandates.agentobs);
+                                });
+
+                                //BOTAO DE SALVAR EDIÇÃO DE AGENTE
+                                ds.saveeditagentmandate.on('click', function(){
+                                    var agent = args.agent;       
+                                    
+                                    with(agent) {
+                                        id = mandates.agentid;
+                                        name = ds.mandateagentnameedit.val();
+                                        firstname = ds.mandateagentfirstnameedit.val();
+                                        lastname = ds.mandateagentlastnameedit.val();
+                                        birth = ds.mandateagentbirthedit.val();
+                                        nationality = ds.mandateagentnationalityedit.val();
+                                        passport = ds.mandateagentpassportedit.val();
+                                        passportval = ds.mandateagentpassportvaledit.val();
+                                        agentcompany = ds.mandateagentcompanyedit.val();
+                                        country = ds.mandateagentcountryedit.val();
+                                        contacts = ds.mandateagentcontactedit.val();
+                                        obs = ds.mandateagentobsedit.val();
+                                    };
+
+                                    controls.ajax({
+                                        functionname: 'update_agent',
+                                        data: {
+                                            agent: agent
+                                        }
+                                    }, function (data) {
+                                        if (ifUndefinedOrNull(data.success, false)) {
+                                            
+                                            //MOSTRAR DADOS ALTERADOS
+                                            ds.mandateagentfirstname.val(agent.firstname);
+                                            ds.mandateagentlastname.val(agent.lastname);
+                                            ds.mandateagentclub.val(agent.clubname);
+                                            ds.mandateagentcountry.val(agent.agentcountry);
+                                            ds.mandateagentpassport.val(agent.passport);
+                                            ds.mandateagentpassportval.val(agent.passportval);
+                                            
+                                            controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
+                                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                                            //$('body').trigger('click');
+
+                                        } else {
+                                            controls.message.bind({ type: 'error', message: 'Não foi possivel editar os dados do jogador.' });
+                                        };
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    }, function () {
+                                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                                    });
+                                }); 
+                            });
                         });
-
-                        //BOTAO DE SALVAR EDIÇÃO DE AGENTE
-                        ds.saveeditagentmandate.on('click', function(){
-                            var agent = args.agent;       
-                            
-                            with(agent) {
-                                id = mandates.agentid;
-                                name = ds.mandateagentnameedit.val();
-                                firstname = ds.mandateagentfirstnameedit.val();
-                                lastname = ds.mandateagentlastnameedit.val();
-                                birth = ds.mandateagentbirthedit.val();
-                                nationality = ds.mandateagentnationalityedit.val();
-                                passport = ds.mandateagentpassportedit.val();
-                                passportval = ds.mandateagentpassportvaledit.val();
-                                agentcompany = ds.mandateagentcompanyedit.val();
-                                country = ds.mandateagentcountryedit.val();
-                                contacts = ds.mandateagentcontactedit.val();
-                                obs = ds.mandateagentobsedit.val();
-                            };
-
-                            controls.ajax({
-                                functionname: 'update_agent',
-                                data: {
-                                    agent: agent
-                                }
-                            }, function (data) {
-                                if (ifUndefinedOrNull(data.success, false)) {
-                                    
-                                    //MOSTRAR DADOS ALTERADOS
-                                    ds.mandateagentfirstname.val(agent.firstname);
-                                    ds.mandateagentlastname.val(agent.lastname);
-                                    ds.mandateagentclub.val(agent.clubname);
-                                    ds.mandateagentcountry.val(agent.agentcountry);
-                                    ds.mandateagentpassport.val(agent.passport);
-                                    ds.mandateagentpassportval.val(agent.passportval);
-                                    
-                                    controls.feedback.bind({ type: 'success', message: 'Dados do jogador atualizados com sucesso' });
-                                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                                    //$('body').trigger('click');
-
-                                } else {
-                                    controls.message.bind({ type: 'error', message: 'Não foi possivel editar os dados do jogador.' });
-                                };
-                            }, function () {
-                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                            }, function () {
-                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                            });
-                        }); 
                     });
                 });
             });
@@ -3996,7 +4613,6 @@ function list_representation() {
                 base: undefined,
                 edit: function (list_representationid) {
                     var me = this.base;
-
                     controls.post(me.datasource.detailpage, { representation_id: list_representationid });
                 },
                 remove: function (representationsids) {
@@ -4054,6 +4670,7 @@ function list_representation() {
                         //[ SET list_representation LIST ]
                         me.datasource.list_representation = ifUndefinedOrNull(data.representations, new Array());
                         me.datasource.detailpage = ifUndefinedOrNull(data.detail_page, '');
+                       
 
                         if (data.total > 0) {
                             ds.me.slideDown();
@@ -4196,6 +4813,7 @@ function list_club() {
                     var me = this.base;
 
                     controls.post(me.datasource.detailpage, { club_id: list_clubid });
+
                 },
                 remove: function (clubsids) {
                     var me = this.base;
@@ -4315,6 +4933,7 @@ function list_club() {
                                 me.methods.actions.edit($(this).attr('data'));
                                 e.preventDefault();
                                 e.stopPropagation();
+                                console.log(list_club.id);
                             });                           
 
                             ds.rows.append(row);

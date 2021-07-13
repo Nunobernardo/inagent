@@ -9,8 +9,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta content="" name="description" />
-    <meta content="" name="author" />
     <link href="assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
@@ -118,7 +116,7 @@
           <li>
             <a href="javascript:;"><span class="title">Clubes</span>
             <span class=" arrow"></span></a>
-            <span class="bg-secondary icon-thumbnail"><i class="fa fa-file-text"></i></span>
+            <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
             <ul class="sub-menu">
               <li class="">
                 <a href="clubs_list.php">Lista de contratos</a>
@@ -127,7 +125,7 @@
               <li class="">
                 <a href="javascript:;"><span class="title">Adiconar contrato</span>
                 <span class=" arrow"></span></a>
-                <span class=" bg-secondary icon-thumbnail"><i class="fa fa-file-text"></i></span>
+                <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>
                 <ul class="sub-menu">
                   <li class="">
                     <a href="clubs_new_player.php">Jogadores</a>
@@ -135,7 +133,7 @@
                   </li>
                   <li class="">
                     <a href="clubs_new_coach.php">Treinadores</a>
-                    <span class="bg-secondary icon-thumbnail"><i class="fa fa-user"></i></span>
+                    <span class=" icon-thumbnail"><i class="fa fa-user"></i></span>
                   </li>
                 </ul>
               </li>
@@ -147,7 +145,7 @@
           <li>
             <a href="javascript:;"><span class="title">Mandatos</span>
             <span class=" arrow"></span></a>
-            <span class="icon-thumbnail"><i class="pg-note"></i></span>
+            <span class="bg-secondary icon-thumbnail"><i class="pg-note"></i></span>
             <ul class="sub-menu">
               <li class="">
                 <a href="mandates_list.php">Lista de mandatos</a>
@@ -229,11 +227,11 @@
       </div>
       <!-- END HEADER -->
 
-
       <!-- START PAGE CONTENT WRAPPER -->
       <div class="page-content-wrapper ">
         <!-- START PAGE CONTENT -->
         <div class="content ">
+
         <!-- Modal Profile -->
         <div class="modal fade slide-right" id="modalSlideLeft_profile" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
@@ -263,10 +261,10 @@
                         <input type="text" class="form-control" required>
                       </div>
                       <br>
-                      <button type="button" onclick="location.href='clubs_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
+                      <button type="button" onclick="location.href='mandates_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
                         <span>Guardar</span>
                       </button>
-                      <button type="button" onclick="location.href='clubs_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
+                      <button type="button" onclick="location.href='mandates_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
                         <span>Cancelar</span>
                       </button>
                     </div>
@@ -279,7 +277,7 @@
         <!-- END Modal -->
 
         <!-- Modal New Player -->
-        <div class="modal fade slide-right" id="modalSlideLeftNew" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade slide-right" id="modalSlideLeft_playerNewMandate" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
             <div class="modal-content-wrapper">
               <div class="modal-content">
@@ -292,20 +290,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameNewClub" required>
+                        <input type="text" class="form-control txtPlayerNameNewMandate" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameNewClub">
+                        <input type="text" class="form-control txtPlayerFirstNameNewMandate">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameNewClub">
+                        <input type="text" class="form-control txtPlayerLastNameNewMandate">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthNewClub" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtPlayerBirthNewMandate" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -313,12 +311,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityNewClub" required>
+                        <input type="text" class="form-control txtPlayerNationalityNewMandate" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightNewClub" required>
+                          <input type="text" class="form-control usd txtPlayerHeightNewMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -328,13 +326,14 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightNewClub" required>
+                          <input type="text" class="form-control usd txtPlayerWeightNewMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
                                 </span>
                         </div>
                       </div>
+
                       <div class="card card-default">
                         <div class="card-header ">
                           <div class="card-title">Formação preferida</div>
@@ -346,7 +345,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlPlayerFormationNewMandate" data-init-plugin="cs-select">
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -358,14 +357,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubNewClub" data-init-plugin="select2"></select>
+                            <select class="full-width ddlPlayerClubNewMandate" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueNewClub" required>
+                          <input type="text" class="form-control usd txtPlayerValueNewMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -374,53 +373,39 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportNewClub" required>
+                        <input type="text" class="form-control txtPlayerPassportNewMandate" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValNewClub" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtPlayerPassportValNewMandate" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFilesNew col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
+                      <div class="card card-default">
+                        <div class="card-header ">
+                          <div class="card-title">
+                            upload de documentos
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
+                          <div class="tools">
+                            <a class="collapse" href="javascript:;"></a>
+                            <a class="config" data-toggle="modal" href="#grid-config"></a>
+                            <a class="reload" href="javascript:;"></a>
+                            <a class="remove" href="javascript:;"></a>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
+                        <div class="card-body no-scroll no-padding">
+                          <form action="/file-upload" class="dropzone no-margin">
+                            <div class="fallback">
+                              <input name="file" type="file" multiple/>
                             </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
+                          </form>
                         </div>
                       </div>
                       <br>
-                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerNewClub">
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerNewMandate">
                         <span>Guardar</span>
                       </button>
                       <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
@@ -436,7 +421,7 @@
         <!-- END Modal -->
 
         <!-- Modal Edit Player -->
-        <div class="modal fade slide-right" id="modalSlideLeftEdit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade slide-right" id="modalSlideLeft_playerEditMandate" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
             <div class="modal-content-wrapper">
               <div class="modal-content">
@@ -445,24 +430,24 @@
                 <div class="container-xs-height full-height">
                   <div class="row-xs-height">
                     <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">EDITAR TREINADOR</h5>
+                      <h5 style="text-align:center">EDITAR JOGADOR</h5>
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameEditClub" required>
+                        <input type="text" class="form-control txtPlayerNameEditMandate" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameEditClub">
+                        <input type="text" class="form-control txtPlayerFirstNameEditMandate">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameEditClub">
+                        <input type="text" class="form-control txtPlayerLastNameEditMandate">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthEditClub" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtPlayerBirthEditMandate" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -470,12 +455,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityEditClub" required>
+                        <input type="text" class="form-control txtPlayerNationalityEditMandate" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightEditClub" required>
+                          <input type="text" class="form-control usd txtPlayerHeightEditMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -485,7 +470,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightEditClub" required>
+                          <input type="text" class="form-control usd txtPlayerWeightEditMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -503,7 +488,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide ddlPlayerFormationEditMandate" data-init-plugin="cs-select">
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -515,14 +500,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubEditClub" data-init-plugin="select2"></select>
+                            <select class="full-width ddlPlayerClubEditMandate" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueEditClub" required>
+                          <input type="text" class="form-control usd txtPlayerValueEditMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -531,53 +516,251 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportEditClub" required>
+                        <input type="text" class="form-control txtPlayerPassportEditMandate" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValEditClub" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtPlayerPassportValEditMandate" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
+                      <div class="card card-default">
+                        <div class="card-header ">
+                          <div class="card-title">
+                            upload de documentos
                           </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
+                          <div class="tools">
+                            <a class="collapse" href="javascript:;"></a>
+                            <a class="config" data-toggle="modal" href="#grid-config"></a>
+                            <a class="reload" href="javascript:;"></a>
+                            <a class="remove" href="javascript:;"></a>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
+                        <div class="card-body no-scroll no-padding">
+                          <form action="/file-upload" class="dropzone no-margin">
+                            <div class="fallback">
+                              <input name="file" type="file" multiple/>
                             </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
+                          </form>
                         </div>
                       </div>
                       <br>
-                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerEditClub">
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerEditMandate">
+                        <span>Guardar</span>
+                      </button>
+                      <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
+                        <span>Cancelar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END Modal -->
+
+        <!-- Modal New Agent -->
+        <div class="modal fade slide-right" id="modalSlideLeft_agentNew" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content-wrapper">
+              <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+                </button>
+                <div class="container-xs-height full-height">
+                  <div class="row-xs-height">
+                    <div class="modal-body col-xs-height col-middle">
+                      <h5 style="text-align:center">ADICIONAR AGENTE</h5>
+                      <br>
+                      <div class="form-group form-group-default required">
+                        <label>Nome completo</label>
+                        <input type="text" class="form-control txtAgentNewMandate">
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Primeiro nome</label>
+                        <input type="text" class="form-control txtAgentFirstNameNewMandate">
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>último nome</label>
+                        <input type="text" class="form-control txtAgentLastNameNewMandate">
+                      </div>
+                      <div class="form-group form-group-default input-group ">
+                        <div class="form-input-group disabled">
+                          <label>Data de nascimento</label>
+                          <input type="email" class="form-control txtAgentBirthNewMandate" placeholder="Selecione a data" id="datepicker-component2">
+                        </div>
+                        <div class="input-group-append ">
+                          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Nacionalidade</label>
+                        <input type="text" class="form-control txtAgentnationalityNewMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>CC/Passaporte</label>
+                        <input type="text" class="form-control txtAgentPassportNewMandate" required>
+                      </div>
+                      <div class="form-group form-group-default input-group">
+                        <div class="form-input-group">
+                          <label>Validade</label>
+                          <input type="email" class="form-control txtAgentPassporValNewMandate" placeholder="Selecione a data" id="datepicker-component2">
+                        </div>
+                        <div class="input-group-append ">
+                          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Nome da Empresa</label>
+                        <input type="text" class="form-control txtAgentCompanyNewMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Clubes</label>
+                        <input type="text" class="form-control txtAgentClubNewMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Países</label>
+                        <input type="text" class="form-control txtAgentCountryNewMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Contactos</label>
+                        <input type="text" class="form-control txtAgentContactNewMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Observações</label>
+                        <input type="text" class="form-control txtAgentObsNewMandate" required>
+                      </div>
+                      <div class="card card-default">
+                        <div class="card-header ">
+                          <div class="card-title">
+                            upload de documentos
+                          </div>
+                          <div class="tools">
+                            <a class="collapse" href="javascript:;"></a>
+                            <a class="config" data-toggle="modal" href="#grid-config"></a>
+                            <a class="reload" href="javascript:;"></a>
+                            <a class="remove" href="javascript:;"></a>
+                          </div>
+                        </div>
+                        <div class="card-body no-scroll no-padding">
+                          <form action="/file-upload" class="dropzone no-margin">
+                            <div class="fallback">
+                              <input name="file" type="file" multiple/>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <br>
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveAgentNewMandate">
+                        <span>Guardar</span>
+                      </button>
+                      <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
+                        <span>Cancelar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END Modal -->
+
+        <!-- Modal New Agent -->
+        <div class="modal fade slide-right" id="modalSlideLeft_agentEdit" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content-wrapper">
+              <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+                </button>
+                <div class="container-xs-height full-height">
+                  <div class="row-xs-height">
+                    <div class="modal-body col-xs-height col-middle">
+                      <h5 style="text-align:center">EDITAR AGENTE</h5>
+                      <br>
+                      <div class="form-group form-group-default required">
+                        <label>Nome completo</label>
+                        <input type="text" class="form-control txtAgentEditMandate">
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Primeiro nome</label>
+                        <input type="text" class="form-control txtAgentFirstNameEditMandate">
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>último nome</label>
+                        <input type="text" class="form-control txtAgentLastNameEditMandate">
+                      </div>
+                      <div class="form-group form-group-default input-group ">
+                        <div class="form-input-group disabled">
+                          <label>Data de nascimento</label>
+                          <input type="email" class="form-control txtAgentBirthEditMandate" placeholder="Selecione a data" id="datepicker-component2">
+                        </div>
+                        <div class="input-group-append ">
+                          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Nacionalidade</label>
+                        <input type="text" class="form-control txtAgentNationalityEditMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>CC/Passaporte</label>
+                        <input type="text" class="form-control txtAgentPassportEditMandate" required>
+                      </div>
+                      <div class="form-group form-group-default input-group">
+                        <div class="form-input-group">
+                          <label>Validade</label>
+                          <input type="email" class="form-control txtAgentPassportValEditMandate" placeholder="Selecione a data" id="datepicker-component2">
+                        </div>
+                        <div class="input-group-append ">
+                          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Nome da Empresa</label>
+                        <input type="text" class="form-control txtAgentCompanyEditMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Clubes</label>
+                        <input type="text" class="form-control txtAgentClubEditMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Países</label>
+                        <input type="text" class="form-control txtAgentCountryEditMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Contactos</label>
+                        <input type="text" class="form-control txtAgentContactEditMandate" required>
+                      </div>
+                      <div class="form-group form-group-default required">
+                        <label>Observações</label>
+                        <input type="text" class="form-control txtAgentObsEditMandate" required>
+                      </div>
+                      <div class="card card-default">
+                        <div class="card-header ">
+                          <div class="card-title">
+                            upload de documentos
+                          </div>
+                          <div class="tools">
+                            <a class="collapse" href="javascript:;"></a>
+                            <a class="config" data-toggle="modal" href="#grid-config"></a>
+                            <a class="reload" href="javascript:;"></a>
+                            <a class="remove" href="javascript:;"></a>
+                          </div>
+                        </div>
+                        <div class="card-body no-scroll no-padding">
+                          <form action="/file-upload" class="dropzone no-margin">
+                            <div class="fallback">
+                              <input name="file" type="file" multiple/>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <br>
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveAgentEditMandate">
                         <span>Guardar</span>
                       </button>
                       <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
@@ -598,15 +781,15 @@
               <div class="row h-100">
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="card-title">
-                    <h5 class="titleClub">ADICIONAR CONTRATO DE CLUBES</h5>
+                  <h5 class="titleMandate"> ADICIONAR MANDATO</h5>
                   </div>
                 </div>
                 <div class="col-lg-6 col-xs-12 my-auto">
                   <div class="float-right">
-                      <button type="button" onclick="location.href='clubs_list.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
+                      <button type="button" onclick="location.href='mandates_list.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
                         <span>Cancelar</span>
                       </button>
-                      <button type="button" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-save btnSaveCclubCoach">
+                      <button type="button" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-save btnSaveMandates">
                         <span>Guardar</span>
                       </button>
                   </div>
@@ -614,25 +797,15 @@
               </div>
               <div class="clearfix"></div>
             </div>
+            
             <div class="row">
               <div class="col-lg-12">
                 <!-- START card -->
                 <div class="card card-transparent">
                   <div class="card-body">
-                    <form class="" role="form">
-                      <div class="col-lg-12 col-xs-12 my-auto">
-                        <div class="float-left">
-                          <div class="btn-group">
-                            <button type="button" class="btn3 btn-primary addNewPlayerClub" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
-                            </button>
-                            <button type="button" class="btn3 btn-primary editPlayerClub" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card card-default">
-                        <div class="card-header ">
-                          <div class="card-title">Treinador</div>
+                  <div class="card card-default">
+                      <div class="card-header ">
+                        <div class="card-title">Treinador</div>
                           <div class="tools">
                             <a href="javascript:;" class="collapse"></a>
                             <a href="#grid-config" data-toggle="modal" class="config"></a>
@@ -641,78 +814,54 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="full-width ddlCclubCoach" data-init-plugin="select2">
+                          <select class="full-width ddlMandateCoach" data-init-plugin="select2">
                           </select> 
                         </div>
                       </div>
-                      
-                      <div class="form-group form-group-default required ">
-                        <label>Clube</label>
-                        <form role="form">
-                          <div class="form-group ">
-                            <select class="full-width ddlCclubClub" data-init-plugin="select2"></select>
+                      <div class="card card-default">
+                        <div class="card-header ">
+                          <div class="card-title">Agente</div>
+                          <div class="tools">
+                            <a href="javascript:;" class="collapse"></a>
+                            <a href="#grid-config" data-toggle="modal" class="config"></a>
+                            <a href="javascript:;" class="reload"></a>
+                            <a href="javascript:;" class="remove"></a>
                           </div>
-                        </form>
+                        </div>
+                        <div class="card-body">
+                          <select class="full-width ddlMandateAgent" data-init-plugin="select2">
+                          </select> 
+                        </div>
+                      </div>
+                      <div class="form-group form-group-default disabled">
+                        <label>Empresa do agente</label>
+                        <input type="text" class="form-control txtMandatesCompany">
+                      </div>
+                      <div class="form-group form-group-default disabled">
+                        <label>Clubes do mandato</label>
+                        <input type="text" class="form-control txtMandatesClub">
+                      </div>
+                      <div class="form-group form-group-default disabled">
+                        <label>Países do mandato</label>
+                        <input type="text" class="form-control txtMandatesCountry">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Data inicio e fim</label>
                         <div class="input-daterange input-group" id="datepicker-range">
-                          <input type="text" class="input-sm form-control txtCclubDateStart" name="start" />
+                          <input type="text" class="input-sm form-control txtMandatesDateStart" name="start" />
                           <div class="input-group-addon">até</div>
-                          <input type="text" class="input-sm form-control txtCclubDateEnd" name="end" />
+                          <input type="text" class="input-sm form-control txtMandatesDateEnd" name="end" />
                         </div>
                       </div>
-
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <div class="form-group form-group-default input-group">
-                            <div class="form-input-group">
-                              <label>Valores</label>
-                              <input type="text" class="form-control usd txtCclubValue" required>
-                            </div>
-                            <div class="input-group-append ">
-                              <span class="input-group-text">EUR
-                                    </span>
-                            </div>
-                          </div>
-                          <div class="form-group form-group-default input-group">
-                            <div class="form-input-group">
-                              <label>Cláusula de rescisão</label>
-                              <input type="text" class="form-control usd txtCclubClause" required>
-                            </div>
-                            <div class="input-group-append ">
-                              <span class="input-group-text">EUR
-                                    </span>
-                            </div>
-                          </div>
-                          <div class="form-group form-group-default input-group">
-                            <div class="form-input-group">
-                              <label>Bonus de sucesso</label>
-                              <input type="text" class="form-control usd txtCclubBonus" required>
-                            </div>
-                            <div class="input-group-append ">
-                              <span class="input-group-text">EUR
-                                    </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
                       <div class="form-group form-group-default">
-                        <label>Tribunal em caso de litígio</label>
-                        <input type="text" class="form-control txtCclubCourt">
+                        <label>Observações</label>
+                        <input type="text" class="form-control txtMandatesObs">
                       </div>
-                      <div class="form-group form-group-default">
-                        <label>Opções e data</label>
-                        <input type="text" class="form-control txtCclubObs">
-                      </div>
-                    </form>
                   </div>
                 </div>
                 <!-- END card -->
               </div>
-
-              </div>
+            </div>
               <div class="row">
                 <div class=" ctrFiles col-md-12"  style="padding-left: 25px;padding-right: 25px;">
                   <div class="card card-default">
@@ -755,7 +904,6 @@
         <!-- END PAGE CONTENT -->
       </div>
       <!-- END PAGE CONTENT WRAPPER -->
-
     </div>
     <!-- END PAGE CONTAINER -->
     
@@ -796,7 +944,6 @@
      <script src="assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
      <script src="js/dropzone/file-dropzone.js"></script>
      <!-- END VENDOR JS -->
-    <!-- END VENDOR JS -->
     <!-- BEGIN CORE TEMPLATE JS -->
     <script src="pages/js/pages.js"></script>
     <!-- END CORE TEMPLATE JS -->
@@ -804,6 +951,7 @@
     <script src="assets/js/scripts.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS -->
     <!-- BEGIN PAGE LEVEL JS -->
+    <script src="assets/js/demo.js" type="text/javascript"></script>
     <script src="assets/js/form_elements.js" type="text/javascript"></script>
     <script src="assets/js/scripts.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS -->
@@ -815,7 +963,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        club({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, club: <?php echo json_encode(new club(null)); ?>, player: <?php echo json_encode(new player(null)); ?>});
+        mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, agent: <?php echo json_encode(new agent(null)); ?>});
       });
     </script>
   </body>
