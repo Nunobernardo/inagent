@@ -217,6 +217,14 @@ Date.prototype.toYMD = function () {
     return year + "-" + month + "-" + day;
 };
 
+Array.prototype.containsWithField = function (field, value) {
+    var newarray = new Array();
+    for (var j = 0; j < this.length; j++) {
+        if (this[j][field] == value) { return true; }
+    }
+    return false;
+};
+
 jQuery.fn.TransitionPrefixedEvent = function (type, callback, data) {
     var pfx = ['webkit', 'ms', 'o', ''],
         element = this;
