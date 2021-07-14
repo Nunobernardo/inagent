@@ -7894,7 +7894,6 @@ select.full-width + .select2-container {
 .select2-container .select2-selection .select2-selection__rendered {
   padding: 0;
   padding-left: 3px;
-  padding-top: 1px;
 }
 .select2-container .select2-selection .select2-selection__rendered .select2-selection__clear {
   font-weight: normal;

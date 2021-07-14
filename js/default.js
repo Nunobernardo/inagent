@@ -2376,6 +2376,7 @@ function representation(args) {
 
                             //EDITAR DADOS DO JOGADOR
                             ds.editplayer.on('click', function(){
+
                                 ds.representationplayerclubedit.val(representation.club);
                                 ds.representationplayerclubedit.trigger('change');
                                 ds.representationplayernameedit.val(representation.name);
@@ -2386,6 +2387,8 @@ function representation(args) {
                                 ds.representationplayerheightedit.val(representation.height);
                                 ds.representationplayerweightedit.val(representation.weight);
                                 ds.representationplayervalueedit.val(representation.value);
+                                ds.representationplayerfootedit.find('span.cs-placeholder').html();
+                                ds.representationplayerpositionedit.find('span.cs-placeholder').html();
                                 ds.representationplayerpassportedit.val(representation.passport);
                                 ds.representationplayerpassportvaledit.val(representation.passportval);
 
@@ -2433,23 +2436,33 @@ function representation(args) {
                                 } else {
                                     ds.ctrfilesedit.remove();
                                 };
-        
-                                ds.representationplayerfootedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerfootedit.val())).trigger('click');
-                                ds.representationplayerfootedit.prev().prev().trigger('click');
-        
-                                $.each(ds.representationplayerpositionedit.find('option'), function (index, element) {
-                                    if ($(element).html() == representation.position) {
-                                        $(element).attr('selected', 'selected');
-        
-                                        ds.representationplayerpositionedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerpositionedit.val())).addClass('cs-selected');
-        
-                                        return false;
-                                    }
-                                });
-        
-                                ds.representationplayerpositionedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerpositionedit.val())).trigger('click');
-                                ds.representationplayerpositionedit.prev().prev().trigger('click');
                             });
+
+                            $.each(ds.representationplayerfootedit.find('option'), function (index, element) {
+                                if ($(element).html() == representation.foot) {
+                                    $(element).attr('selected', 'selected');
+    
+                                    ds.representationplayerfootedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerfootedit.val())).addClass('cs-selected');
+    
+                                    return false;
+                                }
+                            });
+
+                            ds.representationplayerfootedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerfootedit.val())).trigger('click');
+                            ds.representationplayerfootedit.prev().prev().trigger('click');
+    
+                            $.each(ds.representationplayerpositionedit.find('option'), function (index, element) {
+                                if ($(element).html() == representation.position) {
+                                    $(element).attr('selected', 'selected');
+    
+                                    ds.representationplayerpositionedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerpositionedit.val())).addClass('cs-selected');
+    
+                                    return false;
+                                }
+                            });
+    
+                            ds.representationplayerpositionedit.prev().find('li[data-value="{0}"]'.format(ds.representationplayerpositionedit.val())).trigger('click');
+                            ds.representationplayerpositionedit.prev().prev().trigger('click');
 
                             //BOTAO DE SALVAR EDIÇÃO DE JOGADOR
                             ds.saveeditplayer.on('click', function(){
@@ -2465,8 +2478,8 @@ function representation(args) {
                                     nationality = ds.representationplayernationalityedit.val();
                                     height = ds.representationplayerheightedit.val();
                                     weight = ds.representationplayerweightedit.val();
-                                    foot = ds.representationplayerfootedit.find('span.cs-placeholder').html();
-                                    position = ds.representationplayerpositionedit.find('span.cs-placeholder').html();
+                                    foot = ds.representationplayerfootedit.prev().find('.cs-selected span').html();
+                                    position = ds.representationplayerpositionedit.prev().find('.cs-selected span').html();
                                     value = ds.representationplayervalueedit.val();
                                     passport = ds.representationplayerpassportedit.val();
                                     passportval = ds.representationplayerpassportvaledit.val();
@@ -3278,7 +3291,7 @@ function mandates(args) {
             mandateagentpassportval: $('.txtAgentMandatesPassportVal'),
 
             //NOVO JOGADOR
-            mandateplayerclubnew: $('div.ddlPlayerClubNewMandate'),
+            mandateplayerclubnew: $('div.ddlPlayerMandateNew'),
             mandateplayernamenew: $('.txtPlayerNameNewMandate'),
             mandateplayerfirstnamenew: $('.txtPlayerFirstNameNewMandate'),
             mandateplayerlastnamenew: $('.txtPlayerLastNameNewMandate'),
@@ -3286,8 +3299,8 @@ function mandates(args) {
             mandateplayernationalitynew: $('.txtPlayerNationalityNewMandate'),
             mandateplayerheightnew: $('.txtPlayerHeightNewMandate'),
             mandateplayerweightnew: $('.txtPlayerWeightNewMandate'),
-            mandateplayerpositionnew: $('div.ddlPlayerFootNewMandate'),
-            mandateplayerfootnew: $('div.ddlPlayerPositionNewMandate'),
+            mandateplayerpositionnew: $('select.ddlPlayerFootNewMandate'),
+            mandateplayerfootnew: $('select.ddlPlayerPositionNewMandate'),
             mandateplayervaluenew: $('.txtPlayerValueNewMandate'),
             mandateplayerpassportnew: $('.txtPlayerPassportNewMandate'),
             mandateplayerpassportvalnew: $('.txtPlayerPassportValNewMandate'),
@@ -3300,9 +3313,9 @@ function mandates(args) {
             mandateplayernationalityedit: $('.txtPlayerNationalityEditMandate'),
             mandateplayerheightedit: $('.txtPlayerHeightEditMandate'),
             mandateplayerweightedit: $('.txtPlayerWeightEditMandate'),
-            mandateplayerpositionedit: $('div.ddlPlayerPositionEditMandate'),
-            mandateplayerfootedit: $('div.ddlPlayerFootEditMandate'),
-            mandateplayerclubedit: $('div.ddlPlayerClubEditMandate'),
+            mandateplayerpositionedit: $('select.ddlPlayerPositionEditMandate'),
+            mandateplayerfootedit: $('select.ddlPlayerFootEditMandate'),
+            mandateplayerclubedit: $('div.ddlPlayerMandateEdit'),
             mandateplayervalueedit: $('.txtPlayerValueEditMandate'),
             mandateplayerpassportedit: $('.txtPlayerPassportEditMandate'),
             mandateplayerpassportvaledit: $('.txtPlayerPassportValEditMandate'),
@@ -3349,12 +3362,21 @@ function mandates(args) {
             ctruploader: $('.ctrUploader'), //anexos
 
             //BOTÕES
+            ctragentslist: $('.ctrAgentsList'),
+            btnaddagent: $('.btnAddAgent'),
+            btndeleteagent: $('.btnDeleteAgent'),
+
             savemandates: $('.btnSaveMandates'),
 
             saveeditplayermandate: $('.btnSavePlayerEditMandate'),
             savenewplayermandate: $('.btnSavePlayerNewMandate'),
-            addnewplayermandate: $('.addNewPlayerMandate'),
-            editplayermandate: $('.editPlayerMandate'),
+            addnewplayermandate: $('.addNewPlayer'),
+            editplayermandate: $('.editPlayer'),
+            
+            saveeditcoachmandate: $('.btnSaveCoachEdit'),
+            savenewcoachmandate: $('.btnSaveCoachNew'),
+            addnewcoachmandate: $('.addNewCoach'),
+            editcoachmandate: $('.editCoach'),
 
             saveeditagentmandate: $('.btnSaveAgentEditMandate'),
             savenewagentmandate: $('.btnSaveAgentNewMandate'),
@@ -3384,6 +3406,7 @@ function mandates(args) {
                     }, function (data) {
                         //[ SET list_mandates LIST ]
                         me.datasource.mandates = data.mandate;
+                        me.datasource.attachments = data.attachments; //anexos
                         me.datasource.agents_clubs = ifUndefinedOrNull(data.agents_clubs, new Array());
                         me.datasource.all_clubs = ifUndefinedOrNull(data.all_clubs, new Array());
 
@@ -3548,6 +3571,43 @@ function mandates(args) {
                                 $.each(me.datasource.agents, function (index, agents) {
                                     ds.mandateagent.append('<option value="{0}">{1} {2}</option>'.format(agents.id, agents.firstname, agents.lastname));
                                     
+                                });
+
+                                if (ds.ctragentslist.find('.form-group').length == 1) {
+                                    ds.btndeleteagent.hide();
+                                };
+            
+                                ds.btnaddagent.on('click', function(){
+                                    var element = $('<div class="form-group "><select class="full-width ddlAgentClub" style="z-index: auto;" style="z-index: auto;" data-init-plugin="select2"></select></div>');
+            
+                                    element.find('select').append('<option value="0">Selecionar</option>');
+            
+                                    $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
+                                        var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
+                                            countryclubs = clubs.filter(function(c){ return (c.country == country); });
+                
+                                        $.each(countryclubs, function (index, club) {
+                                            group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                                        });
+                
+                                        element.find('select').append(group);
+                                    });
+            
+                                    element.find('select').select2();
+            
+                                    ds.ctragentslist.append(element);
+            
+                                    if (ds.ctragentslist.find('.form-group').length > 1) {
+                                        ds.btndeleteagent.show();
+                                    }
+                                });
+                
+                                ds.btndeleteagent.on('click', function() {
+                                    ds.ctragentslist.find('.form-group').last().remove();
+            
+                                    if (ds.ctragentslist.find('.form-group').length == 1) {
+                                        $(this).hide();
+                                    }
                                 });
 
                                 //anexos
@@ -3837,6 +3897,7 @@ function mandates(args) {
                                     });
 
                                     ds.addnewplayermandate.remove();
+                                    ds.addnewcoachmandate.remove();
                                     ds.addnewagentmandate.remove();
                                 } else {
                                     ds.ctrfiles.remove(); //anexos
@@ -3907,7 +3968,8 @@ function mandates(args) {
 
                                     //ADICIONAR JOGADOR
                                     ds.addnewplayermandate.on('click', function(){
-                                        ds.mandateplayerclubnew.val('');
+                                        ds.mandateplayerclubnew.val();
+                                        ds.mandateplayerclubnew.trigger('change');
                                         ds.mandateplayernamenew.val('');
                                         ds.mandateplayerfirstnamenew.val('');
                                         ds.mandateplayerlastnamenew.val('');
@@ -3928,6 +3990,7 @@ function mandates(args) {
                                         
                                         with(player) {
                                             name = ds.mandateplayernamenew.val();
+                                            club = ds.mandateplayerclubnew.find('option:selected').val();
                                             firstname = ds.mandateplayerfirstnamenew.val();
                                             lastname = ds.mandateplayerlastnamenew.val();
                                             birth = ds.mandateplayerbirthnew.val();
@@ -4038,11 +4101,25 @@ function mandates(args) {
 
                                     ds.editplayermandate.remove();
                                     ds.editagentmandate.remove();
+                                    ds.editcoachmandate.remove();
                                 };
 
                                 //EDITAR DADOS DO JOGADOR
+
+/*                                 $.each(list_clubs.SingleFieldDistinct('country'), function (index, country) {
+                                    var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
+                                        countryclubs = list_clubs.filter(function(c){ return (c.country == country); });
+    
+                                    $.each(countryclubs, function (index, club) {
+                                        group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
+                                    });
+    
+                                    ds.clubplayerclubedit.append(group);
+                                }); */
+
                                 ds.editplayermandate.on('click', function(){
-                                    ds.mandateplayerclubedit.val(mandates.playerclubname);
+                                    ds.mandateplayerclubedit.val(mandates.playerclub);
+                                    ds.mandateplayerclubedit.trigger('change');
                                     ds.mandateplayernameedit.val(mandates.playername);
                                     ds.mandateplayerfirstnameedit.val(mandates.playerfirstname);
                                     ds.mandateplayerlastnameedit.val(mandates.playerlastname);
@@ -4064,6 +4141,7 @@ function mandates(args) {
                                     with(player) {
                                         id = mandates.player;
                                         name = ds.mandateplayernameedit.val();
+                                        club = ds.mandateplayerclubedit.find('option:selected').val();
                                         firstname = ds.mandateplayerfirstnameedit.val();
                                         lastname = ds.mandateplayerlastnameedit.val();
                                         birth = ds.mandateplayerbirthedit.val();

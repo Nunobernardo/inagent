@@ -377,6 +377,7 @@
                         <label>Nome da Empresa</label>
                         <input type="text" class="form-control txtAgentCompany" required>
                       </div>
+
                       <div class="form-group form-group-default required ">
                         <label>Clube</label>
                         <div class="col ctrClubsActions">
@@ -393,6 +394,7 @@
                           </div>
                         </form>
                       </div>
+                      
                       <div class="form-group form-group-default required">
                         <label>Países</label>
                         <input type="text" class="form-control txtAgentCountry" required>

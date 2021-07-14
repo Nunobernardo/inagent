@@ -279,7 +279,7 @@
         </div>
         <!-- END Modal -->
 
-        <!-- Modal New Player -->
+        <!-- Modal New Coach -->
         <div class="modal fade slide-right" id="modalSlideLeftNew" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
             <div class="modal-content-wrapper">
@@ -436,7 +436,7 @@
         </div>
         <!-- END Modal -->
 
-        <!-- Modal Edit Player -->
+        <!-- Modal Edit Coach -->
         <div class="modal fade slide-right" id="modalSlideLeftEdit" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
             <div class="modal-content-wrapper">
@@ -446,7 +446,7 @@
                 <div class="container-xs-height full-height">
                   <div class="row-xs-height">
                     <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">EDITAR JOGADOR </h5>
+                      <h5 style="text-align:center">EDITAR TREINADOR </h5>
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>

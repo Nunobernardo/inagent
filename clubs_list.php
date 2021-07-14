@@ -87,7 +87,7 @@
             </ul>
           </li>
           <div class="small hint-text" style="text-align: center; margin: 2px 0 5px 0;">
-            <h3 class="semi-bold" style = "font-size: 12.5px; ";>Contratos<br></h3>
+            <h3 class="semi-bold" style = "font-size: 12.5px; ">Contratos<br></h3>
           </div>
           <li>
             <a href="javascript:;"><span class="title">Representação</span>
@@ -153,7 +153,7 @@
                 <a href="mandates_list.php">Lista de mandatos</a>
                 <span class="icon-thumbnail"><i class="fa fa-list-ul"></i></span>
               </li>
-              <<li class="">
+              <li class="">
               <a href="javascript:;"><span class="title">Adiconar mandato</span>
                 <span class=" arrow"></span></a>
                 <span class="icon-thumbnail"><i class="fa fa-file-text"></i></span>

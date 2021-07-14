@@ -530,8 +530,25 @@
                     //[ EXECUTE QUERY ]
                     $result = mysqli_query($conn, $query);
 
-                    $feedback['mandates_id'] = $conn->insert_id;
+                    if ($result) {
+                        if (count($attachments) > 0) {
+                            foreach ($attachments as &$value) {
+                                $query = "INSERT INTO mandates_files(id, id_mandates, file_name, file) 
+                                            VALUES (NULL, $value->MandateID, '$value->AttachmentName', '$value->Attachment')";
+                
+                                //[ EXECUTE QUERY ]
+                                $result = mysqli_query($conn, $query);
+                            }
+                        }
 
+                        $feedback['mandates_id'] = $conn->insert_id;
+                        $feedback['success'] = true;
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = 'ERRO_UPDATE_MANDATES';
+                    };
+
+                    $feedback['mandates_id'] = $conn->insert_id;
                     $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
@@ -561,8 +578,25 @@
                     //[ EXECUTE QUERY ]
                     $result = mysqli_query($conn, $query);
 
-                    $feedback['mandates_id'] = $conn->insert_id;
+                    if ($result) {
+                        if (count($attachments) > 0) {
+                            foreach ($attachments as &$value) {
+                                $query = "INSERT INTO mandates_files(id, id_mandates, file_name, file) 
+                                            VALUES (NULL, $value->MandateID, '$value->AttachmentName', '$value->Attachment')";
+                
+                                //[ EXECUTE QUERY ]
+                                $result = mysqli_query($conn, $query);
+                            }
+                        }
 
+                        $feedback['mandates_id'] = $conn->insert_id;
+                        $feedback['success'] = true;
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = 'ERRO_UPDATE_MANDATES';
+                    };
+
+                    $feedback['mandates_id'] = $conn->insert_id;
                     $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
@@ -600,7 +634,7 @@
                     if ($result) {
                         if (count($attachments) > 0) {
                             foreach ($attachments as &$value) {
-                                $query = "INSERT INTO mandates_files(id, id__mandates, file_name, file) 
+                                $query = "INSERT INTO mandates_files(id, id_mandates, file_name, file) 
                                             VALUES (NULL, $value->MandateID, '$value->AttachmentName', '$value->Attachment')";
                 
                                 //[ EXECUTE QUERY ]
@@ -647,7 +681,7 @@
     
                     //[ EXECUTE QUERY ]
                     $result = mysqli_query($conn, $query);
-
+                    
                     //[ CHECK RESULTS ]
                     if ($result->num_rows > 0) {   
                         while($row = $result->fetch_assoc()) {
@@ -1379,26 +1413,6 @@
                     while($row = $result->fetch_assoc()) {
                         array_push($attachments, $row);
                     };
-                };
-
-                //[ CHECK RESULTS ]
-                if ($result) {
-                    if (count($attachments) > 0) {
-                        foreach ($attachments as &$value) {
-                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
-                            $query = "INSERT INTO mandates_files(id, id_mandates, file_name, file) 
-                                      VALUES (NULL, $conn->insert_id, '$value->AttachmentName', '$value->Attachment')";
-    
-                            //[ EXECUTE QUERY ]
-                            $result = mysqli_query($conn, $query);
-                        }
-                    }
-
-                    $feedback['mandates_id'] = $conn->insert_id;
-                    $feedback['success'] = true;
-                } else {
-                    $feedback['success'] = false;
-                    $feedback['error'] = 'ERRO_INSERT_PLAYER';
                 };
 
                 $feedback['success'] = true;

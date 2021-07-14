@@ -380,22 +380,13 @@
                         </div>
                       </div>
                       <div class="form-group form-group-default required ">
-                      <label>Clube</label>
-                      <form role="form">
-                        <div class="form-group ">
-                          <select class="full-width ddlPlayerClubNewMandate" data-init-plugin="select2">
-                            <optgroup label="Portugal">
-                              <option value="AK">F.C.Porto</option>
-                              <option value="HI">S.L.Benfica</option>
-                            </optgroup>
-                            <optgroup label="Espanha">
-                              <option value="CA">Real Madrid</option>
-                              <option value="NV">Barcelona F.C.</option>
-                            </optgroup>
-                          </select>
-                        </div>
-                      </form>
-                    </div>
+                        <label>Clube</label>
+                        <form role="form">
+                          <div class="form-group ">
+                            <select class="full-width ddlPlayerMandateNew" data-init-plugin="select2"></select>
+                          </div>
+                        </form>
+                      </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
@@ -559,22 +550,13 @@
                         </div>
                       </div>
                       <div class="form-group form-group-default required ">
-                      <label>Clube</label>
-                      <form role="form">
-                        <div class="form-group ">
-                          <select class="full-width ddlPlayerClubEditMandate" data-init-plugin="select2">
-                            <optgroup label="Portugal">
-                              <option value="AK">F.C.Porto</option>
-                              <option value="HI">S.L.Benfica</option>
-                            </optgroup>
-                            <optgroup label="Espanha">
-                              <option value="CA">Real Madrid</option>
-                              <option value="NV">Barcelona F.C.</option>
-                            </optgroup>
-                          </select>
-                        </div>
-                      </form>
-                    </div>
+                        <label>Clube</label>
+                        <form role="form">
+                          <div class="form-group ">
+                            <select class="full-width ddlPlayerMandateEdit" data-init-plugin="select2"></select>
+                          </div>
+                        </form>
+                      </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
@@ -810,6 +792,42 @@
                         <label>Observações</label>
                         <input type="text" class="form-control txtAgentObsEditMandate" required>
                       </div>
+
+                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
+                        <div class="card card-default">
+                          <div class="card-header ">
+                            <div class="card-title">
+                              Documentos
+                            </div>
+                          </div>
+                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
+                            <div class="dropzone no-margin">
+                                <div class="files"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
+                        <div class="card card-default">
+                          <div class="card-header ">
+                            <div class="card-title">
+                              upload de documentos
+                            </div>
+                            <div class="tools">
+                              <a class="collapse" href="javascript:;"></a>
+                              <a class="config" data-toggle="modal" href="#grid-config"></a>
+                              <a class="reload" href="javascript:;"></a>
+                              <a class="remove" href="javascript:;"></a>
+                            </div>
+                          </div>
+                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
+                            <div id="box" class="dropzone no-margin">
+                                <div class="files dz-default dz-message"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
                       <div class="card card-default">
                         <div class="card-header ">
                           <div class="card-title">
@@ -874,65 +892,91 @@
                 <!-- START card -->
                 <div class="card card-transparent">
                   <div class="card-body">
-                  <div class="card card-default">
-                      <div class="card-header ">
-                        <div class="card-title">Jogador</div>
-                          <div class="tools">
-                            <a href="javascript:;" class="collapse"></a>
-                            <a href="#grid-config" data-toggle="modal" class="config"></a>
-                            <a href="javascript:;" class="reload"></a>
-                            <a href="javascript:;" class="remove"></a>
+                    <form class="" role="form">
+
+                      <div class="col-lg-12 col-xs-12 my-auto">
+                        <div class="float-left">
+                          <div class="btn-group">
+                            <button type="button" class="btn3 btn-primary addNewPlayer" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_playerNewMandate" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn3 btn-primary editPlayer" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_playerEditMandate" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
+                            </button>
                           </div>
                         </div>
-                        <div class="card-body">
-                          <select class="full-width ddlMandatePlayer" data-init-plugin="select2">
-                          </select> 
-                        </div>
-                      </div>
+                      </div> 
+
                       <div class="card card-default">
                         <div class="card-header ">
-                          <div class="card-title">Agente</div>
-                          <div class="tools">
-                            <a href="javascript:;" class="collapse"></a>
-                            <a href="#grid-config" data-toggle="modal" class="config"></a>
-                            <a href="javascript:;" class="reload"></a>
-                            <a href="javascript:;" class="remove"></a>
+                          <div class="card-title">Jogador</div>
+                            <div class="tools">
+                              <a href="javascript:;" class="collapse"></a>
+                              <a href="#grid-config" data-toggle="modal" class="config"></a>
+                              <a href="javascript:;" class="reload"></a>
+                              <a href="javascript:;" class="remove"></a>
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <select class="full-width ddlMandatePlayer" data-init-plugin="select2">
+                            </select> 
                           </div>
                         </div>
-                        <div class="card-body">
-                          <select class="full-width ddlMandateAgent" data-init-plugin="select2">
-                          </select> 
+
+                        <div class="col-lg-12 col-xs-12 my-auto">
+                          <div class="float-left">
+                            <div class="btn-group">
+                              <button type="button" class="btn3 btn-primary addNewAgentMandate" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_agentNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
+                              </button>
+                              <button type="button" class="btn3 btn-primary editAgentMandate" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_agentEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group form-group-default required ">
+                          <label>Agente</label>
+                          <div class="col ctrAgentsActions">
+                            <button type="button" class="btn3 btn-primary float-right btnAddAgent"style="margin-left: 7px; margin-top: 10px;" ><i class="fa fa-plus"></i></button>
+                            <button type="button" class="btn3 btn-primary float-right btnDeleteAgent" style="margin-top: 10px;" ><i class="fa fa-minus"></i></button>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-11 ctrAgentsList"> 
+                              <select class="full-width ddlMandateAgent" data-init-plugin="select2"></select>
+                              <div class="card-body" style="margin-top: -13px;">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group form-group-default disabled">
+                          <label>Empresa do agente</label>
+                          <input type="text" class="form-control txtMandatesCompany">
+                        </div>
+                        <div class="form-group form-group-default disabled">
+                          <label>Clubes do mandato</label>
+                          <input type="text" class="form-control txtMandatesClub">
+                        </div>
+                        <div class="form-group form-group-default disabled">
+                          <label>Países do mandato</label>
+                          <input type="text" class="form-control txtMandatesCountry">
+                        </div>
+                        <div class="form-group form-group-default required">
+                          <label>Data inicio e fim</label>
+                          <div class="input-daterange input-group" id="datepicker-range">
+                            <input type="text" class="input-sm form-control txtMandatesDateStart" name="start" />
+                            <div class="input-group-addon">até</div>
+                            <input type="text" class="input-sm form-control txtMandatesDateEnd" name="end" />
+                          </div>
+                        </div>
+                        <div class="form-group form-group-default">
+                          <label>Observações</label>
+                          <input type="text" class="form-control txtMandatesObs">
                         </div>
                       </div>
-                      <div class="form-group form-group-default disabled">
-                        <label>Empresa do agente</label>
-                        <input type="text" class="form-control txtMandatesCompany">
-                      </div>
-                      <div class="form-group form-group-default disabled">
-                        <label>Clubes do mandato</label>
-                        <input type="text" class="form-control txtMandatesClub">
-                      </div>
-                      <div class="form-group form-group-default disabled">
-                        <label>Países do mandato</label>
-                        <input type="text" class="form-control txtMandatesCountry">
-                      </div>
-                      <div class="form-group form-group-default required">
-                        <label>Data inicio e fim</label>
-                        <div class="input-daterange input-group" id="datepicker-range">
-                          <input type="text" class="input-sm form-control txtMandatesDateStart" name="start" />
-                          <div class="input-group-addon">até</div>
-                          <input type="text" class="input-sm form-control txtMandatesDateEnd" name="end" />
-                        </div>
-                      </div>
-                      <div class="form-group form-group-default">
-                        <label>Observações</label>
-                        <input type="text" class="form-control txtMandatesObs">
-                      </div>
+                    </form>
                   </div>
                 </div>
                 <!-- END card -->
               </div>
-            </div>
               <div class="row">
                 <div class=" ctrFiles col-md-12"  style="padding-left: 25px;padding-right: 25px;">
                   <div class="card card-default">
@@ -966,8 +1010,8 @@
                           <div class="files dz-default dz-message"></div>
                       </div>
                     </div>
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
           <!-- END CONTAINER FLUID -->
