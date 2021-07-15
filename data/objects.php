@@ -168,6 +168,7 @@
         public $weight;
         public $foot;
         public $position;
+        public $formation;
         public $value;
         public $passport;
         public $passportval;
@@ -197,6 +198,7 @@
                 $this->weight = (isset($obj["weight"])) ? $obj["weight"] : null;
                 $this->foot = (isset($obj["foot"])) ? $obj["foot"] : null;
                 $this->position = (isset($obj["position"])) ? $obj["position"] : null;
+                $this->formation = (isset($obj["formation"])) ? $obj["formation"] : null;
                 $this->value = (isset($obj["value"])) ? $obj["value"] : null;
                 $this->passport = (isset($obj["documents"])) ? $obj["documents"] : null;
                 $this->passportval = (isset($obj["documents_val"])) ? $obj["documents_val"] : null;
@@ -216,7 +218,7 @@
             return $this;
         }
 
-        public function set($id, $player, $coach, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $club, $clubname, $value, $passport, $passportval,
+        public function set($id, $player, $coach, $playername, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot,  $formation, $position, $club, $clubname, $value, $passport, $passportval,
         $child, $father, $mother, $datestart, $dateend, $commission, $file, $iscoach) {
 
             $this->id = $id;
@@ -230,6 +232,7 @@
             $this->height = $height;
             $this->weight = $weight;
             $this->foot = $foot;
+            $this->formation = $formation;
             $this->position = $position;
             $this->club = $club;
             $this->clubname = $clubname;

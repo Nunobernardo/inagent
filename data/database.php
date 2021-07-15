@@ -78,7 +78,6 @@
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
-                $feedback['XXXXXX'] = $query ;
                 //[ CHECK RESULTS ]
                 if ($result) {
                     if (count($attachments) > 0) {
@@ -158,6 +157,7 @@
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
+                $feedback['XXXXXX'] = $query ;
 
                 //[ CHECK RESULTS ]
                 if ($result) {
@@ -285,7 +285,42 @@
                     $feedback['error'] = 'ERRO_UPDATE_REPRESENTATION';
                 };
                 break;
+            case 'update_representation_coach':
+                $representation = $object->{'representation'};
+                $attachments = $object->{'attachments'};
+                $repdatestart = date("Y-m-d", strtotime($representation->datestart));
+                $repdateend = date("Y-m-d", strtotime($representation->dateend));
 
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "UPDATE contract_representation SET 
+                            id_coach = '$representation->coach',
+                            date_start = '$repdatestart',
+                            date_end = '$repdateend',
+                            commission = '$representation->commission'
+                            WHERE id_contract_rep = " . $representation->id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+                $feedback['QUERY'] = $query ;
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            $query = "INSERT INTO contract_representation_files(id, id_representation, file_name, file) 
+                                        VALUES (NULL, $value->RepresentationID, '$value->AttachmentName', '$value->Attachment')";
+            
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
+                    $feedback['representation_id'] = $conn->insert_id;
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = 'ERRO_UPDATE_REPRESENTATION';
+                };
+                break;
             case 'insert_agent':
                 $agent = $object->{'agent'};
                 $attachments = $object->{'attachments'};
@@ -502,6 +537,48 @@
                     $feedback['XX'] = $query;
                 };
                 break;
+            case 'update_club_coach':
+                $club = $object->{'club'};
+                $attachments = $object->{'attachments'};
+                $clubdatestart = date("Y-m-d", strtotime($club->datestart));
+                $clubdateend = date("Y-m-d", strtotime($club->dateend));
+
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "UPDATE contract_club SET 
+                            id_coach = '$club->coach',
+                            id_club = '$club->club',
+                            value = '$club->value',
+                            date_start = '$clubdatestart',
+                            date_end = '$clubdateend',
+                            clause = '$club->clause',
+                            court = '$club->court',
+                            bonus = '$club->bonus',
+                            obs = '$club->obs'
+                            WHERE id_contract_club = " . $club->id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                            $query = "INSERT INTO contract_club_files(id, id_contract_club, file_name, file) 
+                                        VALUES (NULL, $value->ClubID, '$value->AttachmentName', '$value->Attachment')";
+            
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
+                    $feedback['club_id'] = $conn->insert_id;
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = 'ERRO_UPDATE_CLUB_COACH';
+                    $feedback['XX'] = $query;
+                };
+                break;
             case 'insert_mandates':
                 $mandates = $object->{'mandates'};
                 $agents = $object->{'agents'};
@@ -709,7 +786,8 @@
                 $playerid = intval(urldecode($object->{'player_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT p.id_player,c.id_club, p.name, p.first_name, p.last_name, p.height, p.weight, p.birth_date, p.nationality, p.foot, p.position, p.value, p.documents, p.documents_val, c.name_club AS club_name
+                $query = "SELECT p.id_player, c.id_club, p.name, p.first_name, p.last_name, p.height, p.weight, p.birth_date, 
+                            p.nationality, p.foot, p.position, p.value, p.documents, p.documents_val, c.name_club AS club_name
                             FROM players p
                             INNER JOIN club c ON p.id_club = c.id_club
                             WHERE
@@ -843,7 +921,7 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT co.id_coach, co.first_name, co.last_name, co.birth_date, co.nationality, co.formation, c.name_club as club_name, co.value 
+                $query = "SELECT co.id_coach, co.first_name, co.last_name, co.birth_date, co.nationality, co.formation, c.name_club as club_name, co.value, c.id_club
                             FROM coach co
                             INNER JOIN club c ON co.id_club = c.id_club
                             LIMIT $offset, $records";
@@ -874,8 +952,8 @@
                 $coachid = intval(urldecode($object->{'coach_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT co.id_coach, co.name, co.first_name, co.last_name, co.birth_date, co.nationality, co.height,
-                             co. weight, co.formation, co.value, co.documents, co.documents_val, c.name_club as club_name, co.id_club
+                $query = "SELECT co.id_coach, c.id_club, co.name, co.first_name, co.last_name, co.birth_date, co.nationality, co.height,
+                             co. weight, co.formation, co.value, co.documents, co.documents_val, c.name_club as club_name
                             FROM coach co
                             INNER JOIN club c ON co.id_club = c.id_club
                             WHERE
@@ -1046,10 +1124,22 @@
                 $representationid = intval(urldecode($object->{'representation_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT cr.id_contract_rep, p.id_player, co.id_coach, co.name, co.first_name, co.last_name, co.birth_date, co.nationality, co.height, co.weight, co.value, co.documents, co.documents_val, 
-                             cr.date_start, cr.date_end, cr.child,  cr.father_name, cr.mother_name, 
-                            cr.commission, p.name, p.first_name, p.last_name, p.birth_date, p.nationality, p.height, p.weight, p.value, p.documents, 
-                            p.documents_val, c.name_club, p.id_club, p.foot, p.position
+                $query = "SELECT cr.id_contract_rep, p.id_player, co.id_coach, co.formation, p.position, p.foot,
+                            cr.date_start, cr.date_end, cr.child,  cr.father_name, cr.mother_name, cr.commission, 
+
+                            IF(p.first_name is null, co.first_name, p.first_name) as first_name,
+                            IF(p.last_name is null, co.last_name, p.last_name) as last_name, 
+                            IF(p.name is null, co.name, p.name) as name, 
+                            IF(p.birth_date is null, co.birth_date, p.birth_date) as birth_date, 
+                            IF(p.nationality is null, co.nationality, p.nationality) as nationality, 
+                            IF(p.height is null, co.height, p.height) as height, 
+                            IF(p.weight is null, co.weight, p.weight) as weight, 
+                            IF(p.value is null, co.value, p.value) as value, 
+                            IF(p.documents is null, co.documents, p.documents) as documents, 
+                            IF(p.documents_val is null, co.documents_val, p.documents_val) as documents_val, 
+                            IF(p.id_club is null, co.id_club, p.id_club) as id_club,
+                            IF(p.last_name is null, 1, 0) as iscoach
+
                             FROM contract_representation cr
                             LEFT JOIN players p ON cr.id_player = p.id_player
                             LEFT JOIN coach co ON cr.id_coach = co.id_coach
@@ -1168,7 +1258,8 @@
                 $feedback['success'] = true;
                 $feedback['clubs'] = $clubs;
                 $feedback['current_page'] = $page;
-                $feedback['detail_page'] = "clubs_new_player.php";
+                $feedback['detail_page'] = "clubs_new.php";
+                $feedback['coach_detail_page'] = "clubs_new_coach.php";
                 $feedback['total'] = $total_records;
                 $feedback['total_pages'] = $total_pages;
                 break;

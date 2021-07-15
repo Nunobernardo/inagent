@@ -292,20 +292,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameNewClub" required>
+                        <input type="text" class="form-control txtCoachNameNewClub" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameNewClub">
+                        <input type="text" class="form-control txtCoachFirstNameNewClub">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameNewClub">
+                        <input type="text" class="form-control txtCoachLastNameNewClub">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthNewClub" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachBirthNewClub" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -313,12 +313,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityNewClub" required>
+                        <input type="text" class="form-control txtCoachNationalityNewClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightNewClub" required>
+                          <input type="text" class="form-control usd txtCoachHeightNewClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -328,7 +328,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightNewClub" required>
+                          <input type="text" class="form-control usd txtCoachWeightNewClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -346,7 +346,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlCoachFormationNewClub" data-init-plugin="cs-select">
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -358,14 +358,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubNewClub" data-init-plugin="select2"></select>
+                            <select class="full-width ddlCoachClubNewClub" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueNewClub" required>
+                          <input type="text" class="form-control usd txtCoachValueNewClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -374,53 +374,19 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportNewClub" required>
+                        <input type="text" class="form-control txtCoachPassportNewClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValNewClub" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachPassportValNewClub" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFilesNew col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                       <br>
-                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerNewClub">
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveCoachNewClub">
                         <span>Guardar</span>
                       </button>
                       <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
@@ -435,7 +401,7 @@
         </div>
         <!-- END Modal -->
 
-        <!-- Modal Edit Player -->
+        <!-- Modal Edit Coach -->
         <div class="modal fade slide-right" id="modalSlideLeftEdit" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
             <div class="modal-content-wrapper">
@@ -449,20 +415,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameEditClub" required>
+                        <input type="text" class="form-control txtCoachNameEditClub" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameEditClub">
+                        <input type="text" class="form-control txtCoachFirstNameEditClub">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameEditClub">
+                        <input type="text" class="form-control txtCoachLastNameEditClub">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthEditClub" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachBirthEditClub" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -470,12 +436,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityEditClub" required>
+                        <input type="text" class="form-control txtCoachNationalityEditClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightEditClub" required>
+                          <input type="text" class="form-control usd txtCoachHeightEditClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -485,7 +451,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightEditClub" required>
+                          <input type="text" class="form-control usd txtCoachWeightEditClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -503,7 +469,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlCoachFormationEditClub" data-init-plugin="cs-select">
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -515,14 +481,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubEditClub" data-init-plugin="select2"></select>
+                            <select class="full-width ddlCoachClubEditClub" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueEditClub" required>
+                          <input type="text" class="form-control usd txtCoachValueEditClub" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -531,53 +497,19 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportEditClub" required>
+                        <input type="text" class="form-control txtCoachPassportEditClub" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValEditClub" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachPassportValEditClub" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                       <br>
-                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerEditClub">
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveCoachEditClub">
                         <span>Guardar</span>
                       </button>
                       <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
@@ -623,9 +555,9 @@
                       <div class="col-lg-12 col-xs-12 my-auto">
                         <div class="float-left">
                           <div class="btn-group">
-                            <button type="button" class="btn3 btn-primary addNewPlayerClub" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
+                            <button type="button" class="btn3 btn-primary addNewCoachClub" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
                             </button>
-                            <button type="button" class="btn3 btn-primary editPlayerClub" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
+                            <button type="button" class="btn3 btn-primary editCoachClub" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
                             </button>
                           </div>
                         </div>
@@ -815,7 +747,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        club({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, club: <?php echo json_encode(new club(null)); ?>, player: <?php echo json_encode(new player(null)); ?>});
+        club({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, club: <?php echo json_encode(new club(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, coach: <?php echo json_encode(new coach(null)); ?>,});
       });
     </script>
   </body>

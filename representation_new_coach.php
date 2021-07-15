@@ -293,20 +293,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameNew" required>
+                        <input type="text" class="form-control txtCoachNameNew" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameNew">
+                        <input type="text" class="form-control txtCoachFirstNameNew">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameNew">
+                        <input type="text" class="form-control txtCoachLastNameNew">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthNew" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachBirthNew" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -314,12 +314,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityNew" required>
+                        <input type="text" class="form-control txtCoachNationalityNew" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightNew" required>
+                          <input type="text" class="form-control usd txtCoachHeightNew" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -329,7 +329,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightNew" required>
+                          <input type="text" class="form-control usd txtCoachWeightNew" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -347,7 +347,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlCoachFormationNew" data-init-plugin="cs-select">
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -359,14 +359,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubNew" data-init-plugin="select2"></select>
+                            <select class="full-width ddlCoachClubNew" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueNew" required>
+                          <input type="text" class="form-control usd txtCoachValueNew" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -375,53 +375,19 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportNew" required>
+                        <input type="text" class="form-control txtCoachPassportNew" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValNew" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachPassportValNew" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFilesNew col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                       <br>
-                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerNew">
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveCoachNew">
                         <span>Guardar</span>
                       </button>
                       <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
@@ -450,20 +416,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameEdit" required>
+                        <input type="text" class="form-control txtCoachNameEdit" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameEdit">
+                        <input type="text" class="form-control txtCoachFirstNameEdit">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameEdit">
+                        <input type="text" class="form-control txtCoachLastNameEdit">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthEdit" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachBirthEdit" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -471,12 +437,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityEdit" required>
+                        <input type="text" class="form-control txtCoachNationalityEdit" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightEdit" required>
+                          <input type="text" class="form-control usd txtCoachHeightEdit" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -486,7 +452,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightEdit" required>
+                          <input type="text" class="form-control usd txtCoachWeightEdit" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -504,7 +470,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlCoachFormationEdit" data-init-plugin="cs-select">
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -516,14 +482,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubEdit" data-init-plugin="select2"></select>
+                            <select class="full-width ddlCoachClubEdit" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueEdit" required>
+                          <input type="text" class="form-control usd txtCoachValueEdit" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -532,55 +498,19 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportEdit" required>
+                        <input type="text" class="form-control txtCoachPassportEdit" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValEdit" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachPassportValEdit" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-
-                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
                       <br>
-                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerEdit">
+                      <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveCoachEdit">
                         <span>Guardar</span>
                       </button>
                       <button type="button" data-dismiss="modal" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
@@ -626,9 +556,9 @@
                       <div class="col-lg-12 col-xs-12 my-auto">
                         <div class="float-left">
                           <div class="btn-group">
-                            <button type="button" class="btn3 btn-primary addNewPlayer" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
+                            <button type="button" class="btn3 btn-primary addNewCoach" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
                             </button>
-                            <button type="button" class="btn3 btn-primary editPlayer" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
+                            <button type="button" class="btn3 btn-primary editCoach" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeftEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
                             </button>
                           </div>
                         </div>
@@ -777,7 +707,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        representation({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, representation: <?php echo json_encode(new representation(null)); ?>, player: <?php echo json_encode(new player(null)); ?>});
+        representation({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, representation: <?php echo json_encode(new representation(null)); ?>, coach: <?php echo json_encode(new coach(null)); ?>, player: <?php echo json_encode(new player(null)); ?>});
       });
       
       $(document).ready(function(){
