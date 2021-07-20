@@ -410,26 +410,6 @@
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class="card card-default">
-                        <div class="card-header ">
-                          <div class="card-title">
-                            upload de documentos
-                          </div>
-                          <div class="tools">
-                            <a class="collapse" href="javascript:;"></a>
-                            <a class="config" data-toggle="modal" href="#grid-config"></a>
-                            <a class="reload" href="javascript:;"></a>
-                            <a class="remove" href="javascript:;"></a>
-                          </div>
-                        </div>
-                        <div class="card-body no-scroll no-padding">
-                          <form action="/file-upload" class="dropzone no-margin">
-                            <div class="fallback">
-                              <input name="file" type="file" multiple/>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
                       <br>
                       <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerNewMandate">
                         <span>Guardar</span>
@@ -580,26 +560,6 @@
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class="card card-default">
-                        <div class="card-header ">
-                          <div class="card-title">
-                            upload de documentos
-                          </div>
-                          <div class="tools">
-                            <a class="collapse" href="javascript:;"></a>
-                            <a class="config" data-toggle="modal" href="#grid-config"></a>
-                            <a class="reload" href="javascript:;"></a>
-                            <a class="remove" href="javascript:;"></a>
-                          </div>
-                        </div>
-                        <div class="card-body no-scroll no-padding">
-                          <form action="/file-upload" class="dropzone no-margin">
-                            <div class="fallback">
-                              <input name="file" type="file" multiple/>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
                       <br>
                       <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerEditMandate">
                         <span>Guardar</span>
@@ -670,9 +630,21 @@
                         <label>Nome da Empresa</label>
                         <input type="text" class="form-control txtAgentCompanyNewMandate" required>
                       </div>
-                      <div class="form-group form-group-default required">
-                        <label>Clubes</label>
-                        <input type="text" class="form-control txtAgentClubNewMandate" required>
+                      <div class="form-group form-group-default required ">
+                        <label>Clube</label>
+                        <div class="col ctrClubsActions">
+                              <button type="button" class="btn3 btn-primary float-right btnAddClubNew"style="margin-left: 7px; margin-top: 11px;" ><i class="fa fa-plus"></i></button>
+                              <button type="button" class="btn3 btn-primary float-right btnDeleteClubNew" style="margin-top: 11px;" ><i class="fa fa-minus"></i></button>
+                        </div>
+                        <form role="form">
+                          <div class="row">
+                            <div class="col-md-11 ctrClubsListNew">    
+                              <div class="form-group ">
+                                <select class="full-width ddlAgentClubNewMandate" data-init-plugin="select2"></select>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Países</label>
@@ -685,26 +657,6 @@
                       <div class="form-group form-group-default required">
                         <label>Observações</label>
                         <input type="text" class="form-control txtAgentObsNewMandate" required>
-                      </div>
-                      <div class="card card-default">
-                        <div class="card-header ">
-                          <div class="card-title">
-                            upload de documentos
-                          </div>
-                          <div class="tools">
-                            <a class="collapse" href="javascript:;"></a>
-                            <a class="config" data-toggle="modal" href="#grid-config"></a>
-                            <a class="reload" href="javascript:;"></a>
-                            <a class="remove" href="javascript:;"></a>
-                          </div>
-                        </div>
-                        <div class="card-body no-scroll no-padding">
-                          <form action="/file-upload" class="dropzone no-margin">
-                            <div class="fallback">
-                              <input name="file" type="file" multiple/>
-                            </div>
-                          </form>
-                        </div>
                       </div>
                       <br>
                       <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveAgentNewMandate">
@@ -722,7 +674,7 @@
         </div>
         <!-- END Modal -->
 
-        <!-- Modal New Agent -->
+        <!-- Modal edit Agent -->
         <div class="modal fade slide-right" id="modalSlideLeft_agentEdit" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
             <div class="modal-content-wrapper">
@@ -776,9 +728,21 @@
                         <label>Nome da Empresa</label>
                         <input type="text" class="form-control txtAgentCompanyEditMandate" required>
                       </div>
-                      <div class="form-group form-group-default required">
-                        <label>Clubes</label>
-                        <input type="text" class="form-control txtAgentClubEditMandate" required>
+                      <div class="form-group form-group-default required ">
+                        <label>Clube</label>
+                        <div class="col ctrClubsActions">
+                              <button type="button" class="btn3 btn-primary float-right btnAddClubEdit"style="margin-left: 7px; margin-top: 11px;" ><i class="fa fa-plus"></i></button>
+                              <button type="button" class="btn3 btn-primary float-right btnDeleteClubEdit" style="margin-top: 11px;" ><i class="fa fa-minus"></i></button>
+                        </div>
+                        <form role="form">
+                          <div class="row">
+                            <div class="col-md-11 ctrClubsListEdit">    
+                              <div class="form-group ">
+                                <select class="full-width ddlAgentClubEditMandate" data-init-plugin="select2"></select>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Países</label>
@@ -791,62 +755,6 @@
                       <div class="form-group form-group-default required">
                         <label>Observações</label>
                         <input type="text" class="form-control txtAgentObsEditMandate" required>
-                      </div>
-
-                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="card card-default">
-                        <div class="card-header ">
-                          <div class="card-title">
-                            upload de documentos
-                          </div>
-                          <div class="tools">
-                            <a class="collapse" href="javascript:;"></a>
-                            <a class="config" data-toggle="modal" href="#grid-config"></a>
-                            <a class="reload" href="javascript:;"></a>
-                            <a class="remove" href="javascript:;"></a>
-                          </div>
-                        </div>
-                        <div class="card-body no-scroll no-padding">
-                          <form action="/file-upload" class="dropzone no-margin">
-                            <div class="fallback">
-                              <input name="file" type="file" multiple/>
-                            </div>
-                          </form>
-                        </div>
                       </div>
                       <br>
                       <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveAgentEditMandate">
@@ -933,19 +841,19 @@
                         </div>
 
                         <div class="form-group form-group-default required ">
-                          <label>Agente</label>
-                          <div class="col ctrAgentsActions">
-                            <button type="button" class="btn3 btn-primary float-right btnAddAgent"style="margin-left: 7px; margin-top: 10px;" ><i class="fa fa-plus"></i></button>
-                            <button type="button" class="btn3 btn-primary float-right btnDeleteAgent" style="margin-top: 10px;" ><i class="fa fa-minus"></i></button>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-11 ctrAgentsList"> 
-                              <select class="full-width ddlMandateAgent" data-init-plugin="select2"></select>
-                              <div class="card-body" style="margin-top: -13px;">
-                              </div>
+                        <label>Agente</label>
+                        <div class="col ctrAgentsActions">
+                          <button type="button" class="btn3 btn-primary float-right btnAddAgent"style="margin-left: 7px; margin-top: 10px;" ><i class="fa fa-plus"></i></button>
+                          <button type="button" class="btn3 btn-primary float-right btnDeleteAgent" style="margin-top: 10px;" ><i class="fa fa-minus"></i></button>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12 ctrAgentsList"  style="padding-right: 30px;"> 
+                            <select class="full-width ddlMandateAgent" data-init-plugin="select2"></select>
+                            <div class="card-body" style="margin-top: -13px;">
                             </div>
                           </div>
                         </div>
+                      </div>
                         
                         <div class="form-group form-group-default disabled">
                           <label>Empresa do agente</label>
@@ -1078,7 +986,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, agent: <?php echo json_encode(new agent(null)); ?>});
+        mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, agent: <?php echo json_encode(new agent(null)); ?>, coach: <?php echo json_encode(new coach(null)); ?>});
       });
     </script>
   </body>

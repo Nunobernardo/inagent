@@ -2,6 +2,7 @@
     include('connection.php');
     include('session.php');
     include('objects.php');
+    include('methods.php');
 
     header('Content-Type: application/json');
 
@@ -20,17 +21,29 @@
             case 'insert_player':
                 $player = $object->{'player'};
                 $attachments = $object->{'attachments'};
-                $birthPlayer = date("Y-m-d", strtotime($player->birth));
-                $passportvalPlayer = date("Y-m-d", strtotime($player->passportval));
+
+                if (strval($player->birth) != '') {
+                    $birthPlayer = '"' . date("Y-m-d", strtotime($player->birth)) . '"';
+                } else {
+                    $birthPlayer = 'NULL';
+                }
+                
+                if (strval($player->passportval) != ''){
+                    $passportvalPlayer = '"' . date("Y-m-d", strtotime($player->passportval)) . '"';
+                } else {
+                    $passportvalPlayer = 'NULL';
+                }
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
-                $query = "INSERT INTO players (id_player, id_club, image, first_name, last_name, name, nationality, birth_date, height, weight, foot, position, value, documents, documents_val)
-                          VALUES (NULL, '$player->club', '', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', '$birthPlayer', '$player->height', 
-                          '$player->weight', '$player->foot', '$player->position', '$player->value', '$player->passport', '$passportvalPlayer');";
+                $query = "INSERT INTO players (id_player, id_club, first_name, last_name, name, nationality, birth_date, height, weight, foot, position, value, documents, documents_val)
+                          VALUES (NULL, '$player->club', '$player->firstname', '$player->lastname', '$player->name', '$player->nationality', $birthPlayer, $player->height, 
+                          $player->weight, '$player->foot', '$player->position', '$player->value', '$player->passport', $passportvalPlayer);";
 
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
+
+                $feedback['query'] = $query;
                 //[ CHECK RESULTS ]
                 if ($result) {
                     if (count($attachments) > 0) {
@@ -55,8 +68,18 @@
             case 'update_player':
                 $player = $object->{'player'};
                 $attachments = $object->{'attachments'};
-                $birthPlayer = date("Y-m-d", strtotime($player->birth));
-                $passportvalPlayer = date("Y-m-d", strtotime($player->passportval));
+
+                if (strval($player->birth) != '') {
+                    $birthPlayer = '"' . date("Y-m-d", strtotime($player->birth)) . '"';
+                } else {
+                    $birthPlayer = 'NULL';
+                }
+                
+                if (strval($player->passportval) != ''){
+                    $passportvalPlayer = '"' . date("Y-m-d", strtotime($player->passportval)) . '"';
+                } else {
+                    $passportvalPlayer = 'NULL';
+                }
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "UPDATE players 
@@ -66,18 +89,22 @@
                           last_name = '$player->lastname', 
                           name = '$player->name', 
                           nationality = '$player->nationality', 
-                          birth_date = '$birthPlayer', 
-                          height = '$player->height', 
-                          weight = '$player->weight', 
+                          birth_date = $birthPlayer, 
+                          height = $player->height, 
+                          weight = $player->weight, 
                           foot = '$player->foot', 
                           position = '$player->position', 
                           value = '$player->value', 
                           documents = '$player->passport', 
-                          documents_val = '$passportvalPlayer'
+                          documents_val = $passportvalPlayer
                           WHERE id_player = $player->id ";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
+
+                $feedback['XXXXXX'] = $query ;
+
+                $feedback['success'] = $query ;
                 //[ CHECK RESULTS ]
                 if ($result) {
                     if (count($attachments) > 0) {
@@ -102,12 +129,22 @@
             case 'insert_coach':
                 $coach = $object->{'coach'};
                 $attachments = $object->{'attachments'};
-                $birthCoach = date("Y-m-d", strtotime($coach->birth));
-                $passportvalCoach = date("Y-m-d", strtotime($coach->passportval));
+
+                if (strval($coach->birth) != '') {
+                    $birthcoach = '"' . date("Y-m-d", strtotime($coach->birth)) . '"';
+                } else {
+                    $birthcoach = 'NULL';
+                }
+                
+                if (strval($coach->passportval) != ''){
+                    $passportvalcoach = '"' . date("Y-m-d", strtotime($coach->passportval)) . '"';
+                } else {
+                    $passportvalcoach = 'NULL';
+                }
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "INSERT INTO coach (id_coach, id_club, first_name, last_name, name, nationality, birth_date, height, weight, formation, value, documents, documents_val)
-                            VALUES (NULL, '$coach->club', '$coach->firstname', '$coach->lastname', '$coach->name', '$coach->nationality', '$birthCoach', '$coach->height', '$coach->weight', '$coach->formation', '$coach->value', '$coach->passport', '$passportvalCoach');";
+                            VALUES (NULL, '$coach->club', '$coach->firstname', '$coach->lastname', '$coach->name', '$coach->nationality', $birthcoach, '$coach->height', '$coach->weight', '$coach->formation', '$coach->value', '$coach->passport', $passportvalcoach);";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -135,8 +172,18 @@
             case 'update_coach':
                 $coach = $object->{'coach'};
                 $attachments = $object->{'attachments'};
-                $birthcoach = date("Y-m-d", strtotime($coach->birth));
-                $passportvalcoach = date("Y-m-d", strtotime($coach->passportval));
+
+                if (strval($coach->birth) != '') {
+                    $birthcoach = '"' . date("Y-m-d", strtotime($coach->birth)) . '"';
+                } else {
+                    $birthcoach = 'NULL';
+                }
+                
+                if (strval($coach->passportval) != ''){
+                    $passportvalcoach = '"' . date("Y-m-d", strtotime($coach->passportval)) . '"';
+                } else {
+                    $passportvalcoach = 'NULL';
+                }
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "UPDATE coach
@@ -146,13 +193,13 @@
                             last_name = '$coach->lastname', 
                             name = '$coach->name', 
                             nationality = '$coach->nationality', 
-                            birth_date = '$birthcoach', 
+                            birth_date = $birthcoach, 
                             height = '$coach->height', 
                             weight = '$coach->weight', 
                             formation = '$coach->formation', 
                             value = '$coach->value', 
                             documents = '$coach->passport', 
-                            documents_val = '$passportvalcoach'
+                            documents_val = $passportvalcoach
                             WHERE id_coach = $coach->id ";
 
                 //[ EXECUTE QUERY ]
@@ -428,12 +475,22 @@
             case 'insert_club':
                 $club = $object->{'club'};
                 $attachments = $object->{'attachments'};
-                $cdatestart = date("Y-m-d", strtotime($club->datestart));
-                $cdateend = date("Y-m-d", strtotime($club->dateend));
+
+                if (strval($club->datestart) != '') {
+                    $clubdatestart = '"' . date("Y-m-d", strtotime($club->datestart)) . '"';
+                } else {
+                    $clubdatestart = 'NULL';
+                }
+                
+                if (strval($club->dateend) != ''){
+                    $clubdateend = '"' . date("Y-m-d", strtotime($club->dateend)) . '"';
+                } else {
+                    $clubdateend = 'NULL';
+                }
 
                 //[ SET QUERY TO INSERT NEW PUBLICATION ]
                 $query = "INSERT INTO contract_club (id_contract_club, id_player, id_coach, id_club, date_start, date_end, value, clause, court, bonus, obs)
-                            VALUES (NULL, '$club->player', NULL, '$club->club', '$cdatestart', '$cdateend', '$club->value', '$club->clause', '$club->court', '$club->bonus', '$club->obs');";
+                            VALUES (NULL, '$club->player', NULL, '$club->club', $clubdatestart, $clubdateend, '$club->value', '$club->clause', '$club->court', '$club->bonus', '$club->obs');";
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -498,16 +555,26 @@
             case 'update_club':
                 $club = $object->{'club'};
                 $attachments = $object->{'attachments'};
-                $clubdatestart = date("Y-m-d", strtotime($club->datestart));
-                $clubdateend = date("Y-m-d", strtotime($club->dateend));
+
+                if (strval($club->datestart) != '') {
+                    $clubdatestart = '"' . date("Y-m-d", strtotime($club->datestart)) . '"';
+                } else {
+                    $clubdatestart = 'NULL';
+                }
+                
+                if (strval($club->dateend) != ''){
+                    $clubdateend = '"' . date("Y-m-d", strtotime($club->dateend)) . '"';
+                } else {
+                    $clubdateend = 'NULL';
+                }
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "UPDATE contract_club SET 
                             id_player = '$club->player',
                             id_club = '$club->club',
                             value = '$club->value',
-                            date_start = '$clubdatestart',
-                            date_end = '$clubdateend',
+                            date_start = $clubdatestart,
+                            date_end = $clubdateend,
                             clause = '$club->clause',
                             court = '$club->court',
                             bonus = '$club->bonus',
@@ -678,19 +745,30 @@
                 $mandates = $object->{'mandates'};
                 $agents = $object->{'agents'};
                 $attachments = $object->{'attachments'};
-                $mandatesdatestart = date("Y-m-d", strtotime($mandates->datestart));
-                $mandatesdateend = date("Y-m-d", strtotime($mandates->dateend));
+
+                if (strval($mandates->datestart) != '') {
+                    $mandatesdatestart = '"' . date("Y-m-d", strtotime($mandates->datestart)) . '"';
+                } else {
+                    $mandatesdatestart = 'NULL';
+                }
+                
+                if (strval($mandates->dateend) != ''){
+                    $mandatesdateend = '"' . date("Y-m-d", strtotime($mandates->dateend)) . '"';
+                } else {
+                    $mandatesdateend = 'NULL';
+                }
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
                 $query = "UPDATE mandates SET 
                             id_player = '$mandates->player',
-                            date_start = '$mandatesdatestart',
-                            date_end = '$mandatesdateend',
+                            date_start = $mandatesdatestart,
+                            date_end = $mandatesdateend,
                             obs = '$mandates->obs'
                             WHERE id_mandates = " . $mandates->id;
 
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
+                $feedback['asdsadsad'] = $query;
 
                 //[ CHECK RESULTS ]
                 if ($result) {
@@ -737,10 +815,73 @@
                     $feedback['error'] = 'ERRO_UPDATE_MANDATES';
                 };
                 break;
+            case 'update_mandates_coach':
+                $mandates = $object->{'mandates'};
+                $agents = $object->{'agents'};
+                $attachments = $object->{'attachments'};
+                $mandatesdatestart = date("Y-m-d", strtotime($mandates->datestart));
+                $mandatesdateend = date("Y-m-d", strtotime($mandates->dateend));
+
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "UPDATE mandates SET 
+                            id_coach = '$mandates->coach',
+                            date_start = '$mandatesdatestart',
+                            date_end = '$mandatesdateend',
+                            obs = '$mandates->obs'
+                            WHERE id_mandates = " . $mandates->id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result) {
+                    //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                    $query = "UPDATE mandates_agent 
+                                SET id_agent = $mandates->agentid
+                                WHERE id_mandate = " . $mandates->id;
+
+                    //[ EXECUTE QUERY ]
+                    $result = mysqli_query($conn, $query);
+                    
+                    if ($result) {
+                        if (count($agents) > 0) {
+                            foreach ($agents as &$value) {
+                                //[ SET QUERY TO INSERT NEW PUBLICATION ]
+                                $query = "INSERT INTO mandates_agent (id_mandates_agent, id_mandate, id_agent, id_agent_club)
+                                            VALUES (NULL, $mandates->id, $value->agent_id, $value->agent_club_id)";
+    
+                                //[ EXECUTE QUERY ]
+                                $result = mysqli_query($conn, $query);
+                            }
+                        }
+
+                        if (count($attachments) > 0) {
+                            foreach ($attachments as &$value) {
+                                $query = "INSERT INTO mandates_files(id, id_mandates, file_name, file) 
+                                            VALUES (NULL, $value->MandateID, '$value->AttachmentName', '$value->Attachment')";
+                
+                                //[ EXECUTE QUERY ]
+                                $result = mysqli_query($conn, $query);
+                            }
+                        }
+
+                        $feedback['mandates_id'] = $conn->insert_id;
+                        $feedback['success'] = true;
+                    } else {
+                        $feedback['success'] = false;
+                        $feedback['error'] = 'ERRO_UPDATE_MANDATES';
+                    };
+                    $feedback['mandates_id'] = $conn->insert_id;
+                    $feedback['success'] = true;
+                } else {
+                    $feedback['success'] = false;
+                    $feedback['error'] = 'ERRO_UPDATE_MANDATES';
+                };
+                break;
             case 'players':
                     $players = array();
                     $page = (isset($object->{'page'})) ? urldecode($object->{'page'}) : 1;
-                    $records = (isset($object->{'records'})) ? urldecode($object->{'records'}) : 10;
+                    $records = 10000;
                     $offset = ($page - 1) * $records;
                     
                     //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
@@ -906,7 +1047,7 @@
             case 'coaches':
                 $coaches = array();
                 $page = (isset($object->{'page'})) ? urldecode($object->{'page'}) : 1;
-                $records = (isset($object->{'records'})) ? urldecode($object->{'records'}) : 10;
+                $records = 10000;
                 $offset = ($page - 1) * $records;
                 
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
@@ -1073,7 +1214,7 @@
             case 'representations':
                 $representations = array();
                 $page = (isset($object->{'page'})) ? urldecode($object->{'page'}) : 1;
-                $records = (isset($object->{'records'})) ? urldecode($object->{'records'}) : 10;
+                $records = 10000;
                 $offset = ($page - 1) * $records;
                 
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
@@ -1215,7 +1356,7 @@
             case 'clubs':
                 $clubs = array();
                 $page = (isset($object->{'page'})) ? urldecode($object->{'page'}) : 1;
-                $records = (isset($object->{'records'})) ? urldecode($object->{'records'}) : 10;
+                $records = 10000;
                 $offset = ($page - 1) * $records;
                 
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
@@ -1232,7 +1373,7 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT cc.id_contract_club, cc.date_start, cc.date_end, c.name_club as club_name, cc.value, cc.clause, 
+                $query = "SELECT cc.id_contract_club, cc.date_start, cc.date_end, c.name_club as club_name, cc.value, cc.clause, p.id_player, co.id_coach,
                             IF(p.first_name is null, co.first_name, p.first_name) as first_name,
                             IF(p.last_name is null, co.last_name, p.last_name) as last_name, 
                             IF(p.last_name is null, 1, 0) as iscoach
@@ -1258,7 +1399,7 @@
                 $feedback['success'] = true;
                 $feedback['clubs'] = $clubs;
                 $feedback['current_page'] = $page;
-                $feedback['detail_page'] = "clubs_new.php";
+                $feedback['detail_page'] = "clubs_new_player.php";
                 $feedback['coach_detail_page'] = "clubs_new_coach.php";
                 $feedback['total'] = $total_records;
                 $feedback['total_pages'] = $total_pages;
@@ -1316,10 +1457,10 @@
                 $clubid = json_encode($object->{'clubs_ids'});
                 $clubid = str_replace("[","(", $clubid);
                 $clubid = str_replace("]", ")", $clubid);
-                $query = "DELETE cf
+                $query = "DELETE cc
                             FROM contract_club c
                             INNER JOIN contract_club_files cc ON cc.id_contract_club  = c.id_contract_club 
-                            WHERE c.id_contract_club in " . $representationid;
+                            WHERE c.id_contract_club in " . $clubid;
                             
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
@@ -1327,11 +1468,11 @@
                 if ($result) {
                     $query = "DELETE 
                                 FROM contract_club 
-                                WHERE contract_club.id_contract_club = " . $clubid;
+                                WHERE contract_club.id_contract_club IN " . $clubid;
             
                     //[ EXECUTE QUERY ]
                     $result = mysqli_query($conn, $query);
-            
+                    $feedback['xxxx2'] = $query;
                     //[ CHECK RESULTS ]
                     if ($result) {
                         $feedback['success'] = true;
@@ -1340,6 +1481,7 @@
                         $feedback['error'] = "ERROR_REMOVING_CLUB";
                     };
                 }else {
+                    $feedback['xxxx1'] = $query;
                     $feedback['success'] = false;
                     $feedback['error'] = "ERROR_REMOVING_CLUB";
                 };
@@ -1374,6 +1516,8 @@
                 //[ EXECUTE QUERY ]
                 $result = mysqli_query($conn, $query);
 
+                $feedback['ASDADSADS'] = $query ;
+
                 //[ CHECK RESULTS ]
                 if ($result->num_rows > 0) {   
                     $ids = array();
@@ -1381,8 +1525,8 @@
                     while($row = $result->fetch_assoc()) {
                         array_push($mandates, new mandates($row));
 
-                        if(!in_array(intval($row["id_agent"]), $ids, true)){
-                            array_push($ids, intval($row["id_agent"]));
+                        if(!in_array(intval($row["id_mandates"]), $ids, true)){
+                            array_push($ids, intval($row["id_mandates"]));
                         }
                     };
                     
@@ -1391,13 +1535,17 @@
                     $ids2 = str_replace("[","(",  $ids2);
                     $ids2 = str_replace("]", ")", $ids2);
 
-                    $query = "SELECT ac.id_agent, c.name_club as club_name, c.country as country_name
-                                FROM  agent_club ac
-                                LEFT JOIN club c ON c.id_club = ac.id_club
+                    $query = "SELECT ma.id_mandate, ac.id_agent, c.name_club as club_name, c.country as country_name
+                                FROM  mandates_agent ma
+                                INNER JOIN agent_club ac ON ac.id_agent_club = ma.id_agent_club
+                                INNER JOIN club c ON c.id_club = ac.id_club
                                 WHERE
-                                ac.id_agent in " .$ids2;
+                                ma.id_mandate in " .$ids2;
 
                     $result = mysqli_query($conn, $query);
+
+
+                    
 
                     if ($result->num_rows > 0) {
                         $clubs = array();
@@ -1432,6 +1580,7 @@
                 $feedback['mandates'] = $mandates;
                 $feedback['current_page'] = $page;
                 $feedback['detail_page'] = "mandates_new.php";
+                $feedback['coach_detail_page'] = "mandates_new_coach.php";
                 $feedback['total'] = $total_records;
                 $feedback['total_pages'] = $total_pages;
                 break;
@@ -1441,16 +1590,23 @@
                 $mandateid = intval(urldecode($object->{'mandates_id'}));
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT m.id_mandates, m.date_start AS m_date_start, m.date_end AS m_date_end, m.obs AS m_obs,
-                            p.id_player, p.name, p.first_name, p.last_name, p.nationality,
-                            p.birth_date, p.height, p.weight, p.position, 
-                            p.foot, p.value, p.documents, p.documents_val, p.id_club,
-                            c.id_coach, c.name, c.first_name, c.last_name, c.nationality,
-                            c.birth_date, c.height, c.weight,
-                            c.formation, c.value, c.documents, c.documents_val, c.id_club,
-                            ac.id_agent, a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
-                            a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, 
-                            a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs, ma.id_agent as id_agent, p.id_club, cp.name_club as club_name_player
+                $query = "SELECT m.id_mandates, p.id_player, c.id_coach, m.date_start AS m_date_start, m.date_end AS m_date_end, m.obs AS m_obs,
+                            p.position, p.foot, c.formation,
+                            ac.id_agent, a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, a.documents_val AS a_documents_val, a.contacts AS a_contacts, a.obs AS a_obs, 
+                            ma.id_agent as id_agent,                           
+                            IF(p.first_name is null, c.first_name, p.first_name) as first_name,
+                            IF(p.last_name is null, c.last_name, p.last_name) as last_name, 
+                            IF(p.name is null, c.name, p.name) as name, 
+                            IF(p.birth_date is null, c.birth_date, p.birth_date) as birth_date, 
+                            IF(p.nationality is null, c.nationality, p.nationality) as nationality, 
+                            IF(p.height is null, c.height, p.height) as height, 
+                            IF(p.weight is null, c.weight, p.weight) as weight, 
+                            IF(p.value is null, c.value, p.value) as value, 
+                            IF(p.documents is null, c.documents, p.documents) as documents, 
+                            IF(p.documents_val is null, c.documents_val, p.documents_val) as documents_val, 
+                            IF(p.id_club is null, c.id_club, p.id_club) as id_club,
+                            IF(p.last_name is null, 1, 0) as iscoach
+
                             FROM mandates m 
                             LEFT JOIN players p ON p.id_player = m.id_player
                             LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
@@ -1599,7 +1755,7 @@
             case 'agents':
                 $agents = array();
                 $page = (isset($object->{'page'})) ? urldecode($object->{'page'}) : 1;
-                $records = (isset($object->{'records'})) ? urldecode($object->{'records'}) : 10;
+                $records = 10000;
                 $offset = ($page - 1) * $records;
                 
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
@@ -1655,7 +1811,6 @@
 
                     //[ SET TOTAL ]
                     $total = $result->num_rows;
-
                     $feedback['agents_clubs'] = $clubs;
                 };
 
@@ -1918,9 +2073,10 @@
                 $total_pages = ceil($total_records / $records);
 
                 //[ SET PAGED QUERY TO GET PUBLICATIONS ]
-                $query = "SELECT p.id_player, p.first_name, p.last_name, p.birth_date
+                $query = "SELECT p.id_player, p.first_name, p.last_name, p.birth_date,
+                            (366 + DAYOFYEAR(birth_date) - DAYOFYEAR(NOW())) % 366 as left_days
                             FROM players p
-                            ORDER BY p.birth_date DESC
+                            ORDER BY left_days
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -1945,8 +2101,8 @@
                 break;  
             case 'league':
                 $league = array();
-                $page = (isset($object->{'page'})) ? urldecode($object->{'page'}) : 1;
-                $records = (isset($object->{'records'})) ? urldecode($object->{'records'}) : 10;
+                $page = 1;
+                $records = 100000;
                 $offset = ($page - 1) * $records;
                 
                 //[ SET NOT PAGED QUERY TO GET TOTAL PUBLICATIONS ]
@@ -2166,6 +2322,44 @@
                     $feedback['error'] = "ERROR_DELETE_FILES";
                 };
                 break;
+
+            case 'contracts_to_expire':
+                $body = '';
+
+                //[ SET PAGED QUERY TO GET PUBLICATIONS ]
+                $query = "  SELECT cr.id_contract_rep, p.first_name, p.last_name, cr.date_end
+                            FROM contract_representation cr
+                            INNER JOIN players p ON cr.id_player = p.id_player
+                            WHERE
+                            CURDATE() >= DATE_ADD(cr.date_end, INTERVAL -90 DAY)
+                            AND
+                            CURDATE() <= cr.date_end
+                            ORDER BY 
+                            cr.date_end ASC";
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {   
+                    $body = '<div>';
+                    $body = $body . '<p>Os contratos a expirar são os seguintes:</p>';
+
+                    while($row = $result->fetch_assoc()) {
+                        $time = strtotime($row["date_end"]);
+                        $newformat = date('d-m-Y', $time);
+
+                        $body = $body . '<p>O contrato ' . $row["first_name"] . ' expira em ' . $newformat . '</p>';
+                    };
+
+                    $body = $body . '</div>';
+
+                    $feedback['mail'] = SendEmail('nberna_87@hotmail.com', 'Nuno', 'Lista de contratos expirarar', $body);
+                };
+
+                $feedback['success'] = true;
+                break;
+
             default:
                 $feedback['error'] = Feedback::FUNCTION_NAME_IS_NOT_SET . $_POST['functionname'];
                 break;

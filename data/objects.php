@@ -42,7 +42,7 @@
         public $value;
         public $passport;
         public $passportval;
-        public $file;
+        public $age;
 
         function __construct($obj) {
             if (isset($obj)) {
@@ -61,7 +61,7 @@
                 $this->value = (isset($obj["value"])) ? $obj["value"] : null;
                 $this->passport = (isset($obj["documents"])) ? $obj["documents"] : null;
                 $this->passportval = (isset($obj["documents_val"])) ? $obj["documents_val"] : null;
-                $this->file = (isset($obj["file"])) ? $obj["file"] : null;
+                $this->age = (isset($obj["age"])) ? $obj["age"] : null;
             };
         }
 
@@ -69,7 +69,7 @@
             return $this;
         }
 
-        public function set($id, $club, $clubname, $name, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $value, $passport, $passportval) {
+        public function set($id, $club, $clubname, $name, $firstname, $lastname, $birth, $nationality, $height, $weight, $foot, $position, $value, $passport, $passportval, $age) {
             $this->id = $id;
             $this->club = $club;
             $this->clubname = $clubname;
@@ -85,6 +85,7 @@
             $this->value = $value;
             $this->passport = $passport;
             $this->passportval = $passportval;
+            $this->age = $age;
             
             return $this;
         }
@@ -204,7 +205,7 @@
                 $this->passportval = (isset($obj["documents_val"])) ? $obj["documents_val"] : null;
                 $this->iscoach = (isset($obj["iscoach"])) ? boolval($obj["iscoach"]) : null;
                 
-                $this->child = (isset($obj["child"])) ? $obj["child"] : null;
+                $this->child = (isset($obj["child"])) ? boolval($obj["child"]) : null;
                 $this->father = (isset($obj["father_name"])) ? $obj["father_name"] : null;
                 $this->mother = (isset($obj["mother_name"])) ? $obj["mother_name"] : null;
                 $this->datestart = (isset($obj["date_start"])) ? $obj["date_start"] : null;
@@ -414,6 +415,7 @@
                 $this->playervalue = (isset($obj["value"])) ? $obj["value"] : null;
                 $this->playerpassport = (isset($obj["documents"])) ? $obj["documents"] : null;
                 $this->playerpassportval = (isset($obj["documentsval"])) ? $obj["documentsval"] : null;
+                $this->iscoach = (isset($obj["iscoach"])) ? boolval($obj["iscoach"]) : null;
                 
                 $this->agentid = (isset($obj["id_agent"])) ? $obj["id_agent"] : null;
                 $this->agentclub = (isset($obj["id_club"])) ? $obj["id_club"] : null;
@@ -638,6 +640,7 @@
         public $firstname;
         public $lastname;
         public $birth;
+        public $left_days;
 
         function __construct($obj) {
             if (isset($obj)) {
@@ -645,6 +648,7 @@
                 $this->firstname = (isset($obj["first_name"])) ? $obj["first_name"] : null;
                 $this->lastname = (isset($obj["last_name"])) ? $obj["last_name"] : null;
                 $this->birth = (isset($obj["birth_date"])) ? $obj["birth_date"] : null;
+                $this->left_days = (isset($obj["left_days"])) ? $obj["left_days"] : null;
             };
         }
 
@@ -652,11 +656,12 @@
             return $this;
         }
 
-        public function set($id, $firstname, $lastname, $birth) {
+        public function set($id, $firstname, $lastname, $birth, $left_days) {
             $this->id = $id;
             $this->firstname = $firstname;
             $this->lastname = $lastname;
             $this->birth = $birth;
+            $this->left_days = $left_days;
             
             return $this;
         }

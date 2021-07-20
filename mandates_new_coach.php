@@ -290,20 +290,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameNew" required>
+                        <input type="text" class="form-control txtCoachNameNew" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameNew">
+                        <input type="text" class="form-control txtCoachFirstNameNew">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameNew">
+                        <input type="text" class="form-control txtCoachLastNameNew">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthNew" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachBirthNew" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -311,12 +311,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityNew" required>
+                        <input type="text" class="form-control txtCoachNationalityNew" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightNew" required>
+                          <input type="text" class="form-control usd txtCoachHeightNew" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -326,7 +326,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightNew" required>
+                          <input type="text" class="form-control usd txtCoachWeightNew" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -344,7 +344,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlCoachFormationNew" data-init-plugin="cs-select">
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -356,14 +356,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubNew" data-init-plugin="select2"></select>
+                            <select class="full-width ddlCoachClubNew" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueNew" required>
+                          <input type="text" class="form-control usd txtCoachValueNew" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -372,49 +372,15 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportNew" required>
+                        <input type="text" class="form-control txtCoachPassportNew" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValNew" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachPassportValNew" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                      </div>
-                      <div class=" ctrFilesNew col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                       <br>
@@ -447,20 +413,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtPlayerNameEdit" required>
+                        <input type="text" class="form-control txtCoachNameEdit" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtPlayerFirstNameEdit">
+                        <input type="text" class="form-control txtCoachFirstNameEdit">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtPlayerLastNameEdit">
+                        <input type="text" class="form-control txtCoachLastNameEdit">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtPlayerBirthEdit" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachBirthEdit" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -468,12 +434,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtPlayerNationalityEdit" required>
+                        <input type="text" class="form-control txtCoachNationalityEdit" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtPlayerHeightEdit" required>
+                          <input type="text" class="form-control usd txtCoachHeightEdit" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -483,7 +449,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtPlayerWeightEdit" required>
+                          <input type="text" class="form-control usd txtCoachWeightEdit" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -501,7 +467,7 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlCoachFormationEdit" data-init-plugin="cs-select">
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -513,14 +479,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlPlayerClubEdit" data-init-plugin="select2"></select>
+                            <select class="full-width ddlCoachClubEdit" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtPlayerValueEdit" required>
+                          <input type="text" class="form-control usd txtCoachValueEdit" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -529,12 +495,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtPlayerPassportEdit" required>
+                        <input type="text" class="form-control txtCoachPassportEdit" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtPlayerPassportValEdit" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachPassportValEdit" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -555,27 +521,6 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
                       <br>
                       <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveCoachEdit">
                         <span>Guardar</span>
@@ -646,10 +591,24 @@
                         <label>Nome da Empresa</label>
                         <input type="text" class="form-control txtAgentCompanyNewMandate" required>
                       </div>
-                      <div class="form-group form-group-default required">
-                        <label>Clubes</label>
-                        <input type="text" class="form-control txtAgentClubNewMandate" required>
+                      
+                      <div class="form-group form-group-default required ">
+                        <label>Clube</label>
+                        <div class="col ctrClubsActions">
+                              <button type="button" class="btn3 btn-primary float-right btnAddClubNew"style="margin-left: 7px; margin-top: 11px;" ><i class="fa fa-plus"></i></button>
+                              <button type="button" class="btn3 btn-primary float-right btnDeleteClubNew" style="margin-top: 11px;" ><i class="fa fa-minus"></i></button>
+                        </div>
+                        <form role="form">
+                          <div class="row">
+                            <div class="col-md-11 ctrClubsListNew">    
+                              <div class="form-group ">
+                                <select class="full-width ddlAgentClubNewMandate" data-init-plugin="select2"></select>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
                       </div>
+
                       <div class="form-group form-group-default required">
                         <label>Países</label>
                         <input type="text" class="form-control txtAgentCountryNewMandate" required>
@@ -661,26 +620,6 @@
                       <div class="form-group form-group-default required">
                         <label>Observações</label>
                         <input type="text" class="form-control txtAgentObsNewMandate" required>
-                      </div>
-                      <div class="card card-default">
-                        <div class="card-header ">
-                          <div class="card-title">
-                            upload de documentos
-                          </div>
-                          <div class="tools">
-                            <a class="collapse" href="javascript:;"></a>
-                            <a class="config" data-toggle="modal" href="#grid-config"></a>
-                            <a class="reload" href="javascript:;"></a>
-                            <a class="remove" href="javascript:;"></a>
-                          </div>
-                        </div>
-                        <div class="card-body no-scroll no-padding">
-                          <form action="/file-upload" class="dropzone no-margin">
-                            <div class="fallback">
-                              <input name="file" type="file" multiple/>
-                            </div>
-                          </form>
-                        </div>
                       </div>
                       <br>
                       <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveAgentNewMandate">
@@ -698,7 +637,7 @@
         </div>
         <!-- END Modal -->
 
-        <!-- Modal New Agent -->
+        <!-- Modal edit Agent -->
         <div class="modal fade slide-right" id="modalSlideLeft_agentEdit" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-sm">
             <div class="modal-content-wrapper">
@@ -752,9 +691,21 @@
                         <label>Nome da Empresa</label>
                         <input type="text" class="form-control txtAgentCompanyEditMandate" required>
                       </div>
-                      <div class="form-group form-group-default required">
-                        <label>Clubes</label>
-                        <input type="text" class="form-control txtAgentClubEditMandate" required>
+                      <div class="form-group form-group-default required ">
+                        <label>Clube</label>
+                        <div class="col ctrClubsActions">
+                              <button type="button" class="btn3 btn-primary float-right btnAddClubEdit"style="margin-left: 7px; margin-top: 11px;" ><i class="fa fa-plus"></i></button>
+                              <button type="button" class="btn3 btn-primary float-right btnDeleteClubEdit" style="margin-top: 11px;" ><i class="fa fa-minus"></i></button>
+                        </div>
+                        <form role="form">
+                          <div class="row">
+                            <div class="col-md-11 ctrClubsListEdit">    
+                              <div class="form-group ">
+                                <select class="full-width ddlAgentClubEditMandate" data-init-plugin="select2"></select>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Países</label>
@@ -767,26 +718,6 @@
                       <div class="form-group form-group-default required">
                         <label>Observações</label>
                         <input type="text" class="form-control txtAgentObsEditMandate" required>
-                      </div>
-                      <div class="card card-default">
-                        <div class="card-header ">
-                          <div class="card-title">
-                            upload de documentos
-                          </div>
-                          <div class="tools">
-                            <a class="collapse" href="javascript:;"></a>
-                            <a class="config" data-toggle="modal" href="#grid-config"></a>
-                            <a class="reload" href="javascript:;"></a>
-                            <a class="remove" href="javascript:;"></a>
-                          </div>
-                        </div>
-                        <div class="card-body no-scroll no-padding">
-                          <form action="/file-upload" class="dropzone no-margin">
-                            <div class="fallback">
-                              <input name="file" type="file" multiple/>
-                            </div>
-                          </form>
-                        </div>
                       </div>
                       <br>
                       <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSaveAgentEditMandate">
@@ -818,7 +749,7 @@
                       <button type="button" onclick="location.href='mandates_list.php'" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-close">
                         <span>Cancelar</span>
                       </button>
-                      <button type="button" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-save btnSaveMandates">
+                      <button type="button" class="btn2 btn-primary btn-cons btn-animated from-left pg pg-save btnSaveCoachMandates">
                         <span>Guardar</span>
                       </button>
                   </div>
@@ -860,32 +791,32 @@
                         </div>
                       </div>
 
-                    <div class="col-lg-12 col-xs-12 my-auto">
-                      <div class="float-left">
-                        <div class="btn-group">
-                          <button type="button" class="btn3 btn-primary addNewCoach" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_agentNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
-                          </button>
-                          <button type="button" class="btn3 btn-primary editCoach" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_agentEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    
-                      <div class="card card-default">
-                        <div class="card-header ">
-                          <div class="card-title">Agente</div>
-                          <div class="tools">
-                            <a href="javascript:;" class="collapse"></a>
-                            <a href="#grid-config" data-toggle="modal" class="config"></a>
-                            <a href="javascript:;" class="reload"></a>
-                            <a href="javascript:;" class="remove"></a>
+                      <div class="col-lg-12 col-xs-12 my-auto">
+                        <div class="float-left">
+                          <div class="btn-group">
+                            <button type="button" class="btn3 btn-primary addNewCoach" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_agentNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn3 btn-primary editCoach" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_agentEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
+                            </button>
                           </div>
                         </div>
-                        <div class="card-body">
-                          <select class="full-width ddlMandateAgent" data-init-plugin="select2">
-                          </select> 
+                      </div>
+
+                      <div class="form-group form-group-default required ">
+                        <label>Agente</label>
+                        <div class="col ctrAgentsActions">
+                          <button type="button" class="btn3 btn-primary float-right btnAddAgent"style="margin-left: 7px; margin-top: 10px;" ><i class="fa fa-plus"></i></button>
+                          <button type="button" class="btn3 btn-primary float-right btnDeleteAgent" style="margin-top: 10px;" ><i class="fa fa-minus"></i></button>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12 ctrAgentsList"  style="margin-left: -17px;"> 
+                            <select class="full-width ddlMandateAgent" data-init-plugin="select2"></select>
+                            <div class="card-body" style="margin-top: -13px;">
+                            </div>
+                          </div>
                         </div>
                       </div>
+
                       <div class="form-group form-group-default disabled">
                         <label>Empresa do agente</label>
                         <input type="text" class="form-control txtMandatesCompany">
@@ -1016,7 +947,7 @@
     ?>
     <script type="text/javascript">
       $(document).ready(function(){
-        mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, agent: <?php echo json_encode(new agent(null)); ?>});
+        mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, agent: <?php echo json_encode(new agent(null)); ?>, coach: <?php echo json_encode(new coach(null)); ?>});
       });
     </script>
   </body>

@@ -387,6 +387,7 @@
                         </div>
                         <div class="card-body">
                           <select class="cs-select cs-skin-slide  ddlCoachFormation" data-init-plugin="cs-select">
+                            <option value="selected" disabled="disabled">Escolha a formação</option>
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
