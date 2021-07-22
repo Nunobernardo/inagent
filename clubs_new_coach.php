@@ -234,49 +234,45 @@
       <div class="page-content-wrapper ">
         <!-- START PAGE CONTENT -->
         <div class="content ">
-        <!-- Modal Profile -->
-        <div class="modal fade slide-right" id="modalSlideLeft_profile" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog modal-sm">
-            <div class="modal-content-wrapper">
-              <div class="modal-content">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
-                </button>
-                <div class="container-xs-height full-height">
-                  <div class="row-xs-height">
-                    <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">Perfil</h5>
-                      <br>
-                      <div class="form-group form-group-default required">
-                        <label>Nome completo</label>
-                        <input type="text" class="form-control">
+          <!-- Modal Profile -->
+          <div class="modal fade slide-right" id="modalSlideLeft_profile" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content-wrapper">
+                <div class="modal-content">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+                  </button>
+                  <div class="container-xs-height full-height">
+                    <div class="row-xs-height">
+                      <div class="modal-body col-xs-height col-middle">
+                        <h5 style="text-align:center">Perfil</h5>
+                        <br>
+                        <div class="form-group form-group-default required">
+                          <label>Nome completo</label>
+                          <input type="text" class="form-control txtNameUser">
+                        </div>
+                        <div class="form-group form-group-default required">
+                          <label>username</label>
+                          <input type="text" class="form-control txtUserNameUser">
+                        </div>
+                        <div class="form-group form-group-default">
+                          <label>Alterar password</label>
+                          <input type="text" class="form-control txtPasswordUser" required>
+                        </div>
+                        <br>
+                        <button type="button" onclick="location.href='representation_list.php'" class="btn btn-primary btn-block btn-animated btnSaveUser from-left pg pg-save">
+                          <span>Guardar</span>
+                        </button>
+                        <button type="button" onclick="location.href='representation_list.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
+                          <span>Cancelar</span>
+                        </button>
                       </div>
-                      <div class="form-group form-group-default required">
-                        <label>Primeiro nome</label>
-                        <input type="text" class="form-control">
-                      </div>
-                      <div class="form-group form-group-default required">
-                        <label>último nome</label>
-                        <input type="text" class="form-control">
-                      </div>
-                      <div class="form-group form-group-default">
-                        <label>Alterar password</label>
-                        <input type="text" class="form-control" required>
-                      </div>
-                      <br>
-                      <button type="button" onclick="location.href='clubs_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
-                        <span>Guardar</span>
-                      </button>
-                      <button type="button" onclick="location.href='clubs_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
-                        <span>Cancelar</span>
-                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- END Modal -->
+          <!-- END Modal -->
 
         <!-- Modal New Player -->
         <div class="modal fade slide-right" id="modalSlideLeftNew" tabindex="-1" role="dialog" aria-hidden="true">
@@ -750,6 +746,7 @@
     <script type="text/javascript">
       $(document).ready(function(){
         club({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, club: <?php echo json_encode(new club(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, coach: <?php echo json_encode(new coach(null)); ?>,});
+        user();
       });
     </script>
   </body>

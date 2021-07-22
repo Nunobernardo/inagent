@@ -388,6 +388,7 @@
                 break;
             case 'insert_agent':
                 $agent = $object->{'agent'};
+                $clubs = $object->{'clubs'};
                 $attachments = $object->{'attachments'};
 
                 if (strval($agent->birth) != '') {
@@ -409,31 +410,32 @@
                 $result = mysqli_query($conn, $query);
 
                 if ($result) {
-                    $query = "INSERT INTO agent_club (id_agent_club, id_agent, id_club)
-                                VALUES (NULL, $conn->insert_id, $agent->club)";
+                    $agentid = $conn->insert_id;
 
-                    //[ EXECUTE QUERY ]
-                    $result = mysqli_query($conn, $query);
+                    if (count($clubs) > 0) {
+                        foreach ($clubs as &$value) {
+                            $query = "INSERT INTO agent_club(id_agent_club, id_agent, id_club) 
+                                      VALUES (NULL, $agentid, $value)";
 
-                    //[ CHECK RESULTS ]
-                    if ($result) {
-                        if (count($attachments) > 0) {
-                            foreach ($attachments as &$value) {
-                                $query = "INSERT INTO agent_files(id, id_agent, file_name, file) 
-                                        VALUES (NULL, $conn->insert_id, '$value->AttachmentName', '$value->Attachment')";
-                
-                                //[ EXECUTE QUERY ]
-                                $result = mysqli_query($conn, $query);
-                            }
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                            $feedback['query' . $value] = $query;
                         }
-                        $feedback['success'] = true;
-                    } else {
-                        $feedback['success'] = false;
-                        $feedback['error'] = "ERROR_REMOVING_PLAYERS";
-                    };
+                    }
+
+                    if (count($attachments) > 0) {
+                        foreach ($attachments as &$value) {
+                            $query = "INSERT INTO agent_files(id, id_agent, file_name, file) 
+                                    VALUES (NULL, $agentid, '$value->AttachmentName', '$value->Attachment')";
+            
+                            //[ EXECUTE QUERY ]
+                            $result = mysqli_query($conn, $query);
+                        }
+                    }
+                    $feedback['success'] = true;
                 } else {
                     $feedback['success'] = false;
-                    $feedback['error'] = "ERROR_REMOVING_PLAYERS";
+                    $feedback['error'] = "1ERROR_REMOVING_PLAYERS";
                 };
                 break;
 
@@ -1634,10 +1636,6 @@
 
                 $query = "SELECT m.id_mandates, p.id_player, c.id_coach, m.date_start AS m_date_start, m.date_end AS m_date_end, m.obs AS m_obs,
                             p.position, p.foot, c.formation,
-                            ac.id_agent, a.name AS a_name, a.company AS a_company, a.first_name AS a_first_name, a.last_name AS a_last_name, 
-                            a.nationality As a_nationality, a.birth_date AS a_birth_date, a.documents AS a_documents, a.documents_val AS a_documents_val, 
-                            a.contacts AS a_contacts, a.obs AS a_obs, ma.id_agent as id_agent,    
-
                             IF(p.first_name is null, c.first_name, p.first_name) as first_name,
                             IF(p.last_name is null, c.last_name, p.last_name) as last_name, 
                             IF(p.name is null, c.name, p.name) as name, 
@@ -1653,10 +1651,6 @@
 
                             FROM mandates m 
                             LEFT JOIN players p ON p.id_player = m.id_player
-                            LEFT JOIN mandates_agent ma ON m.id_mandates = ma.id_mandate 
-                            LEFT JOIN agent_club ac ON ma.id_agent_club = ac.id_agent_club
-                            LEFT JOIN agent a ON a.id_agent = ma.id_agent
-                            LEFT JOIN club cp ON cp.id_club = p.id_club
                             LEFT JOIN coach c ON c.id_coach = m.id_coach
                             WHERE m.id_mandates = " . $mandateid;
 
@@ -1667,11 +1661,29 @@
                 if ($result->num_rows > 0) {   
                     $mandate = new mandates($result->fetch_array(MYSQLI_ASSOC));
 
-                    $query = "SELECT ac.id_agent, c.name_club as club_name, c.country as country_name, c.id_club
-                                FROM  agent_club ac
+                    $query = "SELECT  ma.id_mandates_agent, ma.id_mandate, ma.id_agent, a.first_name AS a_first_name, a.last_name AS a_last_name
+                                FROM   mandates_agent ma
+                                INNER JOIN agent a ON a.id_agent = ma.id_agent
+                                WHERE
+                                ma.id_mandate = " . $mandate->id;
+
+                    $result = mysqli_query($conn, $query);
+
+                    if ($result->num_rows > 0) {
+                        $agents = array();
+
+                        while($row = $result->fetch_assoc()) {
+                            array_push($agents, $row);
+                        };
+                    };
+
+                    $query = "SELECT ma.id_mandate, ac.id_agent, c.name_club as club_name, c.country as country_name, c.id_club, a.company AS a_company
+                                FROM   mandates_agent ma
+                                LEFT JOIN agent_club ac ON ac.id_agent = ma.id_agent
+                                LEFT JOIN agent a ON a.id_agent = ac.id_agent
                                 LEFT JOIN club c ON c.id_club = ac.id_club
                                 WHERE
-                                ac.id_agent = " . $mandate->agentid;
+                                ma.id_mandate = " . $mandate->id;
 
                     $result = mysqli_query($conn, $query);
 
@@ -1700,7 +1712,7 @@
 
                     //[ SET TOTAL ]
                     $total = $result->num_rows;
-
+                    $feedback['agents'] = $agents;
                     $feedback['agents_clubs'] = $clubs;
                     $feedback['all_clubs'] = $allclubs;
                 };
@@ -2376,6 +2388,52 @@
                     $body = $body . '</div>';
 
                     $feedback['mail'] = SendEmail('nberna_87@hotmail.com', 'Nuno', 'Lista de contratos expirarar', $body);
+                };
+
+                $feedback['success'] = true;
+                break;
+
+            case 'users':
+                $query = "  SELECT id_user, username, name
+                            FROM users";
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+    
+                //[ CHECK RESULTS ]
+                if ($result->num_rows > 0) {   
+                    $user = new user($result->fetch_array(MYSQLI_ASSOC));
+                    
+                };
+
+                $feedback['success'] = true;
+                $feedback['user'] = $user;
+                break;
+
+            case 'update_users':
+                $user = $object->{'user'};
+
+                $query = "UPDATE users SET 
+                            name = '$user->name',
+                            username = '$user->email',
+                            email = '$user->email'
+                            WHERE id_user = " . $user->id;
+
+                //[ EXECUTE QUERY ]
+                $result = mysqli_query($conn, $query);
+    
+                //[ CHECK RESULTS ]
+                if ($result) {   
+                    if ($user->{'password'} != '') {
+                        $newpassword = password_hash($user->{'password'}, PASSWORD_DEFAULT);
+
+                        $query = "UPDATE users SET 
+                        password = '$newpassword'
+                        WHERE id_user = " . $user->id;
+
+                        //[ EXECUTE QUERY ]
+                        $result = mysqli_query($conn, $query);                        
+                    }
                 };
 
                 $feedback['success'] = true;

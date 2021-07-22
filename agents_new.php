@@ -248,25 +248,21 @@
                         <br>
                         <div class="form-group form-group-default required">
                           <label>Nome completo</label>
-                          <input type="text" class="form-control">
+                          <input type="text" class="form-control txtNameUser">
                         </div>
                         <div class="form-group form-group-default required">
-                          <label>Primeiro nome</label>
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group form-group-default required">
-                          <label>último nome</label>
-                          <input type="text" class="form-control">
+                          <label>username</label>
+                          <input type="text" class="form-control txtUserNameUser">
                         </div>
                         <div class="form-group form-group-default">
                           <label>Alterar password</label>
-                          <input type="text" class="form-control" required>
+                          <input type="text" class="form-control txtPasswordUser" required>
                         </div>
                         <br>
-                        <button type="button" onclick="location.href='agents_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
+                        <button type="button" onclick="location.href='representation_list.php'" class="btn btn-primary btn-block btn-animated btnSaveUser from-left pg pg-save">
                           <span>Guardar</span>
                         </button>
-                        <button type="button" onclick="location.href='agents_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
+                        <button type="button" onclick="location.href='representation_list.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
                           <span>Cancelar</span>
                         </button>
                       </div>
@@ -395,7 +391,7 @@
                         </form>
                       </div>
                       
-                      <div class="form-group form-group-default required">
+                      <div class="form-group form-group-default disabled">
                         <label>Países</label>
                         <input type="text" class="form-control txtAgentCountry" required>
                       </div>
@@ -526,6 +522,7 @@
     <script type="text/javascript">
       $(document).ready(function(){
         agent({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, agent: <?php echo json_encode(new agent(null)); ?>});
+        user();
       });
     </script>
 

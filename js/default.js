@@ -1,3 +1,89 @@
+function user() { 
+    var user = {
+        design: {
+            base: undefined,
+            nameuser: $('.txtNameUser'),
+            usernameuser: $('.txtUserNameUser'),
+            passworduser: $('.txtPasswordUser'),
+            btnsaveuser: $('.btnSaveUser')
+        },
+        datasource: {
+            base: undefined,
+            user: undefined
+        },
+        methods: {
+            base: undefined,
+            getuser: function(after) {
+                var me = this.base;
+                
+                controls.ajax({
+                    functionname: 'users'
+                }, function (data) {
+                    me.datasource.user = data.user;
+
+                    if (!isUndefinedOrNull(after)) { after(data); };
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                }, function () {
+                    //[ ERROR ]
+                    controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                });
+            }
+        }, 
+        load: function () {
+            var me = this,
+                ds = me.design;
+
+            me.methods.getuser(function(){
+                var user = me.datasource.user;
+
+                ds.nameuser.val(user.name);
+                ds.usernameuser.val(user.email);
+
+                //ALTERAR PASSWORD
+                ds.btnsaveuser.on('click', function(){
+                    var user = me.datasource.user; 
+                    
+                    with(user) {
+                        name = ds.nameuser.val();
+                        email = ds.usernameuser.val();
+                        password = ds.passworduser.val();
+                    };
+
+                    controls.ajax({
+                        functionname: 'update_users',
+                        data: {
+                            user: user,
+                        }
+                    }, function (data) {
+                        if (ifUndefinedOrNull(data.success, false)) {
+                            controls.feedback.bind({ type: 'success', message: 'Palavra passe alterada com sucesso.' });
+                            setTimeout(function(){
+                                $("[data-dismiss=modal]").trigger({ type: "click" });
+                                window.location.reload();
+                                }, 2000);
+                        } else {
+                            controls.feedback.bind({ type: 'error', message: 'Não foi possível alterar a palavra passe.' });
+                        };
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    }, function () {
+                        controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
+                    });
+                });
+            });
+        },
+        init: function () {
+            var me = this;
+            this.datasource.base = this;
+            this.methods.base = this;
+            this.load();
+        }
+    };
+    user.init();
+};
+
 function player(args) {
     var player = {
         design: {
@@ -1075,8 +1161,6 @@ function agent(args) {
                         var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
                             countryclubs = clubs.filter(function(c){ return (c.country == country); });
 
-                        
-
                         $.each(countryclubs, function (index, club) {
                             group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
                         });
@@ -1371,11 +1455,11 @@ function agent(args) {
                                 };
 
                                 $.each(ds.ctrclubslist.find('.ddlAgentClub'), function (index, element) {
-                                var value = $(element).find('option:selected').val();
-                                
-                                if (parseInt(value) > 0 && !agentclubs.containsWithField('id_club', parseInt(value))) {
-                                    clubs.push(parseInt(value));
-                                }
+                                    var value = $(element).find('option:selected').val();
+                                    
+                                    if (parseInt(value) > 0 && !agentclubs.containsWithField('id_club', parseInt(value))) {
+                                        clubs.push(parseInt(value));
+                                    }
                                 });
 
                                 //ANEXOS
@@ -1420,6 +1504,7 @@ function agent(args) {
                                 && ds.agentcompany.val() != '' && ds.agentnationality.val() != '') {
                                 
                                 var agent = me.datasource.agent,
+                                    clubs = new Array(),
                                     difference=new Date() - new Date(ds.agentbirth.val()), 
                                     ageDate = new Date(difference),
                                     calculatedAge=   Math.abs(ageDate.getUTCFullYear() - 1970);                   
@@ -1439,10 +1524,15 @@ function agent(args) {
                                     obs = ds.agentobs.val();
                                 };
 
+                                $.each(ds.ctrclubslist.find('.ddlAgentClub'), function (index, element) {
+                                    clubs.push(parseInt($(element).find('option:selected').val()));
+                                });
+
                                 controls.ajax({
                                     functionname: 'insert_agent',
                                     data: {
                                         agent: agent,
+                                        clubs: clubs,
                                         attachments: me.datasource.selectedattachments
                                     }
                                 }, function (data) {
@@ -3638,13 +3728,16 @@ function mandates(args) {
             btndeleteclubnew: $('.btnDeleteClubNew'),
             ctrclubslistedit: $('.ctrClubsListEdit'),
             btnaddclubedit: $('.btnAddClubEdit'),
-            btndeleteclubedit: $('.btnDeleteClubEdit')
+            btndeleteclubedit: $('.btnDeleteClubEdit'),
+            ctragentslist: $('.ctrAgentsList'),
         },
         datasource: {
             base: undefined,
             id: ifUndefinedOrNull(args.data.mandates_id, 0),
             mandates: undefined,
             clubs: new Array(),
+            mandateagents: new Array(),
+            agents: new Array(),
             agents_clubs: new Array(),
             agent_clubs: new Array(),
             attachments: new Array(),
@@ -3666,6 +3759,7 @@ function mandates(args) {
                         //[ SET LIST_MANDATES LIST ]
                         me.datasource.mandates = data.mandate;
                         me.datasource.attachments = data.attachments;
+                        me.datasource.mandateagents = ifUndefinedOrNull(data.agents, new Array());
                         me.datasource.agents_clubs = ifUndefinedOrNull(data.agents_clubs, new Array());
                         me.datasource.all_clubs = ifUndefinedOrNull(data.all_clubs, new Array());
 
@@ -4043,26 +4137,31 @@ function mandates(args) {
 
                                 //EDITAR MANDATO
                                 if (mandates.id > 0) {
-                                    var agent_club = me.datasource.agents_clubs.filter(function(ac){ return (ac.id_agent == mandates.agentid); }),
+                                    var agent_club = me.datasource.agents_clubs.filter(function(ac){ return (ac.id_mandate == mandates.id); }),
                                     club = '',
-                                    country = '';
+                                    country = '',
+                                    company = '';
+
 
                                     if (ifUndefinedOrNull(agent_club, new Array).length > 0) {
                                         $.each(agent_club, function (index, ac) {
-                                            if (country.indexOf(ac.club_name) == -1) {
+                                            if (club.indexOf(ac.club_name) == -1) {
                                                 if(index > 0) {
                                                     club += ', ';
                                                 }
-
                                                 club += ac.club_name;
                                             };
-
                                             if (country.indexOf(ac.country_name) == -1) {
                                                 if(index > 0) {
                                                     country += ', ';
                                                 }
-
                                                 country += ac.country_name;
+                                            };
+                                            if (company.indexOf(ac.a_company) == -1) {
+                                                if(index > 0) {
+                                                    company += ', ';
+                                                }
+                                                company += ac.a_company;
                                             };
                                         });
                                     }
@@ -4075,11 +4174,40 @@ function mandates(args) {
                                     ds.mandateagent.trigger('change'); 
                                     ds.mandatedatestart.val(mandates.datestart);
                                     ds.mandatedateend.val(mandates.dateend);
-                                    ds.mandatecompany.val(mandates.agentcompany);
+                                    ds.mandatecompany.val(company);
                                     ds.mandatecountry.val(country);
                                     ds.mandateclub.val(club);
                                     ds.mandateobs.val(mandates.obs);
                                     $('.titleMandate').html('EDITAR MANDATO');
+                                    
+
+                                    if (ifUndefinedOrNull(me.datasource.mandateagents, new Array()).length > 0) {
+                                        ds.mandateagent.val(me.datasource.mandateagents[0].id_agent);
+                                        ds.mandateagent.find('select').trigger('change');
+
+                                        $.each(me.datasource.mandateagents, function (index, club) {
+                                            if (index > 0) {
+                                                var element = $('<div class="form-group "><select class="full-width ddlMandateAgent" style="z-index: auto;" data-init-plugin="select2"></select></div>');
+                
+                                                element.find('select').append('<option value="0">Selecionar</option>');
+                
+                                                $.each(me.datasource.agents, function (index, agents) {
+                                                    element.find('select').append('<option value="{0}">{1} {2}</option>'.format(agents.id, agents.firstname, agents.lastname));
+                                                });
+                
+                                                element.find('select').select2();
+            
+                                                element.find('select').val(club.id_agent);
+                                                element.find('select').trigger('change');
+                
+                                                ds.ctragentslist.append(element);
+            
+                                                if (ds.ctragentslist.find('.form-group').length > 1) {
+                                                    ds.btndeleteagent.show();
+                                                }
+                                            }
+                                        });
+                                    };
 
                                     //ANEXOS
                                     if (ifUndefinedOrNull(me.datasource.attachments, new Array()).length > 0) {
@@ -4604,72 +4732,6 @@ function mandates(args) {
                                             $(this).hide();
                                         }
                                     });
-                                    
-                                    //ADICIONAR AGENTE
-                                    ds.addnewagentmandate.on('click', function(){
-                                        ds.mandateagentclubnew.find('option:selected').val();
-                                        ds.mandateagentnamenew.val('');
-                                        ds.mandateagentfirstnamenew.val('');
-                                        ds.mandateagentlastnamenew.val('');
-                                        ds.mandateagentbirthnew.val('');
-                                        ds.mandateagentnationalitynew.val('');
-                                        ds.mandateagentpassportnew.val('');
-                                        ds.mandateagentpassportvalnew.val('');
-                                        ds.mandateagentcompanynew.val('');
-                                        ds.mandateagentcountrynew.val('');
-                                        ds.mandateagentcontactnew.val('');
-                                        ds.mandateagentobsnew.val('');
-                                    });
-                                    
-                                    //BOTAO DE SALVAR ADICIONAR JOGADOR
-                                    ds.savenewagentmandate.on('click', function(){
-                                        if (ds.mandateagentnamenew.val() != '' && ds.mandateagentfirstnamenew.val() != '' && ds.mandateagentlastnamenew.val() != ''
-                                            && ds.mandateagentbirthnew.val() != '' && ds.mandateagentclubnew.val() != '0' && ds.mandateagentcontactnew.val() != '' 
-                                            && ds.mandateagentnationalitynew.val() != ''&& ds.mandateagentcompanynew.val() != '' && ds.mandateagentcountrynew.val() != '') {
-                                            
-                                            var agent = args.agent;       
-                                            
-                                            with(agent) {
-                                                name = ds.mandateagentnamenew.val();
-                                                club = ds.mandateagentclubnew.find('option:selected').val();
-                                                firstname = ds.mandateagentfirstnamenew.val();
-                                                lastname = ds.mandateagentlastnamenew.val();
-                                                birth = (ds.mandateagentbirthnew.val() != '') ? ds.mandateagentbirthnew.val() : null;
-                                                nationality = ds.mandateagentnationalitynew.val();
-                                                passport = ds.mandateagentpassportnew.val();
-                                                passportval = (ds.mandateagentpassportvalnew.val() != '') ? ds.mandateagentpassportvalnew.val() : null;
-                                                agentcompany = ds.mandateagentcompanynew.val();
-                                                country = ds.mandateagentcountrynew.val();
-                                                contacts = ds.mandateagentcontactnew.val();
-                                                obs = ds.mandateagentobsnew.val();
-                                            };
-
-                                            controls.ajax({
-                                                functionname: 'insert_agent',
-                                                data: {
-                                                    agent: agent,
-                                                    attachments: me.datasource.selectedattachments
-                                                }
-                                            }, function (data) {
-                                                if (ifUndefinedOrNull(data.success, false)) {
-
-                                                    controls.feedback.bind({ type: 'success', message: 'Agente adicionado com sucesso.' });
-                                                    setTimeout(function(){
-                                                        $("[data-dismiss=modal]").trigger({ type: "click" });
-                                                        window.location.reload();
-                                                     }, 2000);
-                                                } else {
-                                                    controls.feedback.bind({ type: 'error', message: 'Não foi possível adicionar o agente.' });
-                                                };
-                                            }, function () {
-                                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                            }, function () {
-                                                controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                            });
-                                        } else {
-                                            controls.feedback.bind({ type: 'warning', message: 'Campos obrigatórios.' });
-                                        };
-                                    });
                                 };
 
                                 //EDITAR DADOS DO JOGADOR
@@ -4838,109 +4900,6 @@ function mandates(args) {
                                         controls.feedback.bind({ type: 'warning', message: 'Campos obrigatórios.' });
                                     }; 
                                 });
-
-                                //EDITAR DADOS DO AGENTE
-                                ds.editagentmandate.on('click', function(){
-                                    ds.mandateagentclubedit.val(mandates.agentclub);
-                                    ds.mandateagentclubedit.trigger('change');
-                                    ds.mandateagentnameedit.val(mandates.agentname);
-                                    ds.mandateagentfirstnameedit.val(mandates.agentfirstname);
-                                    ds.mandateagentlastnameedit.val(mandates.agentlastname);
-                                    ds.mandateagentbirthedit.val(mandates.agentbirth);
-                                    ds.mandateagentnationalityedit.val(mandates.agentnationality);
-                                    ds.mandateagentpassportedit.val(mandates.agentpassport);
-                                    ds.mandateagentpassportvaledit.val(mandates.agentpassportval);
-                                    ds.mandateagentcompanyedit.val(mandates.agentcompany);
-                                    ds.mandateagentcountryedit.val(mandates.agentcountry);
-                                    ds.mandateagentcontactedit.val(mandates.agentcontacts);
-                                    ds.mandateagentobsedit.val(mandates.agentobs);
-
-                                    if (ifUndefinedOrNull(me.datasource.agents_clubs, new Array()).length > 0) {
-                                        $.each(me.datasource.agents_clubs, function (index, club) {
-                                            if (index > 0) {
-                                                var element = $('<div class="form-group "><select class="full-width ddlAgentClubEditMandate" style="z-index: auto;" data-init-plugin="select2"></select></div>');
-                                                 element.find('select').append('<option value="0">Selecionar</option>');
-                                                $.each(clubs.SingleFieldDistinct('country'), function (index, country) {
-                                                    var group = $('<optgroup label="{0}"></optgroup>'.format(country)),
-                                                        countryclubs = clubs.filter(function(c){ return (c.country == country); });
-                            
-                                                    $.each(countryclubs, function (index, club) {
-                                                        group.append('<option value="{0}">{1}</option>'.format(club.id, club.name_club));
-                                                    });
-                                                    element.find('select').append(group);
-                                                });
-                                                element.find('select').select2();
-                                                element.find('select').val(club.id_club);
-                                                element.find('select').trigger('change');
-                                                ds.ctrclubslistedit.append(element);
-            
-                                                if (ds.ctrclubslistedit.find('.form-group').length > 1) {
-                                                    ds.btndeleteclubedit.show();
-                                                }
-                                            }
-                                        });
-                                    };
-                                });
-
-                                //BOTAO DE SALVAR EDIÇÃO DE AGENTE
-                                ds.saveeditagentmandate.on('click', function(){
-                                    if (ds.mandateagentnameedit.val() != '' && ds.mandateagentfirstnameedit.val() != '' && ds.mandateagentlastnameedit.val() != ''
-                                        && ds.mandateagentbirthedit.val() != '' && ds.mandateagentclubedit.val() != '0' && ds.mandateagentcontactedit.val() != '' 
-                                        && ds.mandateagentnationalityedit.val() != ''&& ds.mandateagentcompanyedit.val() != '' && ds.mandateagentcountryedit.val() != '') {
-                                        
-                                        var agent = args.agent;
-                                            agentclubs = me.datasource.agents_clubs.filter(function(ac){ return ac.id_agent ==  agent.id; }),
-                                            clubs = new Array();       
-                                        
-                                        with(agent) {
-                                            id = mandates.agentid;
-                                            name = ds.mandateagentnameedit.val();
-                                            club = ds.mandateagentclubedit.find('option:selected').val();
-                                            firstname = ds.mandateagentfirstnameedit.val();
-                                            lastname = ds.mandateagentlastnameedit.val();
-                                            birth = (ds.mandateagentbirthedit.val() != '') ? ds.mandateagentbirthedit.val() : null;
-                                            nationality = ds.mandateagentnationalityedit.val();
-                                            passport = ds.mandateagentpassportedit.val();
-                                            passportval = (ds.mandateagentpassportvaledit.val() != '') ? ds.mandateagentpassportvaledit.val() : null;
-                                            agentcompany = ds.mandateagentcompanyedit.val();
-                                            country = ds.mandateagentcountryedit.val();
-                                            contacts = ds.mandateagentcontactedit.val();
-                                            obs = ds.mandateagentobsedit.val();
-                                        };
-
-                                        $.each(ds.ctrclubslistedit.find('.ddlAgentClub'), function (index, element) {
-                                            var value = $(element).find('option:selected').val();
-                                            if (parseInt(value) > 0 && !agentclubs.containsWithField('id_club', parseInt(value))) {
-                                                clubs.push(parseInt(value));
-                                            }
-                                        });
-
-                                        controls.ajax({
-                                            functionname: 'update_agent',
-                                            data: {
-                                                agent: agent,
-                                                clubs: clubs,
-                                                attachments: me.datasource.selectedattachments
-                                            }
-                                        }, function (data) {
-                                            if (ifUndefinedOrNull(data.success, false)) {
-                                                controls.feedback.bind({ type: 'success', message: 'Agente editado com sucesso.' });
-                                                setTimeout(function(){
-                                                    $("[data-dismiss=modal]").trigger({ type: "click" });
-                                                    window.location.reload();
-                                                 }, 2000);
-                                            } else {
-                                                controls.message.bind({ type: 'error', message: 'Agente não foi editado com sucesso.' });
-                                            };
-                                        }, function () {
-                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                        }, function () {
-                                            controls.feedback.bind({ type: 'error', message: controls.resources.generic_error });
-                                        });
-                                    } else {
-                                        controls.feedback.bind({ type: 'warning', message: 'Campos obrigatórios.' });
-                                    }; 
-                                }); 
                             });
                         });
                     });
@@ -5507,7 +5466,7 @@ function list_representation() {
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.datestart, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.dateend, '')));
                                 row.append(itemcolumn.format(ifUndefinedOrNull(list_representation.commission, '')));
-                                row.append(itemcolumn.format(ifUndefinedOrNull((list_representation.child) ? 'Sim' : 'Não', '')));
+                                row.append(itemcolumn.format(ifUndefinedOrNull((new Date(list_representation.dateend) > new Date()) ? 'Aberto' : 'Terminado', '')));
                             };
 
                             row.on('dblclick', function (e) {
@@ -5725,7 +5684,6 @@ function list_club() {
                                 me.methods.actions.edit($(this).attr('data'));
                                 e.preventDefault();
                                 e.stopPropagation();
-                                console.log(list_club.id);
                             });                           
 
                             ds.rows.append(row);
@@ -6265,6 +6223,7 @@ function list_index() {
     var list_value = {
         design: {
             base: undefined,
+
             search: $('.grid-search input'),
             actions: {
                 me: $('.main-content-actions'),
@@ -7016,4 +6975,3 @@ function list_index() {
  
     return list_value.init();
 };
-

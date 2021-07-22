@@ -232,49 +232,45 @@
         <!-- START PAGE CONTENT -->
         <div class="content ">
 
-        <!-- Modal Profile -->
-        <div class="modal fade slide-right" id="modalSlideLeft_profile" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog modal-sm">
-            <div class="modal-content-wrapper">
-              <div class="modal-content">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
-                </button>
-                <div class="container-xs-height full-height">
-                  <div class="row-xs-height">
-                    <div class="modal-body col-xs-height col-middle">
-                      <h5 style="text-align:center">Perfil</h5>
-                      <br>
-                      <div class="form-group form-group-default required">
-                        <label>Nome completo</label>
-                        <input type="text" class="form-control">
+          <!-- Modal Profile -->
+          <div class="modal fade slide-right" id="modalSlideLeft_profile" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content-wrapper">
+                <div class="modal-content">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+                  </button>
+                  <div class="container-xs-height full-height">
+                    <div class="row-xs-height">
+                      <div class="modal-body col-xs-height col-middle">
+                        <h5 style="text-align:center">Perfil</h5>
+                        <br>
+                        <div class="form-group form-group-default required">
+                          <label>Nome completo</label>
+                          <input type="text" class="form-control txtNameUser">
+                        </div>
+                        <div class="form-group form-group-default required">
+                          <label>username</label>
+                          <input type="text" class="form-control txtUserNameUser">
+                        </div>
+                        <div class="form-group form-group-default">
+                          <label>Alterar password</label>
+                          <input type="text" class="form-control txtPasswordUser" required>
+                        </div>
+                        <br>
+                        <button type="button" onclick="location.href='representation_list.php'" class="btn btn-primary btn-block btn-animated btnSaveUser from-left pg pg-save">
+                          <span>Guardar</span>
+                        </button>
+                        <button type="button" onclick="location.href='representation_list.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
+                          <span>Cancelar</span>
+                        </button>
                       </div>
-                      <div class="form-group form-group-default required">
-                        <label>Primeiro nome</label>
-                        <input type="text" class="form-control">
-                      </div>
-                      <div class="form-group form-group-default required">
-                        <label>último nome</label>
-                        <input type="text" class="form-control">
-                      </div>
-                      <div class="form-group form-group-default">
-                        <label>Alterar password</label>
-                        <input type="text" class="form-control" required>
-                      </div>
-                      <br>
-                      <button type="button" onclick="location.href='mandates_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-save">
-                        <span>Guardar</span>
-                      </button>
-                      <button type="button" onclick="location.href='mandates_new.php'" class="btn btn-primary btn-block btn-animated from-left pg pg-close">
-                        <span>Cancelar</span>
-                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- END Modal -->
+          <!-- END Modal -->
 
         <!-- Modal New Player -->
         <div class="modal fade slide-right" id="modalSlideLeft_playerNewMandate" tabindex="-1" role="dialog" aria-hidden="true">
@@ -830,18 +826,6 @@
                             </select> 
                           </div>
                         </div>
-
-                        <div class="col-lg-12 col-xs-12 my-auto">
-                          <div class="float-left">
-                            <div class="btn-group">
-                              <button type="button" class="btn3 btn-primary addNewAgentMandate" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_agentNew" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus"></i>
-                              </button>
-                              <button type="button" class="btn3 btn-primary editAgentMandate" style="margin-bottom: 15px; margin-right:10px;" data-target="#modalSlideLeft_agentEdit" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
                         <div class="form-group form-group-default required ">
                         <label>Agente</label>
                         <div class="col ctrAgentsActions">
@@ -861,24 +845,6 @@
                           <label>Empresa do agente</label>
                           <input type="text" class="form-control txtMandatesCompany">
                         </div>
-
-                        <div class="form-group form-group-default required ">
-                        <label>Clube do mandato</label>
-                        <div class="col ctrClubsActions">
-                              <button type="button" class="btn3 btn-primary float-right btnAddClub"style="margin-left: 7px; margin-top: 11px;" ><i class="fa fa-plus"></i></button>
-                              <button type="button" class="btn3 btn-primary float-right btnDeleteClub" style="margin-top: 11px;" ><i class="fa fa-minus"></i></button>
-                        </div>
-                        <form role="form">
-                          <div class="row">
-                            <div class="col-md-11 ctrClubsList">    
-                              <div class="form-group ">
-                                <select class="full-width ddlMandateClub" data-init-plugin="select2"></select>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-
                         <div class="form-group form-group-default disabled">
                           <label>Clubes do mandato</label>
                           <input type="text" class="form-control txtMandatesClub">
@@ -1007,6 +973,7 @@
     <script type="text/javascript">
       $(document).ready(function(){
         mandates({ data: <?php echo (isset($_POST['parameters'])) ? urldecode($_POST['parameters']) : '{}'; ?>, mandates: <?php echo json_encode(new mandates(null)); ?>, player: <?php echo json_encode(new player(null)); ?>, agent: <?php echo json_encode(new agent(null)); ?>, coach: <?php echo json_encode(new coach(null)); ?>});
+        user();
       });
     </script>
   </body>

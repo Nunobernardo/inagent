@@ -7,9 +7,9 @@
 
         function __construct($obj) {
             if (isset($obj)) {
-                $this->id = intval($obj["id"]);
+                $this->id = intval($obj["id_user"]);
                 $this->name = $obj["name"];
-                $this->email = $obj["email"];
+                $this->email = $obj["username"];
             };
         }
 
