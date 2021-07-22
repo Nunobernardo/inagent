@@ -106,6 +106,7 @@
 
                             //[ EXECUTE QUERY ]
                             $result = mysqli_query($conn, $query);
+                            
                         }
                     }
                     $feedback['player_id'] = $conn->insert_id;

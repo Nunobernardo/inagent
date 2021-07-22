@@ -164,7 +164,7 @@ function player(args) {
                             $.each(ifUndefinedOrNull(this.getFiles(), new Array()), function (index, file) {
                                 var isnewfile = ifUndefinedOrNull(files, new Array()).filter(function (a) { return (a.name.toLowerCase() == file.name.toLowerCase()); }).length == 0,
                                     idvalidsize = (file.size <= 10485760); //[ MAX: 10 MB ]
-
+                                                                
                                 if (isnewfile && idvalidsize) {
                                     files.push(file);
                                 };
@@ -349,10 +349,9 @@ function player(args) {
 
                         //EDITAR JOGADOR
                         ds.saveplayer.on('click', function(){
-                            if (ds.playername.val() != '' && ds.playerfirstname.val() != '' && ds.playerlastname.val() != ''
-                                && ds.playerbirth.val() != '' && ds.playerclub.val() != '0' && ds.playerfoot.val() != ''
-                                && ds.playerheight.val() != '' && ds.playernationality.val() != '' && ds.playerposition.val() != ''
-                                && ds.playervalue.val() != '' && ds.playerweight.val() != '') {
+                            if (ds.playername.val() != '' && ds.playerfirstname.val() != '' && ds.playerlastname.val() != '' 
+                                && ds.playerbirth.val() != '' && ds.playerfoot.val() != '' && ds.playernationality.val() != ''
+                                && ds.playerposition.val() != '' && ds.playervalue.val() != '') {
                                 var player = me.datasource.player,
                                     difference=new Date() - new Date(ds.playerbirth.val()), 
                                     ageDate = new Date(difference),
@@ -413,8 +412,7 @@ function player(args) {
                         ds.saveplayer.on('click', function(){
                             if (ds.playername.val() != '' && ds.playerfirstname.val() != '' && ds.playerlastname.val() != ''
                                 && ds.playerbirth.val() != '' && ds.playerclub.val() != '0' && ds.playerfoot.val() != ''
-                                && ds.playerheight.val() != '' && ds.playernationality.val() != '' && ds.playerposition.val() != ''
-                                && ds.playervalue.val() != '' && ds.playerweight.val() != '') {
+                                 && ds.playernationality.val() != '' && ds.playerposition.val() != '' && ds.playervalue.val() != '') {
                                 var player = me.datasource.player,
                                     difference=new Date() - new Date(ds.playerbirth.val()), 
                                     ageDate = new Date(difference),
@@ -812,8 +810,7 @@ function coach(args) {
                         ds.savecoach.on('click', function(){
                             if (ds.coachname.val() != '' && ds.coachfirstname.val() != '' && ds.coachlastname.val() != ''
                                 && ds.coachbirth.val() != '' && ds.coachclub.val() != '0' && ds.coachformation.val() != ''
-                                && ds.coachheight.val() != '' && ds.coachnationality.val() != ''
-                                && ds.coachvalue.val() != '' && ds.coachweight.val() != '') {
+                                && ds.coachnationality.val() != '' && ds.coachvalue.val() != '') {
 
                                 var coach = me.datasource.coach,
                                     difference=new Date() - new Date(ds.coachbirth.val()), 
@@ -874,8 +871,7 @@ function coach(args) {
                         ds.savecoach.on('click', function(){
                             if (ds.coachname.val() != '' && ds.coachfirstname.val() != '' && ds.coachlastname.val() != ''
                                 && ds.coachbirth.val() != '' && ds.coachclub.val() != '0' && ds.coachformation.val() != ''
-                                && ds.coachheight.val() != '' && ds.coachnationality.val() != ''
-                                && ds.coachvalue.val() != '' && ds.coachweight.val() != '') {
+                                && ds.coachnationality.val() != '' && ds.coachvalue.val() != '') {
 
                                 var coach = me.datasource.coach;                   
             
@@ -2175,8 +2171,7 @@ function representation(args) {
                                 ds.savenewplayer.on('click', function(){
                                     if (ds.representationplayernamenew.val() != '' && ds.representationplayerfirstnamenew.val() != '' && ds.representationplayerlastnamenew.val() != ''
                                         && ds.representationplayerbirthnew.val() != '' && ds.representationplayerclubnew.val() != '0' && ds.representationplayerfootnew.val() != ''
-                                        && ds.representationplayerheightnew.val() != '' && ds.representationplayernationalitynew.val() != '' && ds.representationplayerpositionnew.val() != ''
-                                        && ds.representationplayervaluenew.val() != '' && ds.representationplayerweightnew.val() != '') {
+                                        && ds.representationplayernationalitynew.val() != '' && ds.representationplayerpositionnew.val() != '' && ds.representationplayervaluenew.val() != '') {
                                             
                                         var player = args.player;       
                                         
@@ -2254,8 +2249,7 @@ function representation(args) {
                                 ds.savenewcoach.on('click', function(){
                                     if (ds.representationcoachnamenew.val() != '' && ds.representationcoachfirstnamenew.val() != '' && ds.representationcoachlastnamenew.val() != ''
                                         && ds.representationcoachbirthnew.val() != '' && ds.representationcoachclubnew.val() != '0' && ds.representationcoachformationnew.val() != ''
-                                        && ds.representationcoachheightnew.val() != '' && ds.representationcoachnationalitynew.val() != '' && ds.representationcoachvaluenew.val() != '' 
-                                        && ds.representationcoachweightnew.val() != '') {
+                                         && ds.representationcoachnationalitynew.val() != '' && ds.representationcoachvaluenew.val() != '' ) {
                                         
                                         var coach = args.coach;       
                                         
@@ -2344,8 +2338,7 @@ function representation(args) {
                             ds.saveeditplayer.on('click', function(){
                                 if (ds.representationplayernameedit.val() != '' && ds.representationplayerfirstnameedit.val() != '' && ds.representationplayerlastnameedit.val() != ''
                                     && ds.representationplayerbirthedit.val() != '' && ds.representationplayerclubedit.val() != '0' && ds.representationplayerfootedit.val() != ''
-                                    && ds.representationplayerheightedit.val() != '' && ds.representationplayernationalityedit.val() != '' && ds.representationplayerpositionedit.val() != ''
-                                    && ds.representationplayervalueedit.val() != '' && ds.representationplayerweightedit.val() != '') {
+                                     && ds.representationplayernationalityedit.val() != '' && ds.representationplayerpositionedit.val() != '' && ds.representationplayervalueedit.val() != '') {
                                     
                                     var player = args.player;       
                                     
@@ -2427,8 +2420,7 @@ function representation(args) {
                             ds.saveeditcoach.on('click', function(){
                                 if (ds.representationcoachnameedit.val() != '' && ds.representationcoachfirstnameedit.val() != '' && ds.representationcoachlastnameedit.val() != ''
                                     && ds.representationcoachbirthedit.val() != '' && ds.representationcoachclubedit.val() != '0' && ds.representationcoachformationedit.val() != ''
-                                    && ds.representationcoachheightedit.val() != '' && ds.representationcoachnationalityedit.val() != '' && ds.representationcoachvalueedit.val() != '' 
-                                    && ds.representationcoachweightedit.val() != '') {
+                                    && ds.representationcoachnationalityedit.val() != '' && ds.representationcoachvalueedit.val() != '' ) {
                                     
                                     var coach = args.coach;       
                                     
@@ -3211,8 +3203,7 @@ function club(args) {
                                 ds.savenewplayerclub.on('click', function(){
                                     if (ds.clubplayernamenew.val() != '' && ds.clubplayerfirstnamenew.val() != '' && ds.clubplayerlastnamenew.val() != ''
                                         && ds.clubplayerbirthnew.val() != '' && ds.clubplayerclubnew.val() != '0' && ds.clubplayerfootnew.val() != ''
-                                        && ds.clubplayerheightnew.val() != '' && ds.clubplayernationalitynew.val() != '' && ds.clubplayerpositionnew.val() != ''
-                                        && ds.clubplayervaluenew.val() != '' && ds.clubplayerweightnew.val() != '') {
+                                        && ds.clubplayernationalitynew.val() != '' && ds.clubplayerpositionnew.val() != '' && ds.clubplayervaluenew.val() != '') {
                                         
                                         var player = args.player;       
                                         
@@ -3291,8 +3282,7 @@ function club(args) {
                                 ds.savenewcoachclub.on('click', function(){
                                     if (ds.clubcoachnamenew.val() != '' && ds.clubcoachfirstnamenew.val() != '' && ds.clubcoachlastnamenew.val() != ''
                                         && ds.clubcoachbirthnew.val() != '' && ds.clubcoachclubnew.val() != '0' && ds.clubcoachformationnew.val() != ''
-                                        && ds.clubcoachheightnew.val() != '' && ds.clubcoachnationalitynew.val() != '' && ds.clubcoachvaluenew.val() != '' 
-                                        && ds.clubcoachweightnew.val() != '') {
+                                        && ds.clubcoachnationalitynew.val() != '' && ds.clubcoachvaluenew.val() != '' ) {
                                         
                                         var coach = args.coach;       
                                         
@@ -3382,8 +3372,7 @@ function club(args) {
                             ds.saveeditplayerclub.on('click', function(){
                                 if (ds.clubplayernameedit.val() != '' && ds.clubplayerfirstnameedit.val() != '' && ds.clubplayerlastnameedit.val() != ''
                                     && ds.clubplayerbirthedit.val() != '' && ds.clubplayerclubedit.val() != '0' && ds.clubplayerfootedit.val() != ''
-                                    && ds.clubplayerheightedit.val() != '' && ds.clubplayernationalityedit.val() != '' && ds.clubplayerpositionedit.val() != ''
-                                    && ds.clubplayervalueedit.val() != '' && ds.clubplayerweightedit.val() != '') {
+                                    && ds.clubplayernationalityedit.val() != '' && ds.clubplayerpositionedit.val() != '' && ds.clubplayervalueedit.val() != '') {
                                     
                                     var player = args.player;       
                                     
@@ -3460,8 +3449,7 @@ function club(args) {
                             ds.saveeditcoachclub.on('click', function(){
                                 if (ds.clubcoachnameedit.val() != '' && ds.clubcoachfirstnameedit.val() != '' && ds.clubcoachlastnameedit.val() != ''
                                     && ds.clubcoachbirthedit.val() != '' && ds.clubcoachclubedit.val() != '0' && ds.clubcoachformationedit.val() != ''
-                                    && ds.clubcoachheightedit.val() != '' && ds.clubcoachnationalityedit.val() != '' && ds.clubcoachvalueedit.val() != '' 
-                                    && ds.clubcoachweightedit.val() != '') {
+                                    && ds.clubcoachnationalityedit.val() != '' && ds.clubcoachvalueedit.val() != '' ) {
 
                                     var coach = args.coach;       
                                     
@@ -4460,8 +4448,7 @@ function mandates(args) {
                                     ds.savenewplayermandate.on('click', function(){
                                         if (ds.mandateplayernamenew.val() != '' && ds.mandateplayerfirstnamenew.val() != '' && ds.mandateplayerlastnamenew.val() != ''
                                             && ds.mandateplayerbirthnew.val() != '' && ds.mandateplayerclubnew.val() != '0' && ds.mandateplayerfootnew.val() != ''
-                                            && ds.mandateplayerheightnew.val() != '' && ds.mandateplayernationalitynew.val() != '' && ds.mandateplayerpositionnew.val() != ''
-                                            && ds.mandateplayervaluenew.val() != '' && ds.mandateplayerweightnew.val() != '') {
+                                            && ds.mandateplayernationalitynew.val() != '' && ds.mandateplayerpositionnew.val() != '' && ds.mandateplayervaluenew.val() != '') {
                                          
                                             var player = args.player;       
                                             
@@ -4539,8 +4526,7 @@ function mandates(args) {
                                     ds.savenewcoachmandate.on('click', function(){
                                         if (ds.mandatecoachnamenew.val() != '' && ds.mandatecoachfirstnamenew.val() != '' && ds.mandatecoachlastnamenew.val() != ''
                                             && ds.mandatecoachbirthnew.val() != '' && ds.mandatecoachclubnew.val() != '0' && ds.mandatecoachformationnew.val() != ''
-                                            && ds.mandatecoachheightnew.val() != '' && ds.mandatecoachnationalitynew.val() != ''
-                                            && ds.mandatecoachvaluenew.val() != '' && ds.mandatecoachweightnew.val() != '') {
+                                            && ds.mandatecoachnationalitynew.val() != '' && ds.mandatecoachvaluenew.val() != '') {
                                            
                                             var coach = args.coach;       
                                             
@@ -4728,8 +4714,7 @@ function mandates(args) {
                                 ds.saveeditplayermandate.on('click', function(){
                                     if (ds.mandateplayernameedit.val() != '' && ds.mandateplayerfirstnameedit.val() != '' && ds.mandateplayerlastnameedit.val() != ''
                                         && ds.mandateplayerbirthedit.val() != '' && ds.mandateplayerclubedit.val() != '0' && ds.mandateplayerfootedit.val() != ''
-                                        && ds.mandateplayerheightedit.val() != '' && ds.mandateplayernationalityedit.val() != '' && ds.mandateplayerpositionedit.val() != ''
-                                        && ds.mandateplayervalueedit.val() != '' && ds.mandateplayerweightedit.val() != '') {
+                                        && ds.mandateplayernationalityedit.val() != '' && ds.mandateplayerpositionedit.val() != '' && ds.mandateplayervalueedit.val() != '') {
                                       
                                         var player = args.player;       
                                         
@@ -4808,8 +4793,7 @@ function mandates(args) {
                                 ds.saveeditcoachmandate.on('click', function(){
                                     if (ds.mandatecoachnameedit.val() != '' && ds.mandatecoachfirstnameedit.val() != '' && ds.mandatecoachlastnameedit.val() != ''
                                         && ds.mandatecoachbirthedit.val() != '' && ds.mandatecoachclubedit.val() != '0' && ds.mandatecoachformationedit.val() != ''
-                                        && ds.mandatecoachheightedit.val() != '' && ds.mandatecoachnationalityedit.val() != ''
-                                        && ds.mandatecoachvalueedit.val() != '' && ds.mandatecoachweightedit.val() != '') {
+                                        && ds.mandatecoachnationalityedit.val() != '' && ds.mandatecoachvalueedit.val() != '') {
                                        
                                         var coach = args.coach;       
                                         
@@ -6999,7 +6983,6 @@ function list_index() {
                 ds = me.design.actions;
 
             me.methods.actions.contractstoexpire(function(){
-                console.log('cccc');
 
                 //[ BIND list_value GRID ]
                 me.methods.grid.bind();
