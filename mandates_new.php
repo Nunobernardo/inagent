@@ -364,18 +364,19 @@
                         </div>
                         <div class="card-body">
                           <select class="cs-select cs-skin-slide ddlPlayerPositionNewMandate" data-init-plugin="cs-select">
-                            <option value="sightseeing">Guarda-redes</option>
-                            <option value="business">Defesa direito</option>
-                            <option value="honeymoon">Defesa central</option>
-                            <option value="honeymoon">Defesa esquerdo</option>
-                            <option value="honeymoon">Médio centro</option>
-                            <option value="honeymoon">Defesa direito</option>
-                            <option value="honeymoon">Defesa esquerdo</option>
-                            <option value="honeymoon">Defesa ofensivo</option>
-                            <option value="honeymoon">Extremo esquerdo</option>
-                            <option value="honeymoon">Extremo direito</option>
-                            <option value="honeymoon">Avançado</option>
-                            <option value="honeymoon">Ponta de lança</option>
+                            <option value="selected" disabled="disabled">Escolha a posição</option>
+                            <option value="g">Guarda-redes</option>
+                            <option value="dd">Defesa direito</option>
+                            <option value="dc">Defesa central</option>
+                            <option value="de">Defesa esquerdo</option>
+                            <option value="dc">Médio centro</option>
+                            <option value="md">Médio direito</option>
+                            <option value="me">Médio esquerdo</option>
+                            <option value="mo">Médio ofensivo</option>
+                            <option value="ee">Extremo esquerdo</option>
+                            <option value="ed">Extremo direito</option>
+                            <option value="a">Avançado</option>
+                            <option value="pl">Ponta de lança</option>
                           </select> 
                         </div>
                       </div>
@@ -514,18 +515,19 @@
                         </div>
                         <div class="card-body">
                           <select class="cs-select cs-skin-slide ddlPlayerPositionEditMandate" data-init-plugin="cs-select">
-                            <option value="sightseeing">Guarda-redes</option>
-                            <option value="business">Defesa direito</option>
-                            <option value="honeymoon">Defesa central</option>
-                            <option value="honeymoon">Defesa esquerdo</option>
-                            <option value="honeymoon">Médio centro</option>
-                            <option value="honeymoon">Defesa direito</option>
-                            <option value="honeymoon">Defesa esquerdo</option>
-                            <option value="honeymoon">Defesa ofensivo</option>
-                            <option value="honeymoon">Extremo esquerdo</option>
-                            <option value="honeymoon">Extremo direito</option>
-                            <option value="honeymoon">Avançado</option>
-                            <option value="honeymoon">Ponta de lança</option>
+                            <option value="selected" disabled="disabled">Escolha a posição</option>
+                            <option value="g">Guarda-redes</option>
+                            <option value="dd">Defesa direito</option>
+                            <option value="dc">Defesa central</option>
+                            <option value="de">Defesa esquerdo</option>
+                            <option value="dc">Médio centro</option>
+                            <option value="md">Médio direito</option>
+                            <option value="me">Médio esquerdo</option>
+                            <option value="mo">Médio ofensivo</option>
+                            <option value="ee">Extremo esquerdo</option>
+                            <option value="ed">Extremo direito</option>
+                            <option value="a">Avançado</option>
+                            <option value="pl">Ponta de lança</option>
                           </select> 
                         </div>
                       </div>
@@ -859,6 +861,24 @@
                           <label>Empresa do agente</label>
                           <input type="text" class="form-control txtMandatesCompany">
                         </div>
+
+                        <div class="form-group form-group-default required ">
+                        <label>Clube do mandato</label>
+                        <div class="col ctrClubsActions">
+                              <button type="button" class="btn3 btn-primary float-right btnAddClub"style="margin-left: 7px; margin-top: 11px;" ><i class="fa fa-plus"></i></button>
+                              <button type="button" class="btn3 btn-primary float-right btnDeleteClub" style="margin-top: 11px;" ><i class="fa fa-minus"></i></button>
+                        </div>
+                        <form role="form">
+                          <div class="row">
+                            <div class="col-md-11 ctrClubsList">    
+                              <div class="form-group ">
+                                <select class="full-width ddlMandateClub" data-init-plugin="select2"></select>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+
                         <div class="form-group form-group-default disabled">
                           <label>Clubes do mandato</label>
                           <input type="text" class="form-control txtMandatesClub">

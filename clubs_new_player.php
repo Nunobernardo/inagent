@@ -413,40 +413,6 @@
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         </div>
                       </div>
-                      <div class=" ctrFilesNew col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderNew">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                       <br>
                       <button type="button" class="btn btn-primary btn-block btn-animated from-left pg pg-save btnSavePlayerNewClub">
                         <span>Guardar</span>
@@ -596,40 +562,6 @@
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                      </div>
-                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-12" style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              upload de documentos
-                            </div>
-                            <div class="tools">
-                              <a class="collapse" href="javascript:;"></a>
-                              <a class="config" data-toggle="modal" href="#grid-config"></a>
-                              <a class="reload" href="javascript:;"></a>
-                              <a class="remove" href="javascript:;"></a>
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div id="box" class="dropzone no-margin">
-                                <div class="files dz-default dz-message"></div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                       <br>

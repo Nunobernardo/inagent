@@ -290,20 +290,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtCoachNameNew" required>
+                        <input type="text" class="form-control txtCoachNameNewMandate" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtCoachFirstNameNew">
+                        <input type="text" class="form-control txtCoachFirstNameNewMandate">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtCoachLastNameNew">
+                        <input type="text" class="form-control txtCoachLastNameNewMandate">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtCoachBirthNew" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachBirthNewMandate" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -311,12 +311,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtCoachNationalityNew" required>
+                        <input type="text" class="form-control txtCoachNationalityNewMandate" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtCoachHeightNew" required>
+                          <input type="text" class="form-control usd txtCoachHeightNewMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -326,7 +326,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtCoachWeightNew" required>
+                          <input type="text" class="form-control usd txtCoachWeightNewMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -344,7 +344,8 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormationNew" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlCoachFormationNewMandate" data-init-plugin="cs-select">
+                            <option value="selected" disabled="disabled">Escolha a formação</option>
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -356,14 +357,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlCoachClubNew" data-init-plugin="select2"></select>
+                            <select class="full-width ddlCoachMandateNew" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtCoachValueNew" required>
+                          <input type="text" class="form-control usd txtCoachValueNewMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -372,12 +373,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtCoachPassportNew" required>
+                        <input type="text" class="form-control txtCoachPassportNewMandate" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtCoachPassportValNew" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachPassportValNewMandate" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -413,20 +414,20 @@
                       <br>
                       <div class="form-group form-group-default required">
                         <label>Nome completo</label>
-                        <input type="text" class="form-control txtCoachNameEdit" required>
+                        <input type="text" class="form-control txtCoachNameEditMandate" required>
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Primeiro nome</label>
-                        <input type="text" class="form-control txtCoachFirstNameEdit">
+                        <input type="text" class="form-control txtCoachFirstNameEditMandate">
                       </div>
                       <div class="form-group form-group-default required">
                         <label>último nome</label>
-                        <input type="text" class="form-control txtCoachLastNameEdit">
+                        <input type="text" class="form-control txtCoachLastNameEditMandate">
                       </div>
                       <div class="form-group form-group-default input-group ">
                         <div class="form-input-group disabled">
                           <label>Data de nascimento</label>
-                          <input type="email" class="form-control txtCoachBirthEdit" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachBirthEditMandate" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -434,12 +435,12 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>Nacionalidade</label>
-                        <input type="text" class="form-control txtCoachNationalityEdit" required>
+                        <input type="text" class="form-control txtCoachNationalityEditMandate" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Altura</label>
-                          <input type="text" class="form-control usd txtCoachHeightEdit" required>
+                          <input type="text" class="form-control usd txtCoachHeightEditMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">CM
@@ -449,7 +450,7 @@
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Peso</label>
-                          <input type="text" class="form-control usd txtCoachWeightEdit" required>
+                          <input type="text" class="form-control usd txtCoachWeightEditMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">KG
@@ -467,7 +468,8 @@
                           </div>
                         </div>
                         <div class="card-body">
-                          <select class="cs-select cs-skin-slide  ddlCoachFormationEdit" data-init-plugin="cs-select">
+                          <select class="cs-select cs-skin-slide  ddlCoachFormationEditMandate" data-init-plugin="cs-select">
+                            <option value="selected" disabled="disabled">Escolha a formação</option>
                             <option value="442">4-4-2</option>
                             <option value="433">4-3-3</option>
                             <option value="352">3-5-2</option>
@@ -479,14 +481,14 @@
                         <label>Clube</label>
                         <form role="form">
                           <div class="form-group ">
-                            <select class="full-width ddlCoachClubEdit" data-init-plugin="select2"></select>
+                            <select class="full-width ddlCoachMandateEdit" data-init-plugin="select2"></select>
                           </div>
                         </form>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Valor Mercado</label>
-                          <input type="text" class="form-control usd txtCoachValueEdit" required>
+                          <input type="text" class="form-control usd txtCoachValueEditMandate" required>
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text">EUR
@@ -495,30 +497,15 @@
                       </div>
                       <div class="form-group form-group-default required">
                         <label>CC/Passaporte</label>
-                        <input type="text" class="form-control txtCoachPassportEdit" required>
+                        <input type="text" class="form-control txtCoachPassportEditMandate" required>
                       </div>
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label>Validade</label>
-                          <input type="email" class="form-control txtCoachPassportValEdit" placeholder="Selecione a data" id="datepicker-component2">
+                          <input type="email" class="form-control txtCoachPassportValEditMandate" placeholder="Selecione a data" id="datepicker-component2">
                         </div>
                         <div class="input-group-append ">
                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                      </div>
-
-                      <div class=" ctrFilesEdit col-md-12"  style="padding-left: 1px;padding-right: 1px;">
-                        <div class="card card-default">
-                          <div class="card-header ">
-                            <div class="card-title">
-                              Documentos
-                            </div>
-                          </div>
-                          <div class="card-body no-scroll no-padding ctrUploaderEdit">
-                            <div class="dropzone no-margin">
-                                <div class="files"></div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                       <br>

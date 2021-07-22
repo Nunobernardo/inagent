@@ -339,7 +339,7 @@
                         <div class="col-md-6">
                           <div class="form-group form-group-default disabled">
                             <label>Idade</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control txtAgentAge">
                           </div>
                         </div>
                       </div>
