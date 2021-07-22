@@ -6720,7 +6720,7 @@ function list_index() {
                                 var row = ds.rowtemplate.clone(),
                                     actionscolumn = '<div class="actions" data="{1}">{0}</div>',
                                     itemcolumn = '<td class="font-montserrat all-caps fs-12 w-50">{0}</td>',
-                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">Data</span></td>',
+                                    itemcolumn2 = '<td class="text-right b-r b-dashed b-grey w-25"><span class="hint-text small">faltam {0} dias</span></td>',
                                     itemcolumn3 = '<td class="w-25" style="width:20%; text-align: center; vertical-align: middle;">{0}</td>';
     
                                 with (row) {
@@ -6729,7 +6729,7 @@ function list_index() {
     
                                     //[ OTHER COLUMNS ]
                                     row.append(itemcolumn.format('{0} {1}'.format(list_birth.firstname, list_birth.lastname)));
-                                    row.append(itemcolumn2);
+                                    row.append(itemcolumn2.format(ifUndefinedOrNull(list_birth.left_days, '')));
                                     row.append(itemcolumn3.format(ifUndefinedOrNull(list_birth.birth, '')));
                                 };
     

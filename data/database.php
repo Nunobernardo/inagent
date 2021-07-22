@@ -390,7 +390,7 @@
                 $agent = $object->{'agent'};
                 $attachments = $object->{'attachments'};
 
-                if (strval($player->birth) != '') {
+                if (strval($agent->birth) != '') {
                     $birthagent = '"' . date("Y-m-d", strtotime($agent->birth)) . '"';
                 } else {
                     $birthagent = 'NULL';
@@ -442,7 +442,7 @@
                 $clubs = $object->{'clubs'};
                 $attachments = $object->{'attachments'};
 
-                if (strval($player->birth) != '') {
+                if (strval($agent->birth) != '') {
                     $birthagent = '"' . date("Y-m-d", strtotime($agent->birth)) . '"';
                 } else {
                     $birthagent = 'NULL';
@@ -954,6 +954,7 @@
                     $query = "SELECT p.id_player, p.first_name, p.last_name, p.birth_date, p.nationality, p.position, c.name_club as club_name, p.value, c.id_club 
                               FROM players p
                               INNER JOIN club c ON p.id_club = c.id_club
+                              ORDER BY p.first_name
                               LIMIT $offset, $records";
     
                     //[ EXECUTE QUERY ]
@@ -1116,6 +1117,7 @@
                 $query = "SELECT co.id_coach, co.first_name, co.last_name, co.birth_date, co.nationality, co.formation, c.name_club as club_name, co.value, c.id_club
                             FROM coach co
                             INNER JOIN club c ON co.id_club = c.id_club
+                            ORDER BY co.first_name
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -1283,6 +1285,7 @@
                             FROM contract_representation cr 
                             LEFT JOIN players p ON cr.id_player = p.id_player
                             LEFT JOIN coach co ON co.id_coach = cr.id_coach
+                            ORDER BY p.first_name ASC
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -1422,6 +1425,7 @@
                             LEFT JOIN club c ON cc.id_club = c.id_club 
                             LEFT JOIN players p ON cc.id_player = p.id_player
                             LEFT JOIN coach co ON co.id_coach = cc.id_coach
+                            ORDER BY p.first_name ASC
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -1980,6 +1984,7 @@
 
                 $query = "SELECT p.id_player, p.first_name, p.last_name, p.value
                             FROM players p
+                            ORDER BY p.value DESC
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -2020,6 +2025,7 @@
 
                 $query = "SELECT p.id_player, p.first_name, p.last_name, p.nationality
                             FROM players p
+                            ORDER BY p.nationality
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -2061,6 +2067,7 @@
                             FROM players p
                             INNER JOIN club c ON c.id_club = p.id_club
                             GROUP BY c.id_club
+                            ORDER BY total_records DESC
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -2138,10 +2145,11 @@
                 $total_records = intval($result->fetch_array(MYSQLI_ASSOC)['total_records']);
                 $total_pages = ceil($total_records / $records);
 
-                $query = "SELECT cr.id_contract_rep, p.first_name, p.last_name, cr.date_end
-                            FROM contract_representation cr
-                            INNER JOIN players p ON cr.id_player = p.id_player
-                            ORDER BY cr.date_end ASC
+                $query = "SELECT c.id_contract_rep, p.first_name, p.last_name, c.date_end 
+                            FROM contract_representation c 
+                            INNER JOIN players p ON c.id_player = p.id_player
+                            WHERE  DATE(date_end) >= DATE(NOW())
+                            ORDER BY c.date_end ASC
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
@@ -2182,6 +2190,7 @@
                 $query = "SELECT COUNT(p.id_player) AS total_records, p.position
                             FROM players p 
                             GROUP BY p.position
+                            ORDER BY total_records DESC
                             LIMIT $offset, $records";
 
                 //[ EXECUTE QUERY ]
